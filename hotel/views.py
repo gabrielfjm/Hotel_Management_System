@@ -202,7 +202,8 @@ def reserve():
 
             all_rooms = Rooms.query.all()
 
-            if d2 <= d1 or d1 < datetime.datetime.now() or d2 < datetime.datetime.now():
+            # DEF-02: comparar a data de entrada com a data de hoje, e não com o instante atual.
+            if d2 <= d1 or d1.date() < datetime.date.today():
                 flash("Please recheck your date! It has to be at least today! ")
                 return redirect(url_for('reserve'))
             total_num = 0
