@@ -12,6 +12,17 @@ def _sessao_autenticada():
     return session.get('user_available', False)
 
 
+def _periodos_conflitam(entrada_a, saida_a, entrada_b, saida_b):
+    # DEF-01: estadias são intervalos [entrada, saída); só há conflito se houver interseção.
+    return entrada_a < saida_b and entrada_b < saida_a
+
+
+def _quartos_ocupados(entrada, saida):
+    # DEF-15: cada vínculo de quarto é comparado apenas com a própria reserva (brid == rid).
+    vinculos = db.session.query(Booked.room_id, Reservations.checkin_date, Reservations.checkout_date)         .join(Reservations, Booked.brid == Reservations.rid)
+    return {quarto for quarto, c1, c2 in vinculos if _periodos_conflitam(entrada, saida, c1, c2)}
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -146,8 +157,6 @@ global_avail = None
 @app.route('/rooms')
 def show_rooms():
     if _sessao_autenticada():
-        all_reserves = Reservations.query.all()
-        all_bookings = Booked.query.all()
         all_rooms = Rooms.query.all()
         all_room_type = Room_type.query.all()
         global global_avail
@@ -156,15 +165,10 @@ def show_rooms():
         # If entered information on check availability page, only display rooms available at that point
         c_in = datetime.datetime.combine(global_avail.checkin_date.data, datetime.time(0, 0))
         c_out = datetime.datetime.combine(global_avail.checkout_date.data, datetime.time(0, 0))
+        ocupados = _quartos_ocupados(c_in, c_out)
         for each in all_rooms:
-            for each_reserves in all_reserves:
-                for each_booking in all_bookings:
-                    c1 = each_reserves.checkin_date
-                    c2 = each_reserves.checkout_date
-                    if each_booking.room_id == each.room_number and (
-                            (c_in <= c1 and c2 <= c_out) or (c1 <= c_in and c2 <= c_out) or (c_in <= c1 and c_out <= c2) or (
-                            c1 <= c_in and c_out <= c2)) and (c_in < c_out):
-                        all_rooms.remove(each)
+            if each.room_number in ocupados and (c_in < c_out):
+                all_rooms.remove(each)
         global_avail = None
         return render_template('rooms.html', rooms=all_rooms, room_type=all_room_type)
     flash('User is not Authenticated')
@@ -196,24 +200,17 @@ def reserve():
             d2 = datetime.datetime.combine(reservation.checkout_date.data, datetime.time(0, 0))
             num = reservation.num_guests.data
 
-            all_reserves = Reservations.query.all()
-            all_bookings = Booked.query.all()
             all_rooms = Rooms.query.all()
 
             if d2 <= d1 or d1 < datetime.datetime.now() or d2 < datetime.datetime.now():
                 flash("Please recheck your date! It has to be at least today! ")
                 return redirect(url_for('reserve'))
             total_num = 0
+            ocupados = _quartos_ocupados(d1, d2)
             for each in room_list:
-                for each_reserves in all_reserves:
-                    for each_booking in all_bookings:
-                        c1 = each_reserves.checkin_date
-                        c2 = each_reserves.checkout_date
-                        if each_booking.room_id == int(each) and (
-                                (c1 <= d1 and d2 <= c2) or (d1 <= c1 and d2 <= c2) or (c1 <= d1 and c2 <= d2) or (
-                                d1 <= c1 and c2 <= d2)):
-                            flash("The room you are reserving is not available at the time you selected!")
-                            return redirect(url_for('reserve'))
+                if int(each) in ocupados:
+                    flash("The room you are reserving is not available at the time you selected!")
+                    return redirect(url_for('reserve'))
             for each in room_list:
                 for each_room in all_rooms:
                     if int(each) == each_room.room_number:
