@@ -1,0 +1,108 @@
+# Etapa: estrutural-original
+# SUT: original
+# Comando: SUT_VERSAO=original -m pytest -v -rxX -m funcional or estrutural --cov=hotel.views --cov-branch --cov-report=term-missing --cov-report=json:C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\estrutural-original\coverage.json --cov-report=html:C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\estrutural-original\htmlcov --junitxml=C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\estrutural-original\junit.xml --rastreabilidade=C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\estrutural-original\rastreabilidade.json
+
+============================= test session starts =============================
+platform win32 -- Python 3.9.25, pytest-8.4.2, pluggy-1.6.0 -- C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\.venv\Scripts\python.exe
+SUT_VERSAO=original; hotel.views=C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\.sut-original\hotel\views.py
+rootdir: C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado
+configfile: pytest.ini
+testpaths: tests
+plugins: cov-6.3.0
+collecting ... collected 50 items
+
+tests/test_01_funcional.py::test_CT_001_reserva_valida_de_um_quarto_por_duas_noites PASSED [  2%]
+tests/test_01_funcional.py::test_CT_002_varios_quartos_com_hospedes_no_limite_da_capacidade_somada PASSED [  4%]
+tests/test_01_funcional.py::test_CT_003_hospedes_iguais_a_capacidade_do_quarto_sao_aceitos PASSED [  6%]
+tests/test_01_funcional.py::test_CT_004_hospedes_acima_da_capacidade_do_quarto_sao_rejeitados PASSED [  8%]
+tests/test_01_funcional.py::test_CT_005_hospedes_acima_da_capacidade_somada_sao_rejeitados PASSED [ 10%]
+tests/test_01_funcional.py::test_CT_006_um_hospede_limite_inferior_e_aceito PASSED [ 12%]
+tests/test_01_funcional.py::test_CT_007_zero_hospedes_e_rejeitado XFAIL  [ 14%]
+tests/test_01_funcional.py::test_CT_008_uma_noite_limite_inferior_custa_uma_diaria PASSED [ 16%]
+tests/test_01_funcional.py::test_CT_009_saida_igual_a_entrada_zero_noites_e_rejeitada PASSED [ 18%]
+tests/test_01_funcional.py::test_CT_010_saida_anterior_a_entrada_e_rejeitada PASSED [ 20%]
+tests/test_01_funcional.py::test_CT_011_entrada_hoje_limite_e_aceita XFAIL [ 22%]
+tests/test_01_funcional.py::test_CT_012_entrada_amanha_e_aceita PASSED   [ 24%]
+tests/test_01_funcional.py::test_CT_013_entrada_ontem_e_rejeitada PASSED [ 26%]
+tests/test_01_funcional.py::test_CT_014_reserva_sem_sessao_redireciona_para_inicio XFAIL [ 28%]
+tests/test_01_funcional.py::test_CT_015_numero_de_quarto_nao_numerico_e_rejeitado XFAIL [ 30%]
+tests/test_01_funcional.py::test_CT_016_quarto_inexistente_e_rejeitado XFAIL [ 32%]
+tests/test_01_funcional.py::test_CT_017_quarto_repetido_e_rejeitado XFAIL [ 34%]
+tests/test_01_funcional.py::test_CT_018_mesmo_quarto_no_mesmo_periodo_e_rejeitado PASSED [ 36%]
+tests/test_01_funcional.py::test_CT_019_sobreposicao_de_uma_noite_no_inicio_e_rejeitada PASSED [ 38%]
+tests/test_01_funcional.py::test_CT_020_sobreposicao_de_uma_noite_no_fim_e_rejeitada PASSED [ 40%]
+tests/test_01_funcional.py::test_CT_021_saida_no_dia_da_entrada_existente_e_aceita XFAIL [ 42%]
+tests/test_01_funcional.py::test_CT_022_entrada_no_dia_da_saida_existente_e_aceita XFAIL [ 44%]
+tests/test_01_funcional.py::test_CT_023_mesmo_quarto_em_periodo_distante_e_aceito XFAIL [ 46%]
+tests/test_01_funcional.py::test_CT_024_titular_cancela_propria_reserva PASSED [ 48%]
+tests/test_01_funcional.py::test_CT_025_cancelamento_sem_sessao_redireciona_e_preserva XFAIL [ 50%]
+tests/test_01_funcional.py::test_CT_026_cancelamento_de_reserva_inexistente_retorna_404 XFAIL [ 52%]
+tests/test_01_funcional.py::test_CT_027_cancelamento_de_reserva_alheia_e_negado XFAIL [ 54%]
+tests/test_01_funcional.py::test_CT_028_get_de_cancelamento_nao_altera_dados XFAIL [ 56%]
+tests/test_01_funcional.py::test_CT_029_cancelamento_com_pagamento_nao_deixa_registro_orfao XFAIL [ 58%]
+tests/test_01_funcional.py::test_CT_030_consulta_sem_filtro_lista_todos_os_quartos PASSED [ 60%]
+tests/test_01_funcional.py::test_CT_031_consulta_sem_sessao_redireciona_para_inicio XFAIL [ 62%]
+tests/test_01_funcional.py::test_CT_032_consulta_omite_quarto_ocupado_e_lista_livres PASSED [ 64%]
+tests/test_01_funcional.py::test_CT_033_reserva_em_periodo_distante_nao_oculta_quarto XFAIL [ 66%]
+tests/test_01_funcional.py::test_CT_034_entrada_da_consulta_no_dia_da_saida_existente_exibe_quarto XFAIL [ 68%]
+tests/test_01_funcional.py::test_CT_035_saida_da_consulta_no_dia_da_entrada_existente_exibe_quarto XFAIL [ 70%]
+tests/test_01_funcional.py::test_CT_036_consulta_com_sobreposicao_de_uma_noite_omite_quarto PASSED [ 72%]
+tests/test_01_funcional.py::test_CT_037_consulta_com_datas_invertidas_e_rejeitada XFAIL [ 74%]
+tests/test_01_funcional.py::test_CT_038_consulta_com_entrada_igual_a_saida_e_rejeitada XFAIL [ 76%]
+tests/test_01_funcional.py::test_CT_039_consulta_com_zero_hospedes_e_rejeitada XFAIL [ 78%]
+tests/test_01_funcional.py::test_CT_040_hospedes_iguais_a_capacidade_exibem_o_quarto PASSED [ 80%]
+tests/test_01_funcional.py::test_CT_041_hospedes_acima_da_capacidade_ocultam_o_quarto XFAIL [ 82%]
+tests/test_01_funcional.py::test_CT_042_um_hospede_limite_inferior_lista_quartos_livres PASSED [ 84%]
+tests/test_01_funcional.py::test_CT_043_consulta_de_uma_noite_limite_inferior_e_aceita PASSED [ 86%]
+tests/test_02_estrutural.py::test_CT_044_reserva_existente_de_outro_quarto_nao_gera_conflito PASSED [ 88%]
+tests/test_02_estrutural.py::test_CT_045_reserva_de_outro_quarto_no_periodo_nao_bloqueia_quarto_livre XFAIL [ 90%]
+tests/test_02_estrutural.py::test_CT_046_consulta_de_um_usuario_nao_altera_listagem_de_outro XFAIL [ 92%]
+tests/test_02_estrutural.py::test_CT_047_consulta_omite_dois_quartos_ocupados_consecutivos XFAIL [ 94%]
+tests/test_02_estrutural.py::test_CT_048_sessao_encerrada_redireciona_nas_rotas_do_recorte PASSED [ 96%]
+tests/test_02_estrutural.py::test_CT_049_formulario_de_disponibilidade_abre_para_usuario_autenticado PASSED [ 98%]
+tests/test_02_estrutural.py::test_CT_050_formulario_de_reserva_abre_para_usuario_autenticado PASSED [100%]
+
+============================== warnings summary ===============================
+.venv\lib\site-packages\flask_sqlalchemy\__init__.py:800
+  C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\.venv\lib\site-packages\flask_sqlalchemy\__init__.py:800: UserWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True to suppress this warning.
+    warnings.warn('SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True to suppress this warning.')
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\estrutural-original\junit.xml -
+=============================== tests coverage ================================
+_______________ coverage: platform win32, python 3.9.25-final-0 _______________
+
+Name                           Stmts   Miss Branch BrPart  Cover   Missing
+--------------------------------------------------------------------------
+.sut-original\hotel\views.py     222     89     94      2    59%   13, 18-74, 94-102, 107-116, 121-131, 136-138, 230->229, 265-273, 277
+--------------------------------------------------------------------------
+TOTAL                            222     89     94      2    59%
+Coverage HTML written to dir C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\estrutural-original\htmlcov
+Coverage JSON written to file C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\estrutural-original\coverage.json
+=========================== short test summary info ===========================
+XFAIL tests/test_01_funcional.py::test_CT_007_zero_hospedes_e_rejeitado - DEF-03: reserva com zero hóspedes é gravada
+XFAIL tests/test_01_funcional.py::test_CT_011_entrada_hoje_limite_e_aceita - DEF-02: entrada no dia atual é rejeitada
+XFAIL tests/test_01_funcional.py::test_CT_014_reserva_sem_sessao_redireciona_para_inicio - DEF-07: rota protegida sem sessão gera erro interno
+XFAIL tests/test_01_funcional.py::test_CT_015_numero_de_quarto_nao_numerico_e_rejeitado - DEF-04: número de quarto não numérico gera erro interno
+XFAIL tests/test_01_funcional.py::test_CT_016_quarto_inexistente_e_rejeitado - DEF-05: quarto inexistente é aceito junto com um quarto válido
+XFAIL tests/test_01_funcional.py::test_CT_017_quarto_repetido_e_rejeitado - DEF-06: quarto repetido gera dois vínculos e custo em dobro
+XFAIL tests/test_01_funcional.py::test_CT_021_saida_no_dia_da_entrada_existente_e_aceita - DEF-01: períodos sem interseção são tratados como conflito
+XFAIL tests/test_01_funcional.py::test_CT_022_entrada_no_dia_da_saida_existente_e_aceita - DEF-01: períodos sem interseção são tratados como conflito
+XFAIL tests/test_01_funcional.py::test_CT_023_mesmo_quarto_em_periodo_distante_e_aceito - DEF-01: períodos sem interseção são tratados como conflito
+XFAIL tests/test_01_funcional.py::test_CT_025_cancelamento_sem_sessao_redireciona_e_preserva - DEF-07: rota protegida sem sessão gera erro interno
+XFAIL tests/test_01_funcional.py::test_CT_026_cancelamento_de_reserva_inexistente_retorna_404 - DEF-09: cancelamento de reserva inexistente gera erro interno
+XFAIL tests/test_01_funcional.py::test_CT_027_cancelamento_de_reserva_alheia_e_negado - DEF-08: usuário cancela reserva de outro usuário
+XFAIL tests/test_01_funcional.py::test_CT_028_get_de_cancelamento_nao_altera_dados - DEF-10: requisição GET exclui a reserva
+XFAIL tests/test_01_funcional.py::test_CT_029_cancelamento_com_pagamento_nao_deixa_registro_orfao - DEF-11: pagamento fica órfão após o cancelamento
+XFAIL tests/test_01_funcional.py::test_CT_031_consulta_sem_sessao_redireciona_para_inicio - DEF-07: rota protegida sem sessão gera erro interno
+XFAIL tests/test_01_funcional.py::test_CT_033_reserva_em_periodo_distante_nao_oculta_quarto - DEF-01: períodos sem interseção são tratados como conflito
+XFAIL tests/test_01_funcional.py::test_CT_034_entrada_da_consulta_no_dia_da_saida_existente_exibe_quarto - DEF-01: períodos sem interseção são tratados como conflito
+XFAIL tests/test_01_funcional.py::test_CT_035_saida_da_consulta_no_dia_da_entrada_existente_exibe_quarto - DEF-01: períodos sem interseção são tratados como conflito
+XFAIL tests/test_01_funcional.py::test_CT_037_consulta_com_datas_invertidas_e_rejeitada - DEF-12: consulta aceita período vazio ou invertido
+XFAIL tests/test_01_funcional.py::test_CT_038_consulta_com_entrada_igual_a_saida_e_rejeitada - DEF-12: consulta aceita período vazio ou invertido
+XFAIL tests/test_01_funcional.py::test_CT_039_consulta_com_zero_hospedes_e_rejeitada - DEF-13: consulta aceita zero hóspedes
+XFAIL tests/test_01_funcional.py::test_CT_041_hospedes_acima_da_capacidade_ocultam_o_quarto - DEF-14: consulta ignora a quantidade de hóspedes
+XFAIL tests/test_02_estrutural.py::test_CT_045_reserva_de_outro_quarto_no_periodo_nao_bloqueia_quarto_livre - DEF-15: vínculo de quarto é comparado com reservas de outros quartos
+XFAIL tests/test_02_estrutural.py::test_CT_046_consulta_de_um_usuario_nao_altera_listagem_de_outro - DEF-16: filtro de disponibilidade é global e vaza entre sessões
+XFAIL tests/test_02_estrutural.py::test_CT_047_consulta_omite_dois_quartos_ocupados_consecutivos - DEF-17: remoção durante a iteração pula o quarto seguinte
+================== 25 passed, 25 xfailed, 1 warning in 3.81s ==================

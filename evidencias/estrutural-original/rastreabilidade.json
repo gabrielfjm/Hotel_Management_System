@@ -1,0 +1,480 @@
+[
+  {
+    "caso": "CT-001",
+    "teste": "tests/test_01_funcional.py::test_CT_001_reserva_valida_de_um_quarto_por_duas_noites",
+    "etapa": "funcional",
+    "classes": [
+      "CE-01",
+      "CE-03",
+      "CE-05",
+      "CE-08",
+      "CE-11",
+      "CE-13",
+      "CE-15",
+      "CE-17",
+      "CE-19"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-002",
+    "teste": "tests/test_01_funcional.py::test_CT_002_varios_quartos_com_hospedes_no_limite_da_capacidade_somada",
+    "etapa": "funcional",
+    "classes": [
+      "CE-08",
+      "CE-20"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-003",
+    "teste": "tests/test_01_funcional.py::test_CT_003_hospedes_iguais_a_capacidade_do_quarto_sao_aceitos",
+    "etapa": "funcional",
+    "classes": [
+      "CE-08"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-004",
+    "teste": "tests/test_01_funcional.py::test_CT_004_hospedes_acima_da_capacidade_do_quarto_sao_rejeitados",
+    "etapa": "funcional",
+    "classes": [
+      "CE-10"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-005",
+    "teste": "tests/test_01_funcional.py::test_CT_005_hospedes_acima_da_capacidade_somada_sao_rejeitados",
+    "etapa": "funcional",
+    "classes": [
+      "CE-10"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-006",
+    "teste": "tests/test_01_funcional.py::test_CT_006_um_hospede_limite_inferior_e_aceito",
+    "etapa": "funcional",
+    "classes": [
+      "CE-08"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-007",
+    "teste": "tests/test_01_funcional.py::test_CT_007_zero_hospedes_e_rejeitado",
+    "etapa": "funcional",
+    "classes": [
+      "CE-09"
+    ],
+    "defeito": "DEF-03"
+  },
+  {
+    "caso": "CT-008",
+    "teste": "tests/test_01_funcional.py::test_CT_008_uma_noite_limite_inferior_custa_uma_diaria",
+    "etapa": "funcional",
+    "classes": [
+      "CE-05"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-009",
+    "teste": "tests/test_01_funcional.py::test_CT_009_saida_igual_a_entrada_zero_noites_e_rejeitada",
+    "etapa": "funcional",
+    "classes": [
+      "CE-06"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-010",
+    "teste": "tests/test_01_funcional.py::test_CT_010_saida_anterior_a_entrada_e_rejeitada",
+    "etapa": "funcional",
+    "classes": [
+      "CE-07"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-011",
+    "teste": "tests/test_01_funcional.py::test_CT_011_entrada_hoje_limite_e_aceita",
+    "etapa": "funcional",
+    "classes": [
+      "CE-03"
+    ],
+    "defeito": "DEF-02"
+  },
+  {
+    "caso": "CT-012",
+    "teste": "tests/test_01_funcional.py::test_CT_012_entrada_amanha_e_aceita",
+    "etapa": "funcional",
+    "classes": [
+      "CE-03"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-013",
+    "teste": "tests/test_01_funcional.py::test_CT_013_entrada_ontem_e_rejeitada",
+    "etapa": "funcional",
+    "classes": [
+      "CE-04"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-014",
+    "teste": "tests/test_01_funcional.py::test_CT_014_reserva_sem_sessao_redireciona_para_inicio",
+    "etapa": "funcional",
+    "classes": [
+      "CE-02"
+    ],
+    "defeito": "DEF-07"
+  },
+  {
+    "caso": "CT-015",
+    "teste": "tests/test_01_funcional.py::test_CT_015_numero_de_quarto_nao_numerico_e_rejeitado",
+    "etapa": "funcional",
+    "classes": [
+      "CE-12"
+    ],
+    "defeito": "DEF-04"
+  },
+  {
+    "caso": "CT-016",
+    "teste": "tests/test_01_funcional.py::test_CT_016_quarto_inexistente_e_rejeitado",
+    "etapa": "funcional",
+    "classes": [
+      "CE-14"
+    ],
+    "defeito": "DEF-05"
+  },
+  {
+    "caso": "CT-017",
+    "teste": "tests/test_01_funcional.py::test_CT_017_quarto_repetido_e_rejeitado",
+    "etapa": "funcional",
+    "classes": [
+      "CE-16"
+    ],
+    "defeito": "DEF-06"
+  },
+  {
+    "caso": "CT-018",
+    "teste": "tests/test_01_funcional.py::test_CT_018_mesmo_quarto_no_mesmo_periodo_e_rejeitado",
+    "etapa": "funcional",
+    "classes": [
+      "CE-18"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-019",
+    "teste": "tests/test_01_funcional.py::test_CT_019_sobreposicao_de_uma_noite_no_inicio_e_rejeitada",
+    "etapa": "funcional",
+    "classes": [
+      "CE-18"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-020",
+    "teste": "tests/test_01_funcional.py::test_CT_020_sobreposicao_de_uma_noite_no_fim_e_rejeitada",
+    "etapa": "funcional",
+    "classes": [
+      "CE-18"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-021",
+    "teste": "tests/test_01_funcional.py::test_CT_021_saida_no_dia_da_entrada_existente_e_aceita",
+    "etapa": "funcional",
+    "classes": [
+      "CE-17"
+    ],
+    "defeito": "DEF-01"
+  },
+  {
+    "caso": "CT-022",
+    "teste": "tests/test_01_funcional.py::test_CT_022_entrada_no_dia_da_saida_existente_e_aceita",
+    "etapa": "funcional",
+    "classes": [
+      "CE-17"
+    ],
+    "defeito": "DEF-01"
+  },
+  {
+    "caso": "CT-023",
+    "teste": "tests/test_01_funcional.py::test_CT_023_mesmo_quarto_em_periodo_distante_e_aceito",
+    "etapa": "funcional",
+    "classes": [
+      "CE-17"
+    ],
+    "defeito": "DEF-01"
+  },
+  {
+    "caso": "CT-024",
+    "teste": "tests/test_01_funcional.py::test_CT_024_titular_cancela_propria_reserva",
+    "etapa": "funcional",
+    "classes": [
+      "CE-21",
+      "CE-23",
+      "CE-25",
+      "CE-27",
+      "CE-29"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-025",
+    "teste": "tests/test_01_funcional.py::test_CT_025_cancelamento_sem_sessao_redireciona_e_preserva",
+    "etapa": "funcional",
+    "classes": [
+      "CE-22"
+    ],
+    "defeito": "DEF-07"
+  },
+  {
+    "caso": "CT-026",
+    "teste": "tests/test_01_funcional.py::test_CT_026_cancelamento_de_reserva_inexistente_retorna_404",
+    "etapa": "funcional",
+    "classes": [
+      "CE-24"
+    ],
+    "defeito": "DEF-09"
+  },
+  {
+    "caso": "CT-027",
+    "teste": "tests/test_01_funcional.py::test_CT_027_cancelamento_de_reserva_alheia_e_negado",
+    "etapa": "funcional",
+    "classes": [
+      "CE-26"
+    ],
+    "defeito": "DEF-08"
+  },
+  {
+    "caso": "CT-028",
+    "teste": "tests/test_01_funcional.py::test_CT_028_get_de_cancelamento_nao_altera_dados",
+    "etapa": "funcional",
+    "classes": [
+      "CE-28"
+    ],
+    "defeito": "DEF-10"
+  },
+  {
+    "caso": "CT-029",
+    "teste": "tests/test_01_funcional.py::test_CT_029_cancelamento_com_pagamento_nao_deixa_registro_orfao",
+    "etapa": "funcional",
+    "classes": [
+      "CE-21",
+      "CE-23",
+      "CE-25",
+      "CE-27",
+      "CE-30"
+    ],
+    "defeito": "DEF-11"
+  },
+  {
+    "caso": "CT-030",
+    "teste": "tests/test_01_funcional.py::test_CT_030_consulta_sem_filtro_lista_todos_os_quartos",
+    "etapa": "funcional",
+    "classes": [
+      "CE-31",
+      "CE-33"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-031",
+    "teste": "tests/test_01_funcional.py::test_CT_031_consulta_sem_sessao_redireciona_para_inicio",
+    "etapa": "funcional",
+    "classes": [
+      "CE-32"
+    ],
+    "defeito": "DEF-07"
+  },
+  {
+    "caso": "CT-032",
+    "teste": "tests/test_01_funcional.py::test_CT_032_consulta_omite_quarto_ocupado_e_lista_livres",
+    "etapa": "funcional",
+    "classes": [
+      "CE-31",
+      "CE-34",
+      "CE-35",
+      "CE-37",
+      "CE-39",
+      "CE-40",
+      "CE-41"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-033",
+    "teste": "tests/test_01_funcional.py::test_CT_033_reserva_em_periodo_distante_nao_oculta_quarto",
+    "etapa": "funcional",
+    "classes": [
+      "CE-39"
+    ],
+    "defeito": "DEF-01"
+  },
+  {
+    "caso": "CT-034",
+    "teste": "tests/test_01_funcional.py::test_CT_034_entrada_da_consulta_no_dia_da_saida_existente_exibe_quarto",
+    "etapa": "funcional",
+    "classes": [
+      "CE-39"
+    ],
+    "defeito": "DEF-01"
+  },
+  {
+    "caso": "CT-035",
+    "teste": "tests/test_01_funcional.py::test_CT_035_saida_da_consulta_no_dia_da_entrada_existente_exibe_quarto",
+    "etapa": "funcional",
+    "classes": [
+      "CE-39"
+    ],
+    "defeito": "DEF-01"
+  },
+  {
+    "caso": "CT-036",
+    "teste": "tests/test_01_funcional.py::test_CT_036_consulta_com_sobreposicao_de_uma_noite_omite_quarto",
+    "etapa": "funcional",
+    "classes": [
+      "CE-40"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-037",
+    "teste": "tests/test_01_funcional.py::test_CT_037_consulta_com_datas_invertidas_e_rejeitada",
+    "etapa": "funcional",
+    "classes": [
+      "CE-36"
+    ],
+    "defeito": "DEF-12"
+  },
+  {
+    "caso": "CT-038",
+    "teste": "tests/test_01_funcional.py::test_CT_038_consulta_com_entrada_igual_a_saida_e_rejeitada",
+    "etapa": "funcional",
+    "classes": [
+      "CE-36"
+    ],
+    "defeito": "DEF-12"
+  },
+  {
+    "caso": "CT-039",
+    "teste": "tests/test_01_funcional.py::test_CT_039_consulta_com_zero_hospedes_e_rejeitada",
+    "etapa": "funcional",
+    "classes": [
+      "CE-38"
+    ],
+    "defeito": "DEF-13"
+  },
+  {
+    "caso": "CT-040",
+    "teste": "tests/test_01_funcional.py::test_CT_040_hospedes_iguais_a_capacidade_exibem_o_quarto",
+    "etapa": "funcional",
+    "classes": [
+      "CE-41"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-041",
+    "teste": "tests/test_01_funcional.py::test_CT_041_hospedes_acima_da_capacidade_ocultam_o_quarto",
+    "etapa": "funcional",
+    "classes": [
+      "CE-42"
+    ],
+    "defeito": "DEF-14"
+  },
+  {
+    "caso": "CT-042",
+    "teste": "tests/test_01_funcional.py::test_CT_042_um_hospede_limite_inferior_lista_quartos_livres",
+    "etapa": "funcional",
+    "classes": [
+      "CE-37",
+      "CE-41"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-043",
+    "teste": "tests/test_01_funcional.py::test_CT_043_consulta_de_uma_noite_limite_inferior_e_aceita",
+    "etapa": "funcional",
+    "classes": [
+      "CE-35"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-044",
+    "teste": "tests/test_02_estrutural.py::test_CT_044_reserva_existente_de_outro_quarto_nao_gera_conflito",
+    "etapa": "estrutural",
+    "classes": [
+      "CE-17",
+      "CE-19"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-045",
+    "teste": "tests/test_02_estrutural.py::test_CT_045_reserva_de_outro_quarto_no_periodo_nao_bloqueia_quarto_livre",
+    "etapa": "estrutural",
+    "classes": [
+      "CE-17"
+    ],
+    "defeito": "DEF-15"
+  },
+  {
+    "caso": "CT-046",
+    "teste": "tests/test_02_estrutural.py::test_CT_046_consulta_de_um_usuario_nao_altera_listagem_de_outro",
+    "etapa": "estrutural",
+    "classes": [
+      "CE-33"
+    ],
+    "defeito": "DEF-16"
+  },
+  {
+    "caso": "CT-047",
+    "teste": "tests/test_02_estrutural.py::test_CT_047_consulta_omite_dois_quartos_ocupados_consecutivos",
+    "etapa": "estrutural",
+    "classes": [
+      "CE-40"
+    ],
+    "defeito": "DEF-17"
+  },
+  {
+    "caso": "CT-048",
+    "teste": "tests/test_02_estrutural.py::test_CT_048_sessao_encerrada_redireciona_nas_rotas_do_recorte",
+    "etapa": "estrutural",
+    "classes": [
+      "CE-02",
+      "CE-22",
+      "CE-32"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-049",
+    "teste": "tests/test_02_estrutural.py::test_CT_049_formulario_de_disponibilidade_abre_para_usuario_autenticado",
+    "etapa": "estrutural",
+    "classes": [
+      "CE-31"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-050",
+    "teste": "tests/test_02_estrutural.py::test_CT_050_formulario_de_reserva_abre_para_usuario_autenticado",
+    "etapa": "estrutural",
+    "classes": [
+      "CE-01"
+    ],
+    "defeito": ""
+  }
+]
