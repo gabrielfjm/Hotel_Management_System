@@ -25,7 +25,7 @@ funcional = pytest.mark.funcional
 # ---------------------------------------------------------------- REQ-01 Reserva
 
 @funcional
-@pytest.mark.ce("CE-01", "CE-03", "CE-05", "CE-08", "CE-11", "CE-13", "CE-15", "CE-17", "CE-19")
+@pytest.mark.ce("CE-01", "CE-03", "CE-05", "CE-08", "CE-11", "CE-13", "CE-15", "CE-17", "CE-19", "CE-43")
 def test_CT_001_reserva_valida_de_um_quarto_por_duas_noites(client):
     login(client)
     response = booking(client, room_numbers="101", guests="2", offset=10, nights=2)
@@ -315,7 +315,7 @@ def test_CT_031_consulta_sem_sessao_redireciona_para_inicio(client):
 
 
 @funcional
-@pytest.mark.ce("CE-31", "CE-34", "CE-35", "CE-37", "CE-39", "CE-40", "CE-41")
+@pytest.mark.ce("CE-31", "CE-34", "CE-35", "CE-37", "CE-39", "CE-40", "CE-41", "CE-46")
 def test_CT_032_consulta_omite_quarto_ocupado_e_lista_livres(client, baseline):
     seed_reservation(baseline["ana"], offset=10, nights=2)
     login(client)

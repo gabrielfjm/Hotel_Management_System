@@ -1,0 +1,9 @@
+# Rodada inicial: conjunto de testes ao fim da etapa estrutural (funcional + estrutural).
+[cosmic-ray]
+module-path = "hotel/views.py"
+timeout = 30.0
+excluded-modules = []
+test-command = "\"C:/PROJETOS/MESTRADO/Verificação de Validação/GESTÃO DE TESTES/output/hotel-management-testado/.venv/Scripts/python.exe\" -m pytest -x -q -p no:cacheprovider -m 'funcional or estrutural'"
+
+[cosmic-ray.distributor]
+name = "local"

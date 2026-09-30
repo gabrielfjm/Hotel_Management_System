@@ -1,0 +1,95 @@
+{
+  "recorte": {
+    "comandos": 106,
+    "comandos_cobertos": 106,
+    "desvios": 44,
+    "desvios_cobertos": 44,
+    "pct_comandos": 100.0,
+    "pct_desvios": 100.0
+  },
+  "por_funcao": {
+    "_sessao_autenticada": {
+      "comandos": 1,
+      "comandos_cobertos": 1,
+      "desvios": 0,
+      "desvios_cobertos": 0,
+      "linhas_nao_cobertas": [],
+      "desvios_nao_cobertos": []
+    },
+    "_periodos_conflitam": {
+      "comandos": 1,
+      "comandos_cobertos": 1,
+      "desvios": 0,
+      "desvios_cobertos": 0,
+      "linhas_nao_cobertas": [],
+      "desvios_nao_cobertos": []
+    },
+    "_quartos_ocupados": {
+      "comandos": 2,
+      "comandos_cobertos": 2,
+      "desvios": 0,
+      "desvios_cobertos": 0,
+      "linhas_nao_cobertas": [],
+      "desvios_nao_cobertos": []
+    },
+    "_ler_quartos": {
+      "comandos": 8,
+      "comandos_cobertos": 8,
+      "desvios": 2,
+      "desvios_cobertos": 2,
+      "linhas_nao_cobertas": [],
+      "desvios_nao_cobertos": []
+    },
+    "delete_reservation": {
+      "comandos": 14,
+      "comandos_cobertos": 14,
+      "desvios": 6,
+      "desvios_cobertos": 6,
+      "linhas_nao_cobertas": [],
+      "desvios_nao_cobertos": []
+    },
+    "show_rooms": {
+      "comandos": 13,
+      "comandos_cobertos": 13,
+      "desvios": 4,
+      "desvios_cobertos": 4,
+      "linhas_nao_cobertas": [],
+      "desvios_nao_cobertos": []
+    },
+    "check_available": {
+      "comandos": 14,
+      "comandos_cobertos": 14,
+      "desvios": 6,
+      "desvios_cobertos": 6,
+      "linhas_nao_cobertas": [],
+      "desvios_nao_cobertos": []
+    },
+    "reserve": {
+      "comandos": 39,
+      "comandos_cobertos": 39,
+      "desvios": 20,
+      "desvios_cobertos": 20,
+      "linhas_nao_cobertas": [],
+      "desvios_nao_cobertos": []
+    },
+    "cal_cost": {
+      "comandos": 14,
+      "comandos_cobertos": 14,
+      "desvios": 6,
+      "desvios_cobertos": 6,
+      "linhas_nao_cobertas": [],
+      "desvios_nao_cobertos": []
+    }
+  },
+  "views_py_inteiro": {
+    "comandos": 228,
+    "comandos_cobertos": 139,
+    "desvios": 84,
+    "desvios_cobertos": 45,
+    "pct_total": 59.0
+  },
+  "etapa": "suite-corrigida",
+  "sut": "corrigida",
+  "marcas": "funcional or estrutural",
+  "casos": 54
+}
