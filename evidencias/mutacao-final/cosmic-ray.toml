@@ -1,0 +1,9 @@
+# Rodada final: conjunto completo, incluindo os casos criados para matar sobreviventes.
+[cosmic-ray]
+module-path = "hotel/views.py"
+timeout = 30.0
+excluded-modules = []
+test-command = "\"C:/PROJETOS/MESTRADO/Verificação de Validação/GESTÃO DE TESTES/output/hotel-management-testado/.venv/Scripts/python.exe\" -m pytest -x -q -p no:cacheprovider"
+
+[cosmic-ray.distributor]
+name = "local"

@@ -12,7 +12,8 @@
       "CE-13",
       "CE-15",
       "CE-17",
-      "CE-19"
+      "CE-19",
+      "CE-43"
     ],
     "defeito": ""
   },
@@ -307,7 +308,8 @@
       "CE-37",
       "CE-39",
       "CE-40",
-      "CE-41"
+      "CE-41",
+      "CE-46"
     ],
     "defeito": ""
   },
@@ -510,6 +512,56 @@
     "etapa": "estrutural",
     "classes": [
       "CE-01"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-055",
+    "teste": "tests/test_03_mutacao.py::test_CT_055_vinculo_so_e_comparado_com_a_propria_reserva",
+    "etapa": "mutacao",
+    "classes": [
+      "CE-17"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-056",
+    "teste": "tests/test_03_mutacao.py::test_CT_056_reserva_de_todos_os_quartos_do_hotel_e_aceita",
+    "etapa": "mutacao",
+    "classes": [
+      "CE-13",
+      "CE-20"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-057",
+    "teste": "tests/test_03_mutacao.py::test_CT_057_titular_com_identificador_alto_cancela_propria_reserva",
+    "etapa": "mutacao",
+    "classes": [
+      "CE-21",
+      "CE-23",
+      "CE-25",
+      "CE-27"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-058",
+    "teste": "tests/test_03_mutacao.py::test_CT_058_usuario_de_id_menor_nao_cancela_reserva_de_id_maior",
+    "etapa": "mutacao",
+    "classes": [
+      "CE-26"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-059",
+    "teste": "tests/test_03_mutacao.py::test_CT_059_custo_de_quarto_com_numero_acima_de_256",
+    "etapa": "mutacao",
+    "classes": [
+      "CE-05",
+      "CE-19"
     ],
     "defeito": ""
   }

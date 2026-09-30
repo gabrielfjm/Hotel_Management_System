@@ -1,0 +1,40 @@
+# Código: upstream-71b396b
+# Comando: radon==6.0.1 cc -s -a --total-average app.py hotel
+
+hotel\forms.py
+    F 7:0 length_check - A (2)
+    C 12:0 SignUpForm - A (1)
+    C 21:0 SignInForm - A (1)
+    C 28:0 AboutUserForm - A (1)
+    C 36:0 CheckAvailForm - A (1)
+    C 42:0 ReserveForm - A (1)
+    C 49:0 PaymentForm - A (1)
+hotel\models.py
+    C 7:0 User - A (2)
+    C 24:0 Room_type - A (2)
+    C 33:0 Rooms - A (2)
+    C 46:0 Reservations - A (2)
+    C 61:0 Booked - A (2)
+    C 70:0 Payment - A (2)
+    M 16:4 User.__init__ - A (1)
+    M 29:4 Room_type.__init__ - A (1)
+    M 40:4 Rooms.__init__ - A (1)
+    M 54:4 Reservations.__init__ - A (1)
+    M 66:4 Booked.__init__ - A (1)
+    M 78:4 Payment.__init__ - A (1)
+hotel\views.py
+    F 185:0 reserve - D (25)
+    F 17:0 update_reservation - D (24)
+    F 143:0 show_rooms - C (16)
+    F 246:0 cal_cost - A (4)
+    F 78:0 delete_reservation - A (3)
+    F 106:0 signin - A (3)
+    F 171:0 check_available - A (3)
+    F 264:0 payment - A (3)
+    F 93:0 signup - A (2)
+    F 120:0 about_user - A (2)
+    F 12:0 index - A (1)
+    F 135:0 logout - A (1)
+
+31 blocks (classes, functions, methods) analyzed.
+Average complexity: A (3.6451612903225805)

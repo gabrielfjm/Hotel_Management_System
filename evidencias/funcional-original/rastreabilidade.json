@@ -12,7 +12,8 @@
       "CE-13",
       "CE-15",
       "CE-17",
-      "CE-19"
+      "CE-19",
+      "CE-43"
     ],
     "defeito": ""
   },
@@ -307,7 +308,8 @@
       "CE-37",
       "CE-39",
       "CE-40",
-      "CE-41"
+      "CE-41",
+      "CE-46"
     ],
     "defeito": ""
   },
@@ -408,6 +410,158 @@
     "etapa": "funcional",
     "classes": [
       "CE-35"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-051",
+    "teste": "tests/test_01_funcional.py::test_CT_051_reserva_com_data_malformada_e_rejeitada",
+    "etapa": "funcional",
+    "classes": [
+      "CE-44"
+    ],
+    "defeito": "DEF-18"
+  },
+  {
+    "caso": "CT-052",
+    "teste": "tests/test_01_funcional.py::test_CT_052_reserva_com_hospedes_nao_numerico_e_rejeitada",
+    "etapa": "funcional",
+    "classes": [
+      "CE-45"
+    ],
+    "defeito": "DEF-19"
+  },
+  {
+    "caso": "CT-053",
+    "teste": "tests/test_01_funcional.py::test_CT_053_consulta_com_data_malformada_e_rejeitada",
+    "etapa": "funcional",
+    "classes": [
+      "CE-47"
+    ],
+    "defeito": "DEF-18"
+  },
+  {
+    "caso": "CT-054",
+    "teste": "tests/test_01_funcional.py::test_CT_054_consulta_com_hospedes_nao_numerico_e_rejeitada",
+    "etapa": "funcional",
+    "classes": [
+      "CE-48"
+    ],
+    "defeito": "DEF-13"
+  },
+  {
+    "caso": "CT-044",
+    "teste": "tests/test_02_estrutural.py::test_CT_044_reserva_existente_de_outro_quarto_nao_gera_conflito",
+    "etapa": "estrutural",
+    "classes": [
+      "CE-17",
+      "CE-19"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-045",
+    "teste": "tests/test_02_estrutural.py::test_CT_045_reserva_de_outro_quarto_no_periodo_nao_bloqueia_quarto_livre",
+    "etapa": "estrutural",
+    "classes": [
+      "CE-17"
+    ],
+    "defeito": "DEF-15"
+  },
+  {
+    "caso": "CT-046",
+    "teste": "tests/test_02_estrutural.py::test_CT_046_consulta_de_um_usuario_nao_altera_listagem_de_outro",
+    "etapa": "estrutural",
+    "classes": [
+      "CE-33"
+    ],
+    "defeito": "DEF-16"
+  },
+  {
+    "caso": "CT-047",
+    "teste": "tests/test_02_estrutural.py::test_CT_047_consulta_omite_dois_quartos_ocupados_consecutivos",
+    "etapa": "estrutural",
+    "classes": [
+      "CE-40"
+    ],
+    "defeito": "DEF-17"
+  },
+  {
+    "caso": "CT-048",
+    "teste": "tests/test_02_estrutural.py::test_CT_048_sessao_encerrada_redireciona_nas_rotas_do_recorte",
+    "etapa": "estrutural",
+    "classes": [
+      "CE-02",
+      "CE-22",
+      "CE-32"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-049",
+    "teste": "tests/test_02_estrutural.py::test_CT_049_formulario_de_disponibilidade_abre_para_usuario_autenticado",
+    "etapa": "estrutural",
+    "classes": [
+      "CE-31"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-050",
+    "teste": "tests/test_02_estrutural.py::test_CT_050_formulario_de_reserva_abre_para_usuario_autenticado",
+    "etapa": "estrutural",
+    "classes": [
+      "CE-01"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-055",
+    "teste": "tests/test_03_mutacao.py::test_CT_055_vinculo_so_e_comparado_com_a_propria_reserva",
+    "etapa": "mutacao",
+    "classes": [
+      "CE-17"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-056",
+    "teste": "tests/test_03_mutacao.py::test_CT_056_reserva_de_todos_os_quartos_do_hotel_e_aceita",
+    "etapa": "mutacao",
+    "classes": [
+      "CE-13",
+      "CE-20"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-057",
+    "teste": "tests/test_03_mutacao.py::test_CT_057_titular_com_identificador_alto_cancela_propria_reserva",
+    "etapa": "mutacao",
+    "classes": [
+      "CE-21",
+      "CE-23",
+      "CE-25",
+      "CE-27"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-058",
+    "teste": "tests/test_03_mutacao.py::test_CT_058_usuario_de_id_menor_nao_cancela_reserva_de_id_maior",
+    "etapa": "mutacao",
+    "classes": [
+      "CE-26"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-059",
+    "teste": "tests/test_03_mutacao.py::test_CT_059_custo_de_quarto_com_numero_acima_de_256",
+    "etapa": "mutacao",
+    "classes": [
+      "CE-05",
+      "CE-19"
     ],
     "defeito": ""
   }

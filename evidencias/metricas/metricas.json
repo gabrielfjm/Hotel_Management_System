@@ -1,0 +1,53 @@
+{
+  "codigo": "upstream-71b396b",
+  "ferramentas": {
+    "radon": "radon==6.0.1",
+    "pygount": "pygount==3.1.0"
+  },
+  "modulos": [
+    "app.py",
+    "hotel/__init__.py",
+    "hotel/forms.py",
+    "hotel/models.py",
+    "hotel/views.py"
+  ],
+  "num_modulos": 5,
+  "loc_fisico": 428,
+  "sloc": 354,
+  "lloc": 341,
+  "comentarios": 3,
+  "linhas_em_branco": 71,
+  "classes": 12,
+  "funcoes": 13,
+  "metodos": 6,
+  "funcoes_mais_metodos": 19,
+  "complexidade_ciclomatica_media": 5.0,
+  "complexidade_ciclomatica_max": 25,
+  "por_modulo": {
+    "app.py": {
+      "loc": 4,
+      "sloc": 3,
+      "lloc": 3
+    },
+    "hotel/forms.py": {
+      "loc": 51,
+      "sloc": 37,
+      "lloc": 37
+    },
+    "hotel/models.py": {
+      "loc": 85,
+      "sloc": 70,
+      "lloc": 70
+    },
+    "hotel/views.py": {
+      "loc": 277,
+      "sloc": 237,
+      "lloc": 224
+    },
+    "hotel/__init__.py": {
+      "loc": 11,
+      "sloc": 7,
+      "lloc": 7
+    }
+  }
+}

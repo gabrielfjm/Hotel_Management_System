@@ -9,7 +9,7 @@ rootdir: C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\out
 configfile: pytest.ini
 testpaths: tests
 plugins: cov-6.3.0
-collecting ... collected 54 items
+collecting ... collected 59 items / 5 deselected / 54 selected
 
 tests/test_01_funcional.py::test_CT_001_reserva_valida_de_um_quarto_por_duas_noites PASSED [  1%]
 tests/test_01_funcional.py::test_CT_002_varios_quartos_com_hospedes_no_limite_da_capacidade_somada PASSED [  3%]
@@ -83,4 +83,4 @@ hotel\views.py     228     89     84      1    59%   41, 46-102, 127-135, 140-14
 TOTAL              228     89     84      1    59%
 Coverage HTML written to dir C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\suite-corrigida\htmlcov
 Coverage JSON written to file C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\suite-corrigida\coverage.json
-======================== 54 passed, 1 warning in 1.59s ========================
+================= 54 passed, 5 deselected, 1 warning in 1.29s =================

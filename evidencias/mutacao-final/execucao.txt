@@ -1,0 +1,16 @@
+# Rodada: final
+# Configuração (evidencias\mutacao-final\cosmic-ray.toml):
+# Rodada final: conjunto completo, incluindo os casos criados para matar sobreviventes.
+[cosmic-ray]
+module-path = "hotel/views.py"
+timeout = 30.0
+excluded-modules = []
+test-command = "\"C:/PROJETOS/MESTRADO/Verificação de Validação/GESTÃO DE TESTES/output/hotel-management-testado/.venv/Scripts/python.exe\" -m pytest -x -q -p no:cacheprovider"
+
+[cosmic-ray.distributor]
+name = "local"
+
+# Comando: exec evidencias\mutacao-final\cosmic-ray.toml evidencias\mutacao-final\sessao.sqlite
+# Duração: 275.2 s; código de saída: 0
+
+

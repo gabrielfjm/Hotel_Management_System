@@ -1,0 +1,106 @@
+Rodada final: 8 mutantes sobreviventes
+
+=== _ler_quartos linha 34 | core/ReplaceComparisonOperator_NotEq_IsNot (ocorrência 0) | job f029e3da1b1d4e2d948b9a7a1d30b62f
+--- mutation diff ---
+--- ahotel\views.py
++++ bhotel\views.py
+@@ -31,7 +31,7 @@
+     except ValueError:
+         return None
+     existentes = {quarto.room_number for quarto in Rooms.query.all()}
+-    if len(set(numeros)) != len(numeros) or not set(numeros) <= existentes:
++    if len(set(numeros)) is not len(numeros) or not set(numeros) <= existentes:
+         return None
+     return numeros
+ 
+=== _ler_quartos linha 34 | core/ReplaceComparisonOperator_NotEq_Lt (ocorrência 0) | job d55d5adbeb41461386bf5fed837b3cdc
+--- mutation diff ---
+--- ahotel\views.py
++++ bhotel\views.py
+@@ -31,7 +31,7 @@
+     except ValueError:
+         return None
+     existentes = {quarto.room_number for quarto in Rooms.query.all()}
+-    if len(set(numeros)) != len(numeros) or not set(numeros) <= existentes:
++    if len(set(numeros)) < len(numeros) or not set(numeros) <= existentes:
+         return None
+     return numeros
+ 
+=== check_available linha 197 | core/ReplaceComparisonOperator_Eq_GtE (ocorrência 7) | job e4b465c03a724064aaf72c7c7daa7686
+--- mutation diff ---
+--- ahotel\views.py
++++ bhotel\views.py
+@@ -194,7 +194,7 @@
+ def check_available():
+     if _sessao_autenticada():
+         reservation = CheckAvailForm(request.form)
+-        if request.method == 'POST':
++        if request.method >= 'POST':
+             checkin = reservation.checkin_date.data
+             checkout = reservation.checkout_date.data
+             num = reservation.num_guests.data
+=== reserve linha 217 | core/ReplaceComparisonOperator_Eq_GtE (ocorrência 8) | job f9ad23c33aee452283ddff014e95f9ae
+--- mutation diff ---
+--- ahotel\views.py
++++ bhotel\views.py
+@@ -214,7 +214,7 @@
+     if _sessao_autenticada():
+         reservation = ReserveForm(request.form)
+         us = User.query.filter_by(username=session['current_user']).first()
+-        if request.method == 'POST':
++        if request.method >= 'POST':
+             room_list = _ler_quartos(reservation.room_numbers.data)
+             num = reservation.num_guests.data
+             checkin = reservation.checkin_date.data
+=== reserve linha 226 | core/NumberReplacer (ocorrência 24) | job f41b4a35b8194e5a824127415f4c109f
+--- mutation diff ---
+--- ahotel\views.py
++++ bhotel\views.py
+@@ -223,7 +223,7 @@
+             if room_list is None or num is None or num < 1 or checkin is None or checkout is None:
+                 flash("Please recheck the room numbers, the number of guests and the dates!")
+                 return redirect(url_for('reserve'))
+-            d1 = datetime.datetime.combine(checkin, datetime.time(0, 0))
++            d1 = datetime.datetime.combine(checkin, datetime.time( 1, 0))
+             d2 = datetime.datetime.combine(checkout, datetime.time(0, 0))
+ 
+             # DEF-02: comparar a data de entrada com a data de hoje, e não com o instante atual.
+=== reserve linha 226 | core/NumberReplacer (ocorrência 26) | job 0bb361c09d89461bbbaf8207aa8722ef
+--- mutation diff ---
+--- ahotel\views.py
++++ bhotel\views.py
+@@ -223,7 +223,7 @@
+             if room_list is None or num is None or num < 1 or checkin is None or checkout is None:
+                 flash("Please recheck the room numbers, the number of guests and the dates!")
+                 return redirect(url_for('reserve'))
+-            d1 = datetime.datetime.combine(checkin, datetime.time(0, 0))
++            d1 = datetime.datetime.combine(checkin, datetime.time(0, 1))
+             d2 = datetime.datetime.combine(checkout, datetime.time(0, 0))
+ 
+             # DEF-02: comparar a data de entrada com a data de hoje, e não com o instante atual.
+=== reserve linha 247 | core/NumberReplacer (ocorrência 34) | job 55c4b11b8a6b4e0eb2c66dcc66a0abd7
+--- mutation diff ---
+--- ahotel\views.py
++++ bhotel\views.py
+@@ -244,7 +244,7 @@
+                     "The rooms you selected can't fit the number of guests you entered. Please restart the reservation!")
+                 return redirect(url_for('reserve'))
+             # Reserva, vínculos e custo gravados em uma única transação; flush() obtém o rid.
+-            reserve = Reservations(us.uid, checkin, checkout, num, 0)
++            reserve = Reservations(us.uid, checkin, checkout, num, 1)
+             db.session.add(reserve)
+             db.session.flush()
+             # Storing each rooms booked into the Booked table along with reservation id
+=== reserve linha 247 | core/NumberReplacer (ocorrência 35) | job 827edd1b9abb4176a77ae4a3e64591a0
+--- mutation diff ---
+--- ahotel\views.py
++++ bhotel\views.py
+@@ -244,7 +244,7 @@
+                     "The rooms you selected can't fit the number of guests you entered. Please restart the reservation!")
+                 return redirect(url_for('reserve'))
+             # Reserva, vínculos e custo gravados em uma única transação; flush() obtém o rid.
+-            reserve = Reservations(us.uid, checkin, checkout, num, 0)
++            reserve = Reservations(us.uid, checkin, checkout, num, -1)
+             db.session.add(reserve)
+             db.session.flush()
+             # Storing each rooms booked into the Booked table along with reservation id

@@ -1,0 +1,253 @@
+diff --git a/hotel/templates/about_user.html b/hotel/templates/about_user.html
+index ba00811..f8378f3 100644
+--- a/hotel/templates/about_user.html
++++ b/hotel/templates/about_user.html
+@@ -100,7 +100,7 @@
+     <div><h3 class="panel-title">Reservation Number: {{i.rid}}</h3></div>
+       <div id="icon">
+       <a class="glyphicon glyphicon-pencil" href="/update/{{ i.rid }}"></a>&nbsp &nbsp
+-      <a class="glyphicon glyphicon-trash" id="del" href="/delete/{{ i.rid }}"></a>&nbsp &nbsp
++      <form action="/delete/{{ i.rid }}" method="POST" style="display:inline" onsubmit="return confirm('Cancel reservation {{ i.rid }}?');"><button type="submit" class="glyphicon glyphicon-trash" id="del" style="border:0;background:none;color:#337ab7;padding:0" title="Cancel reservation"></button></form>&nbsp &nbsp
+         <a class="glyphicon glyphicon-usd"  href="/payment/{{ i.rid }}"></a>
+     </div>
+   </div>
+diff --git a/hotel/templates/add_room.html b/hotel/templates/add_room.html
+index 3c978db..42051c2 100644
+--- a/hotel/templates/add_room.html
++++ b/hotel/templates/add_room.html
+@@ -63,6 +63,14 @@
+ </ul>
+ </div>
+ <div >
++{% with messages = get_flashed_messages() %}
++  {% if messages %}
++    {% for message in messages %}
++      <h3 class="flashes" align="center" style="color:#337ab7">{{ message }}</h3>
++    {% endfor %}
++  {% endif %}
++{% endwith %}
++
+   <form action="" method="POST">
+   <table align="center">
+     <tr>
+diff --git a/hotel/views.py b/hotel/views.py
+index 2c7615d..5b13f45 100644
+--- a/hotel/views.py
++++ b/hotel/views.py
+@@ -1,4 +1,4 @@
+-from flask import Flask, request, session, redirect, url_for, render_template, flash
++from flask import Flask, request, session, redirect, url_for, render_template, flash, abort
+ 
+ from .models import User, db, Rooms, Room_type, Booked, Reservations, Payment
+ from .forms import PaymentForm, SignUpForm, SignInForm, AboutUserForm, CheckAvailForm, ReserveForm
+@@ -7,6 +7,34 @@ from hotel import app
+ import datetime
+ 
+ 
++def _sessao_autenticada():
++    # DEF-07: session['user_available'] lança KeyError quando a chave não existe.
++    return session.get('user_available', False)
++
++
++def _periodos_conflitam(entrada_a, saida_a, entrada_b, saida_b):
++    # DEF-01: estadias são intervalos [entrada, saída); só há conflito se houver interseção.
++    return entrada_a < saida_b and entrada_b < saida_a
++
++
++def _quartos_ocupados(entrada, saida):
++    # DEF-15: cada vínculo de quarto é comparado apenas com a própria reserva (brid == rid).
++    vinculos = db.session.query(Booked.room_id, Reservations.checkin_date, Reservations.checkout_date).join(
++        Reservations, Booked.brid == Reservations.rid)
++    return {quarto for quarto, c1, c2 in vinculos if _periodos_conflitam(entrada, saida, c1, c2)}
++
++
++def _ler_quartos(texto):
++    # DEF-04/05/06: aceita apenas números inteiros de quartos existentes, sem repetição.
++    try:
++        numeros = [int(parte) for parte in texto.split(",")]
++    except ValueError:
++        return None
++    existentes = {quarto.room_number for quarto in Rooms.query.all()}
++    if len(set(numeros)) != len(numeros) or not set(numeros) <= existentes:
++        return None
++    return numeros
++
+ 
+ @app.route('/')
+ def index():
+@@ -74,16 +102,21 @@ def update_reservation(rid):
+     return redirect(url_for('show_rooms'))
+ 
+ 
+-@app.route('/delete/<rid>', methods=('GET', 'POST'))
++# DEF-10: exclusão apenas por POST; GET (link, pré-carregamento, robô) recebe 405.
++@app.route('/delete/<rid>', methods=('POST',))
+ def delete_reservation(rid):
+-    if session['user_available']:
++    if _sessao_autenticada():
+         cur_res = Reservations.query.get(rid)
++        if cur_res is None:
++            abort(404)  # DEF-09
++        us = User.query.filter_by(username=session['current_user']).first()
++        if cur_res.ruid != us.uid:
++            abort(403)  # DEF-08
++        # DEF-11: vínculos e pagamentos saem junto com a reserva, em uma única transação.
++        Booked.query.filter_by(brid=cur_res.rid).delete()
++        Payment.query.filter_by(prid=cur_res.rid).delete()
+         db.session.delete(cur_res)
+         db.session.commit()
+-        cbooked = Booked.query.filter_by(brid=rid).all()
+-        for each in cbooked:
+-            db.session.delete(each)
+-            db.session.commit()
+         return redirect(url_for('show_rooms'))
+     flash('You are not a valid user to Delete this Reservation!')
+     return redirect(url_for('show_rooms'))
+@@ -137,44 +170,39 @@ def logout():
+     session['user_available'] = False
+     return redirect(url_for('index'))
+ 
+-global_avail = None
+-
+ @app.route('/rooms')
+ def show_rooms():
+-    if session['user_available']:
+-        all_reserves = Reservations.query.all()
+-        all_bookings = Booked.query.all()
++    if _sessao_autenticada():
+         all_rooms = Rooms.query.all()
+         all_room_type = Room_type.query.all()
+-        global global_avail
+-        if global_avail is None:
++        # DEF-16: o filtro vem da sessão do próprio usuário e vale para uma exibição.
++        filtro = session.pop('filtro_disponibilidade', None)
++        if filtro is None:
+             return render_template('rooms.html', rooms=all_rooms, room_type=all_room_type)
+         # If entered information on check availability page, only display rooms available at that point
+-        c_in = datetime.datetime.combine(global_avail.checkin_date.data, datetime.time(0, 0))
+-        c_out = datetime.datetime.combine(global_avail.checkout_date.data, datetime.time(0, 0))
+-        for each in all_rooms:
+-            for each_reserves in all_reserves:
+-                for each_booking in all_bookings:
+-                    c1 = each_reserves.checkin_date
+-                    c2 = each_reserves.checkout_date
+-                    if each_booking.room_id == each.room_number and (
+-                            (c_in <= c1 and c2 <= c_out) or (c1 <= c_in and c2 <= c_out) or (c_in <= c1 and c_out <= c2) or (
+-                            c1 <= c_in and c_out <= c2)) and (c_in < c_out):
+-                        all_rooms.remove(each)
+-        global_avail = None
+-        return render_template('rooms.html', rooms=all_rooms, room_type=all_room_type)
++        c_in = datetime.datetime.strptime(filtro[0], '%Y-%m-%d')
++        c_out = datetime.datetime.strptime(filtro[1], '%Y-%m-%d')
++        ocupados = _quartos_ocupados(c_in, c_out)
++        # DEF-14/17: nova lista filtrada por ocupação e capacidade, sem remover itens durante a iteração.
++        rooms = [each for each in all_rooms if each.room_number not in ocupados and each.capacity >= filtro[2]]
++        return render_template('rooms.html', rooms=rooms, room_type=all_room_type)
+     flash('User is not Authenticated')
+     return redirect(url_for('index'))
+ 
+ 
+ @app.route('/available', methods=['GET', 'POST'])
+ def check_available():
+-    if session['user_available']:
++    if _sessao_autenticada():
+         reservation = CheckAvailForm(request.form)
+-        us = User.query.filter_by(username=session['current_user']).first()
+         if request.method == 'POST':
+-            global global_avail
+-            global_avail = reservation
++            checkin = reservation.checkin_date.data
++            checkout = reservation.checkout_date.data
++            num = reservation.num_guests.data
++            # DEF-12/13/18: período vazio ou invertido, data malformada e hóspedes < 1 são recusados.
++            if checkin is None or checkout is None or checkout <= checkin or num is None or num < 1:
++                flash("Please recheck the dates and the number of guests!")
++                return redirect(url_for('check_available'))
++            session['filtro_disponibilidade'] = [checkin.isoformat(), checkout.isoformat(), num]
+             return redirect(url_for('show_rooms'))
+         return render_template('add_room.html', reservation=reservation)
+     flash('User is not Authenticated')
+@@ -183,59 +211,46 @@ def check_available():
+ 
+ @app.route('/reserve', methods=['GET', 'POST'])
+ def reserve():
+-    if session['user_available']:
++    if _sessao_autenticada():
+         reservation = ReserveForm(request.form)
+         us = User.query.filter_by(username=session['current_user']).first()
+         if request.method == 'POST':
+-            room_list = reservation.room_numbers.data.split(",")
+-            d1 = datetime.datetime.combine(reservation.checkin_date.data, datetime.time(0, 0))
+-            d2 = datetime.datetime.combine(reservation.checkout_date.data, datetime.time(0, 0))
++            room_list = _ler_quartos(reservation.room_numbers.data)
+             num = reservation.num_guests.data
++            checkin = reservation.checkin_date.data
++            checkout = reservation.checkout_date.data
++            # DEF-03/18/19: dados malformados ou menos de um hóspede são rejeitados antes de gravar.
++            if room_list is None or num is None or num < 1 or checkin is None or checkout is None:
++                flash("Please recheck the room numbers, the number of guests and the dates!")
++                return redirect(url_for('reserve'))
++            d1 = datetime.datetime.combine(checkin, datetime.time(0, 0))
++            d2 = datetime.datetime.combine(checkout, datetime.time(0, 0))
+ 
+-            all_reserves = Reservations.query.all()
+-            all_bookings = Booked.query.all()
+-            all_rooms = Rooms.query.all()
+-
+-            if d2 <= d1 or d1 < datetime.datetime.now() or d2 < datetime.datetime.now():
++            # DEF-02: comparar a data de entrada com a data de hoje, e não com o instante atual.
++            if d2 <= d1 or d1.date() < datetime.date.today():
+                 flash("Please recheck your date! It has to be at least today! ")
+                 return redirect(url_for('reserve'))
+             total_num = 0
++            ocupados = _quartos_ocupados(d1, d2)
+             for each in room_list:
+-                for each_reserves in all_reserves:
+-                    for each_booking in all_bookings:
+-                        c1 = each_reserves.checkin_date
+-                        c2 = each_reserves.checkout_date
+-                        if each_booking.room_id == int(each) and (
+-                                (c1 <= d1 and d2 <= c2) or (d1 <= c1 and d2 <= c2) or (c1 <= d1 and c2 <= d2) or (
+-                                d1 <= c1 and c2 <= d2)):
+-                            flash("The room you are reserving is not available at the time you selected!")
+-                            return redirect(url_for('reserve'))
+-            for each in room_list:
+-                for each_room in all_rooms:
+-                    if int(each) == each_room.room_number:
+-                        total_num += each_room.capacity
++                if each in ocupados:
++                    flash("The room you are reserving is not available at the time you selected!")
++                    return redirect(url_for('reserve'))
++            for each_room in Rooms.query.all():
++                if each_room.room_number in room_list:
++                    total_num += each_room.capacity
+             if num > total_num:
+                 flash(
+                     "The rooms you selected can't fit the number of guests you entered. Please restart the reservation!")
+                 return redirect(url_for('reserve'))
+-            reserve = Reservations(us.uid, reservation.checkin_date.data, reservation.checkout_date.data,
+-                                   reservation.num_guests.data, 0)
++            # Reserva, vínculos e custo gravados em uma única transação; flush() obtém o rid.
++            reserve = Reservations(us.uid, checkin, checkout, num, 0)
+             db.session.add(reserve)
+-            db.session.commit()
+-            reservations_committed = Reservations.query.filter_by(ruid=us.uid).all()
+-
+-            # Getting the most current reservation the user made
+-            current_id = 0
+-            for each in reservations_committed:
+-                if each.rid > current_id:
+-                    current_id = each.rid
++            db.session.flush()
+             # Storing each rooms booked into the Booked table along with reservation id
+             for each in room_list:
+-                single_room = Booked(current_id, each)
+-                db.session.add(single_room)
+-                db.session.commit()
+-            cur_res = Reservations.query.get(current_id)
+-            cur_res.costs = cal_cost(current_id)
++                db.session.add(Booked(reserve.rid, each))
++            reserve.costs = cal_cost(reserve.rid)
+             db.session.commit()
+             return redirect(url_for('show_rooms'))
+         return render_template('reservation.html', reservation=reservation)

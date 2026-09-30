@@ -1,0 +1,75 @@
+# Código: upstream-71b396b
+# Comando: radon==6.0.1 raw -s app.py hotel
+
+app.py
+    LOC: 4
+    LLOC: 3
+    SLOC: 3
+    Comments: 0
+    Single comments: 0
+    Multi: 0
+    Blank: 1
+    - Comment Stats
+        (C % L): 0%
+        (C % S): 0%
+        (C + M % L): 0%
+hotel\forms.py
+    LOC: 51
+    LLOC: 37
+    SLOC: 37
+    Comments: 0
+    Single comments: 0
+    Multi: 0
+    Blank: 14
+    - Comment Stats
+        (C % L): 0%
+        (C % S): 0%
+        (C + M % L): 0%
+hotel\models.py
+    LOC: 85
+    LLOC: 70
+    SLOC: 70
+    Comments: 0
+    Single comments: 0
+    Multi: 0
+    Blank: 15
+    - Comment Stats
+        (C % L): 0%
+        (C % S): 0%
+        (C + M % L): 0%
+hotel\views.py
+    LOC: 277
+    LLOC: 224
+    SLOC: 237
+    Comments: 3
+    Single comments: 3
+    Multi: 0
+    Blank: 37
+    - Comment Stats
+        (C % L): 1%
+        (C % S): 1%
+        (C + M % L): 1%
+hotel\__init__.py
+    LOC: 11
+    LLOC: 7
+    SLOC: 7
+    Comments: 0
+    Single comments: 0
+    Multi: 0
+    Blank: 4
+    - Comment Stats
+        (C % L): 0%
+        (C % S): 0%
+        (C + M % L): 0%
+** Total **
+    LOC: 428
+    LLOC: 341
+    SLOC: 354
+    Comments: 3
+    Single comments: 3
+    Multi: 0
+    Blank: 71
+    - Comment Stats
+        (C % L): 1%
+        (C % S): 1%
+        (C + M % L): 1%
