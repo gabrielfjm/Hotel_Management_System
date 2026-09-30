@@ -59,7 +59,7 @@ def pytest_collection_modifyitems(config, items):
         if marker and SUT_VERSAO == "original":
             item.add_marker(pytest.mark.xfail(strict=True, reason=": ".join(defect)))
         ce = item.get_closest_marker("ce")
-        stage = next((name for name in ("funcional", "estrutural", "mutacao") if item.get_closest_marker(name)), "")
+        stage = next((name for name in ("funcional", "estrutural", "mutacao", "secundario") if item.get_closest_marker(name)), "")
         case = re.search(r"CT_(\d{3})", item.name)
         matrix.append({
             "caso": f"CT-{case.group(1)}" if case else "",

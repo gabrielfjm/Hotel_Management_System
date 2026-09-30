@@ -1,29 +1,13 @@
 {
   "recorte": {
-    "comandos": 103,
-    "comandos_cobertos": 93,
-    "desvios": 54,
-    "desvios_cobertos": 45,
-    "pct_comandos": 90.3,
-    "pct_desvios": 83.3
+    "comandos": 92,
+    "comandos_cobertos": 84,
+    "desvios": 50,
+    "desvios_cobertos": 42,
+    "pct_comandos": 91.3,
+    "pct_desvios": 84.0
   },
   "por_funcao": {
-    "delete_reservation": {
-      "comandos": 11,
-      "comandos_cobertos": 9,
-      "desvios": 4,
-      "desvios_cobertos": 3,
-      "linhas_nao_cobertas": [
-        88,
-        89
-      ],
-      "desvios_nao_cobertos": [
-        [
-          79,
-          88
-        ]
-      ]
-    },
     "show_rooms": {
       "comandos": 20,
       "comandos_cobertos": 18,
@@ -105,13 +89,13 @@
   },
   "views_py_inteiro": {
     "comandos": 222,
-    "comandos_cobertos": 123,
+    "comandos_cobertos": 114,
     "desvios": 94,
-    "desvios_cobertos": 46,
-    "pct_total": 53.5
+    "desvios_cobertos": 43,
+    "pct_total": 49.7
   },
   "etapa": "funcional-original",
   "sut": "original",
   "marcas": "funcional",
-  "casos": 64
+  "casos": 68
 }

@@ -9,60 +9,58 @@ rootdir: C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\out
 configfile: pytest.ini
 testpaths: tests
 plugins: cov-6.3.0
-collecting ... collected 64 items / 12 deselected / 52 selected
+collecting ... collected 68 items / 18 deselected / 50 selected
 
-tests/test_01_funcional.py::test_CT_001_reserva_valida_de_um_quarto_por_duas_noites PASSED [  1%]
-tests/test_01_funcional.py::test_CT_002_varios_quartos_com_hospedes_no_limite_da_capacidade_somada PASSED [  3%]
-tests/test_01_funcional.py::test_CT_003_hospedes_iguais_a_capacidade_do_quarto_sao_aceitos PASSED [  5%]
-tests/test_01_funcional.py::test_CT_004_hospedes_acima_da_capacidade_do_quarto_sao_rejeitados PASSED [  7%]
-tests/test_01_funcional.py::test_CT_005_hospedes_acima_da_capacidade_somada_sao_rejeitados PASSED [  9%]
-tests/test_01_funcional.py::test_CT_006_um_hospede_limite_inferior_e_aceito PASSED [ 11%]
-tests/test_01_funcional.py::test_CT_007_zero_hospedes_e_rejeitado XFAIL  [ 13%]
-tests/test_01_funcional.py::test_CT_008_uma_noite_limite_inferior_custa_uma_diaria PASSED [ 15%]
-tests/test_01_funcional.py::test_CT_009_saida_igual_a_entrada_zero_noites_e_rejeitada PASSED [ 17%]
-tests/test_01_funcional.py::test_CT_010_saida_anterior_a_entrada_e_rejeitada PASSED [ 19%]
-tests/test_01_funcional.py::test_CT_011_entrada_hoje_limite_e_aceita XFAIL [ 21%]
-tests/test_01_funcional.py::test_CT_012_entrada_amanha_e_aceita PASSED   [ 23%]
-tests/test_01_funcional.py::test_CT_013_entrada_ontem_e_rejeitada PASSED [ 25%]
-tests/test_01_funcional.py::test_CT_014_reserva_sem_sessao_redireciona_para_inicio XFAIL [ 26%]
-tests/test_01_funcional.py::test_CT_015_numero_de_quarto_nao_numerico_e_rejeitado XFAIL [ 28%]
-tests/test_01_funcional.py::test_CT_016_quarto_inexistente_e_rejeitado XFAIL [ 30%]
-tests/test_01_funcional.py::test_CT_017_quarto_repetido_e_rejeitado XFAIL [ 32%]
-tests/test_01_funcional.py::test_CT_018_mesmo_quarto_no_mesmo_periodo_e_rejeitado PASSED [ 34%]
-tests/test_01_funcional.py::test_CT_019_sobreposicao_de_uma_noite_no_inicio_e_rejeitada PASSED [ 36%]
-tests/test_01_funcional.py::test_CT_020_sobreposicao_de_uma_noite_no_fim_e_rejeitada PASSED [ 38%]
-tests/test_01_funcional.py::test_CT_021_saida_no_dia_da_entrada_existente_e_aceita XFAIL [ 40%]
-tests/test_01_funcional.py::test_CT_022_entrada_no_dia_da_saida_existente_e_aceita XFAIL [ 42%]
-tests/test_01_funcional.py::test_CT_023_mesmo_quarto_em_periodo_distante_e_aceito XFAIL [ 44%]
-tests/test_01_funcional.py::test_CT_024_titular_cancela_propria_reserva PASSED [ 46%]
-tests/test_01_funcional.py::test_CT_025_cancelamento_sem_sessao_redireciona_e_preserva XFAIL [ 48%]
-tests/test_01_funcional.py::test_CT_026_cancelamento_de_reserva_inexistente_retorna_404 XFAIL [ 50%]
-tests/test_01_funcional.py::test_CT_027_cancelamento_de_reserva_alheia_e_negado XFAIL [ 51%]
-tests/test_01_funcional.py::test_CT_028_get_de_cancelamento_nao_altera_dados XFAIL [ 53%]
-tests/test_01_funcional.py::test_CT_029_cancelamento_com_pagamento_nao_deixa_registro_orfao XFAIL [ 55%]
-tests/test_01_funcional.py::test_CT_030_consulta_sem_filtro_lista_todos_os_quartos PASSED [ 57%]
-tests/test_01_funcional.py::test_CT_031_consulta_sem_sessao_redireciona_para_inicio XFAIL [ 59%]
-tests/test_01_funcional.py::test_CT_032_consulta_omite_quarto_ocupado_e_lista_livres PASSED [ 61%]
-tests/test_01_funcional.py::test_CT_033_reserva_em_periodo_distante_nao_oculta_quarto XFAIL [ 63%]
-tests/test_01_funcional.py::test_CT_034_entrada_da_consulta_no_dia_da_saida_existente_exibe_quarto XFAIL [ 65%]
-tests/test_01_funcional.py::test_CT_035_saida_da_consulta_no_dia_da_entrada_existente_exibe_quarto XFAIL [ 67%]
-tests/test_01_funcional.py::test_CT_036_consulta_com_sobreposicao_de_uma_noite_omite_quarto PASSED [ 69%]
-tests/test_01_funcional.py::test_CT_037_consulta_com_datas_invertidas_e_rejeitada XFAIL [ 71%]
-tests/test_01_funcional.py::test_CT_038_consulta_com_entrada_igual_a_saida_e_rejeitada XFAIL [ 73%]
-tests/test_01_funcional.py::test_CT_039_consulta_com_zero_hospedes_e_rejeitada XFAIL [ 75%]
-tests/test_01_funcional.py::test_CT_040_hospedes_iguais_a_capacidade_exibem_o_quarto PASSED [ 76%]
-tests/test_01_funcional.py::test_CT_041_hospedes_acima_da_capacidade_ocultam_o_quarto XFAIL [ 78%]
-tests/test_01_funcional.py::test_CT_042_um_hospede_limite_inferior_lista_quartos_livres PASSED [ 80%]
-tests/test_01_funcional.py::test_CT_043_consulta_de_uma_noite_limite_inferior_e_aceita PASSED [ 82%]
-tests/test_01_funcional.py::test_CT_051_reserva_com_data_malformada_e_rejeitada XFAIL [ 84%]
-tests/test_01_funcional.py::test_CT_052_reserva_com_hospedes_nao_numerico_e_rejeitada XFAIL [ 86%]
-tests/test_01_funcional.py::test_CT_053_consulta_com_data_malformada_e_rejeitada XFAIL [ 88%]
-tests/test_01_funcional.py::test_CT_054_consulta_com_hospedes_nao_numerico_e_rejeitada XFAIL [ 90%]
-tests/test_01_funcional.py::test_CT_060_hospedes_um_abaixo_da_capacidade_somada_sao_aceitos PASSED [ 92%]
-tests/test_01_funcional.py::test_CT_061_saida_um_dia_antes_da_entrada_existente_e_aceita XFAIL [ 94%]
-tests/test_01_funcional.py::test_CT_062_entrada_um_dia_depois_da_saida_existente_e_aceita XFAIL [ 96%]
-tests/test_01_funcional.py::test_CT_063_consulta_terminando_um_dia_antes_da_entrada_existente_exibe_quarto XFAIL [ 98%]
-tests/test_01_funcional.py::test_CT_064_consulta_comecando_um_dia_depois_da_saida_existente_exibe_quarto XFAIL [100%]
+tests/test_01_funcional.py::test_CT_001_reserva_valida_de_um_quarto_por_duas_noites PASSED [  2%]
+tests/test_01_funcional.py::test_CT_002_varios_quartos_com_hospedes_no_limite_da_capacidade_somada PASSED [  4%]
+tests/test_01_funcional.py::test_CT_003_hospedes_iguais_a_capacidade_do_quarto_sao_aceitos PASSED [  6%]
+tests/test_01_funcional.py::test_CT_004_hospedes_acima_da_capacidade_do_quarto_sao_rejeitados PASSED [  8%]
+tests/test_01_funcional.py::test_CT_005_hospedes_acima_da_capacidade_somada_sao_rejeitados PASSED [ 10%]
+tests/test_01_funcional.py::test_CT_006_um_hospede_limite_inferior_e_aceito PASSED [ 12%]
+tests/test_01_funcional.py::test_CT_007_zero_hospedes_e_rejeitado XFAIL  [ 14%]
+tests/test_01_funcional.py::test_CT_008_uma_noite_limite_inferior_custa_uma_diaria PASSED [ 16%]
+tests/test_01_funcional.py::test_CT_009_saida_igual_a_entrada_zero_noites_e_rejeitada PASSED [ 18%]
+tests/test_01_funcional.py::test_CT_010_saida_anterior_a_entrada_e_rejeitada PASSED [ 20%]
+tests/test_01_funcional.py::test_CT_011_entrada_hoje_limite_e_aceita XFAIL [ 22%]
+tests/test_01_funcional.py::test_CT_012_entrada_amanha_e_aceita PASSED   [ 24%]
+tests/test_01_funcional.py::test_CT_013_entrada_ontem_e_rejeitada PASSED [ 26%]
+tests/test_01_funcional.py::test_CT_014_reserva_sem_sessao_redireciona_para_inicio XFAIL [ 28%]
+tests/test_01_funcional.py::test_CT_015_numero_de_quarto_nao_numerico_e_rejeitado XFAIL [ 30%]
+tests/test_01_funcional.py::test_CT_016_quarto_inexistente_e_rejeitado XFAIL [ 32%]
+tests/test_01_funcional.py::test_CT_017_quarto_repetido_e_rejeitado XFAIL [ 34%]
+tests/test_01_funcional.py::test_CT_018_mesmo_quarto_no_mesmo_periodo_e_rejeitado PASSED [ 36%]
+tests/test_01_funcional.py::test_CT_019_sobreposicao_de_uma_noite_no_inicio_e_rejeitada PASSED [ 38%]
+tests/test_01_funcional.py::test_CT_020_sobreposicao_de_uma_noite_no_fim_e_rejeitada PASSED [ 40%]
+tests/test_01_funcional.py::test_CT_021_saida_no_dia_da_entrada_existente_e_aceita XFAIL [ 42%]
+tests/test_01_funcional.py::test_CT_022_entrada_no_dia_da_saida_existente_e_aceita XFAIL [ 44%]
+tests/test_01_funcional.py::test_CT_023_mesmo_quarto_em_periodo_distante_e_aceito XFAIL [ 46%]
+tests/test_01_funcional.py::test_CT_030_consulta_sem_filtro_lista_todos_os_quartos PASSED [ 48%]
+tests/test_01_funcional.py::test_CT_031_consulta_sem_sessao_redireciona_para_inicio XFAIL [ 50%]
+tests/test_01_funcional.py::test_CT_032_consulta_omite_quarto_ocupado_e_lista_livres PASSED [ 52%]
+tests/test_01_funcional.py::test_CT_033_reserva_em_periodo_distante_nao_oculta_quarto XFAIL [ 54%]
+tests/test_01_funcional.py::test_CT_034_entrada_da_consulta_no_dia_da_saida_existente_exibe_quarto XFAIL [ 56%]
+tests/test_01_funcional.py::test_CT_035_saida_da_consulta_no_dia_da_entrada_existente_exibe_quarto XFAIL [ 58%]
+tests/test_01_funcional.py::test_CT_036_consulta_com_sobreposicao_de_uma_noite_omite_quarto PASSED [ 60%]
+tests/test_01_funcional.py::test_CT_037_consulta_com_datas_invertidas_e_rejeitada XFAIL [ 62%]
+tests/test_01_funcional.py::test_CT_038_consulta_com_entrada_igual_a_saida_e_rejeitada XFAIL [ 64%]
+tests/test_01_funcional.py::test_CT_039_consulta_com_zero_hospedes_e_rejeitada XFAIL [ 66%]
+tests/test_01_funcional.py::test_CT_040_hospedes_iguais_a_capacidade_exibem_o_quarto PASSED [ 68%]
+tests/test_01_funcional.py::test_CT_041_hospedes_acima_da_capacidade_ocultam_o_quarto XFAIL [ 70%]
+tests/test_01_funcional.py::test_CT_042_um_hospede_limite_inferior_lista_quartos_livres PASSED [ 72%]
+tests/test_01_funcional.py::test_CT_043_consulta_de_uma_noite_limite_inferior_e_aceita PASSED [ 74%]
+tests/test_01_funcional.py::test_CT_051_reserva_com_data_malformada_e_rejeitada XFAIL [ 76%]
+tests/test_01_funcional.py::test_CT_052_reserva_com_hospedes_nao_numerico_e_rejeitada XFAIL [ 78%]
+tests/test_01_funcional.py::test_CT_053_consulta_com_data_malformada_e_rejeitada XFAIL [ 80%]
+tests/test_01_funcional.py::test_CT_054_consulta_com_hospedes_nao_numerico_e_rejeitada XFAIL [ 82%]
+tests/test_01_funcional.py::test_CT_060_hospedes_um_abaixo_da_capacidade_somada_sao_aceitos PASSED [ 84%]
+tests/test_01_funcional.py::test_CT_061_saida_um_dia_antes_da_entrada_existente_e_aceita XFAIL [ 86%]
+tests/test_01_funcional.py::test_CT_062_entrada_um_dia_depois_da_saida_existente_e_aceita XFAIL [ 88%]
+tests/test_01_funcional.py::test_CT_063_consulta_terminando_um_dia_antes_da_entrada_existente_exibe_quarto XFAIL [ 90%]
+tests/test_01_funcional.py::test_CT_064_consulta_comecando_um_dia_depois_da_saida_existente_exibe_quarto XFAIL [ 92%]
+tests/test_01_funcional.py::test_CT_065_reserva_com_data_de_saida_malformada_e_rejeitada XFAIL [ 94%]
+tests/test_01_funcional.py::test_CT_066_consulta_com_data_de_saida_malformada_e_rejeitada XFAIL [ 96%]
+tests/test_01_funcional.py::test_CT_067_saida_define_o_numero_de_diarias_cobradas PASSED [ 98%]
+tests/test_01_funcional.py::test_CT_068_reserva_sem_data_de_entrada_e_rejeitada XFAIL [100%]
 
 ============================== warnings summary ===============================
 .venv\lib\site-packages\flask_sqlalchemy\__init__.py:800
@@ -76,9 +74,9 @@ _______________ coverage: platform win32, python 3.9.25-final-0 _______________
 
 Name                           Stmts   Miss Branch BrPart  Cover   Missing
 --------------------------------------------------------------------------
-.sut-original\hotel\views.py     222     99     94     10    53%   13, 18-74, 88-89, 94-102, 107-116, 121-131, 136-138, 166-167, 179-181, 205->204, 208->205, 230->229, 241-243, 265-273, 277
+.sut-original\hotel\views.py     222    108     94      9    50%   13, 18-74, 79-89, 94-102, 107-116, 121-131, 136-138, 166-167, 179-181, 205->204, 208->205, 230->229, 241-243, 265-273, 277
 --------------------------------------------------------------------------
-TOTAL                            222     99     94     10    53%
+TOTAL                            222    108     94      9    50%
 Coverage HTML written to dir C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\funcional-original\htmlcov
 Coverage JSON written to file C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\funcional-original\coverage.json
 =========================== short test summary info ===========================
@@ -91,11 +89,6 @@ XFAIL tests/test_01_funcional.py::test_CT_017_quarto_repetido_e_rejeitado - DEF-
 XFAIL tests/test_01_funcional.py::test_CT_021_saida_no_dia_da_entrada_existente_e_aceita - DEF-01: períodos sem interseção são tratados como conflito
 XFAIL tests/test_01_funcional.py::test_CT_022_entrada_no_dia_da_saida_existente_e_aceita - DEF-01: períodos sem interseção são tratados como conflito
 XFAIL tests/test_01_funcional.py::test_CT_023_mesmo_quarto_em_periodo_distante_e_aceito - DEF-01: períodos sem interseção são tratados como conflito
-XFAIL tests/test_01_funcional.py::test_CT_025_cancelamento_sem_sessao_redireciona_e_preserva - DEF-07: rota protegida sem sessão gera erro interno
-XFAIL tests/test_01_funcional.py::test_CT_026_cancelamento_de_reserva_inexistente_retorna_404 - DEF-09: cancelamento de reserva inexistente gera erro interno
-XFAIL tests/test_01_funcional.py::test_CT_027_cancelamento_de_reserva_alheia_e_negado - DEF-08: usuário cancela reserva de outro usuário
-XFAIL tests/test_01_funcional.py::test_CT_028_get_de_cancelamento_nao_altera_dados - DEF-10: requisição GET exclui a reserva
-XFAIL tests/test_01_funcional.py::test_CT_029_cancelamento_com_pagamento_nao_deixa_registro_orfao - DEF-11: pagamento fica órfão após o cancelamento
 XFAIL tests/test_01_funcional.py::test_CT_031_consulta_sem_sessao_redireciona_para_inicio - DEF-07: rota protegida sem sessão gera erro interno
 XFAIL tests/test_01_funcional.py::test_CT_033_reserva_em_periodo_distante_nao_oculta_quarto - DEF-01: períodos sem interseção são tratados como conflito
 XFAIL tests/test_01_funcional.py::test_CT_034_entrada_da_consulta_no_dia_da_saida_existente_exibe_quarto - DEF-01: períodos sem interseção são tratados como conflito
@@ -112,4 +105,7 @@ XFAIL tests/test_01_funcional.py::test_CT_061_saida_um_dia_antes_da_entrada_exis
 XFAIL tests/test_01_funcional.py::test_CT_062_entrada_um_dia_depois_da_saida_existente_e_aceita - DEF-01: períodos sem interseção são tratados como conflito
 XFAIL tests/test_01_funcional.py::test_CT_063_consulta_terminando_um_dia_antes_da_entrada_existente_exibe_quarto - DEF-01: períodos sem interseção são tratados como conflito
 XFAIL tests/test_01_funcional.py::test_CT_064_consulta_comecando_um_dia_depois_da_saida_existente_exibe_quarto - DEF-01: períodos sem interseção são tratados como conflito
-========== 22 passed, 12 deselected, 30 xfailed, 1 warning in 2.89s ===========
+XFAIL tests/test_01_funcional.py::test_CT_065_reserva_com_data_de_saida_malformada_e_rejeitada - DEF-18: data fora do formato MM/DD/AAAA gera erro interno
+XFAIL tests/test_01_funcional.py::test_CT_066_consulta_com_data_de_saida_malformada_e_rejeitada - DEF-18: data fora do formato MM/DD/AAAA gera erro interno
+XFAIL tests/test_01_funcional.py::test_CT_068_reserva_sem_data_de_entrada_e_rejeitada - DEF-18: data fora do formato MM/DD/AAAA gera erro interno
+========== 22 passed, 18 deselected, 28 xfailed, 1 warning in 4.65s ===========

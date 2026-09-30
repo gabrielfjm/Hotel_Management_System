@@ -1,50 +1,366 @@
 [
-  {"id": "CE-01", "req": "REQ-01", "condicao": "C01 Sessão", "tipo": "válida", "descricao": "Usuário autenticado"},
-  {"id": "CE-02", "req": "REQ-01", "condicao": "C01 Sessão", "tipo": "inválida", "descricao": "Sem sessão (nunca fez login) ou sessão encerrada"},
-  {"id": "CE-03", "req": "REQ-01", "condicao": "C02 Data de entrada", "tipo": "válida", "descricao": "Hoje ou data futura"},
-  {"id": "CE-04", "req": "REQ-01", "condicao": "C02 Data de entrada", "tipo": "inválida", "descricao": "Data passada"},
-  {"id": "CE-05", "req": "REQ-01", "condicao": "C03 Duração (saída − entrada)", "tipo": "válida", "descricao": "1 noite ou mais"},
-  {"id": "CE-06", "req": "REQ-01", "condicao": "C03 Duração (saída − entrada)", "tipo": "inválida", "descricao": "0 noites (saída = entrada)"},
-  {"id": "CE-07", "req": "REQ-01", "condicao": "C03 Duração (saída − entrada)", "tipo": "inválida", "descricao": "Negativa (saída antes da entrada)"},
-  {"id": "CE-08", "req": "REQ-01", "condicao": "C04 Nº de hóspedes", "tipo": "válida", "descricao": "Inteiro de 1 até a capacidade somada dos quartos"},
-  {"id": "CE-09", "req": "REQ-01", "condicao": "C04 Nº de hóspedes", "tipo": "inválida", "descricao": "Menor que 1"},
-  {"id": "CE-10", "req": "REQ-01", "condicao": "C04 Nº de hóspedes", "tipo": "inválida", "descricao": "Maior que a capacidade somada"},
-  {"id": "CE-45", "req": "REQ-01", "condicao": "C04 Nº de hóspedes", "tipo": "inválida", "descricao": "Não inteiro (texto)"},
-  {"id": "CE-11", "req": "REQ-01", "condicao": "C05 Formato dos quartos", "tipo": "válida", "descricao": "Números inteiros separados por vírgula"},
-  {"id": "CE-12", "req": "REQ-01", "condicao": "C05 Formato dos quartos", "tipo": "inválida", "descricao": "Texto não numérico"},
-  {"id": "CE-13", "req": "REQ-01", "condicao": "C06 Existência dos quartos", "tipo": "válida", "descricao": "Todos os quartos existem"},
-  {"id": "CE-14", "req": "REQ-01", "condicao": "C06 Existência dos quartos", "tipo": "inválida", "descricao": "Algum quarto não existe"},
-  {"id": "CE-15", "req": "REQ-01", "condicao": "C07 Repetição de quartos", "tipo": "válida", "descricao": "Sem repetição"},
-  {"id": "CE-16", "req": "REQ-01", "condicao": "C07 Repetição de quartos", "tipo": "inválida", "descricao": "Quarto repetido"},
-  {"id": "CE-17", "req": "REQ-01", "condicao": "C08 Ocupação no período", "tipo": "válida", "descricao": "Nenhuma reserva do quarto com interseção (inclui estadias adjacentes)"},
-  {"id": "CE-18", "req": "REQ-01", "condicao": "C08 Ocupação no período", "tipo": "inválida", "descricao": "Reserva existente do quarto com interseção de ao menos uma noite"},
-  {"id": "CE-19", "req": "REQ-01", "condicao": "C09 Quantidade de quartos", "tipo": "válida", "descricao": "Um quarto"},
-  {"id": "CE-20", "req": "REQ-01", "condicao": "C09 Quantidade de quartos", "tipo": "válida", "descricao": "Vários quartos (custo e capacidade somados)"},
-  {"id": "CE-43", "req": "REQ-01", "condicao": "C10 Formato das datas", "tipo": "válida", "descricao": "Datas válidas no formato MM/DD/AAAA"},
-  {"id": "CE-44", "req": "REQ-01", "condicao": "C10 Formato das datas", "tipo": "inválida", "descricao": "Data malformada ou inexistente"},
-  {"id": "CE-21", "req": "REQ-02", "condicao": "C11 Sessão", "tipo": "válida", "descricao": "Usuário autenticado"},
-  {"id": "CE-22", "req": "REQ-02", "condicao": "C11 Sessão", "tipo": "inválida", "descricao": "Sem sessão ou sessão encerrada"},
-  {"id": "CE-23", "req": "REQ-02", "condicao": "C12 Existência da reserva", "tipo": "válida", "descricao": "Reserva existente"},
-  {"id": "CE-24", "req": "REQ-02", "condicao": "C12 Existência da reserva", "tipo": "inválida", "descricao": "Identificador inexistente"},
-  {"id": "CE-25", "req": "REQ-02", "condicao": "C13 Titularidade", "tipo": "válida", "descricao": "Reserva do próprio usuário"},
-  {"id": "CE-26", "req": "REQ-02", "condicao": "C13 Titularidade", "tipo": "inválida", "descricao": "Reserva de outro usuário"},
-  {"id": "CE-27", "req": "REQ-02", "condicao": "C14 Forma da requisição", "tipo": "válida", "descricao": "Confirmação explícita (POST)"},
-  {"id": "CE-28", "req": "REQ-02", "condicao": "C14 Forma da requisição", "tipo": "inválida", "descricao": "Navegação por link (GET)"},
-  {"id": "CE-29", "req": "REQ-02", "condicao": "C15 Registros dependentes", "tipo": "válida", "descricao": "Reserva sem pagamento"},
-  {"id": "CE-30", "req": "REQ-02", "condicao": "C15 Registros dependentes", "tipo": "válida", "descricao": "Reserva com pagamento registrado"},
-  {"id": "CE-31", "req": "REQ-03", "condicao": "C16 Sessão", "tipo": "válida", "descricao": "Usuário autenticado"},
-  {"id": "CE-32", "req": "REQ-03", "condicao": "C16 Sessão", "tipo": "inválida", "descricao": "Sem sessão ou sessão encerrada"},
-  {"id": "CE-33", "req": "REQ-03", "condicao": "C17 Filtro", "tipo": "válida", "descricao": "Sem filtro: lista geral de quartos"},
-  {"id": "CE-34", "req": "REQ-03", "condicao": "C17 Filtro", "tipo": "válida", "descricao": "Com período e hóspedes informados"},
-  {"id": "CE-35", "req": "REQ-03", "condicao": "C18 Período", "tipo": "válida", "descricao": "Entrada anterior à saída (1 noite ou mais)"},
-  {"id": "CE-36", "req": "REQ-03", "condicao": "C18 Período", "tipo": "inválida", "descricao": "Entrada igual ou posterior à saída"},
-  {"id": "CE-46", "req": "REQ-03", "condicao": "C19 Formato das datas", "tipo": "válida", "descricao": "Datas válidas no formato MM/DD/AAAA"},
-  {"id": "CE-47", "req": "REQ-03", "condicao": "C19 Formato das datas", "tipo": "inválida", "descricao": "Data malformada ou inexistente"},
-  {"id": "CE-37", "req": "REQ-03", "condicao": "C20 Nº de hóspedes", "tipo": "válida", "descricao": "Inteiro maior ou igual a 1"},
-  {"id": "CE-38", "req": "REQ-03", "condicao": "C20 Nº de hóspedes", "tipo": "inválida", "descricao": "Menor que 1"},
-  {"id": "CE-48", "req": "REQ-03", "condicao": "C20 Nº de hóspedes", "tipo": "inválida", "descricao": "Não inteiro (texto)"},
-  {"id": "CE-39", "req": "REQ-03", "condicao": "C21 Ocupação de cada quarto", "tipo": "válida", "descricao": "Livre no período: exibido"},
-  {"id": "CE-40", "req": "REQ-03", "condicao": "C21 Ocupação de cada quarto", "tipo": "válida", "descricao": "Ocupado no período: omitido"},
-  {"id": "CE-41", "req": "REQ-03", "condicao": "C22 Capacidade de cada quarto", "tipo": "válida", "descricao": "Capacidade ≥ hóspedes: exibido"},
-  {"id": "CE-42", "req": "REQ-03", "condicao": "C22 Capacidade de cada quarto", "tipo": "válida", "descricao": "Capacidade < hóspedes: omitido"}
+  {
+    "id": "CE-01",
+    "req": "REQ-01",
+    "condicao": "C01 Sessão",
+    "tipo": "válida",
+    "descricao": "Usuário autenticado"
+  },
+  {
+    "id": "CE-02",
+    "req": "REQ-01",
+    "condicao": "C01 Sessão",
+    "tipo": "inválida",
+    "descricao": "Sem sessão (nunca fez login) ou sessão encerrada"
+  },
+  {
+    "id": "CE-11",
+    "req": "REQ-01",
+    "condicao": "C02 Formato dos quartos",
+    "tipo": "válida",
+    "descricao": "Números inteiros separados por vírgula"
+  },
+  {
+    "id": "CE-12",
+    "req": "REQ-01",
+    "condicao": "C02 Formato dos quartos",
+    "tipo": "inválida",
+    "descricao": "Texto não numérico"
+  },
+  {
+    "id": "CE-13",
+    "req": "REQ-01",
+    "condicao": "C03 Existência dos quartos",
+    "tipo": "válida",
+    "descricao": "Todos os quartos existem"
+  },
+  {
+    "id": "CE-14",
+    "req": "REQ-01",
+    "condicao": "C03 Existência dos quartos",
+    "tipo": "inválida",
+    "descricao": "Algum quarto não existe"
+  },
+  {
+    "id": "CE-15",
+    "req": "REQ-01",
+    "condicao": "C04 Repetição de quartos",
+    "tipo": "válida",
+    "descricao": "Sem repetição"
+  },
+  {
+    "id": "CE-16",
+    "req": "REQ-01",
+    "condicao": "C04 Repetição de quartos",
+    "tipo": "inválida",
+    "descricao": "Quarto repetido"
+  },
+  {
+    "id": "CE-19",
+    "req": "REQ-01",
+    "condicao": "C05 Quantidade de quartos",
+    "tipo": "válida",
+    "descricao": "Um quarto"
+  },
+  {
+    "id": "CE-20",
+    "req": "REQ-01",
+    "condicao": "C05 Quantidade de quartos",
+    "tipo": "válida",
+    "descricao": "Vários quartos (custo e capacidade somados)"
+  },
+  {
+    "id": "CE-08",
+    "req": "REQ-01",
+    "condicao": "C06 Nº de hóspedes na reserva",
+    "tipo": "válida",
+    "descricao": "Inteiro de 1 até a capacidade somada dos quartos"
+  },
+  {
+    "id": "CE-09",
+    "req": "REQ-01",
+    "condicao": "C06 Nº de hóspedes na reserva",
+    "tipo": "inválida",
+    "descricao": "Menor que 1"
+  },
+  {
+    "id": "CE-10",
+    "req": "REQ-01",
+    "condicao": "C06 Nº de hóspedes na reserva",
+    "tipo": "inválida",
+    "descricao": "Maior que a capacidade somada"
+  },
+  {
+    "id": "CE-45",
+    "req": "REQ-01",
+    "condicao": "C06 Nº de hóspedes na reserva",
+    "tipo": "inválida",
+    "descricao": "Não inteiro (texto)"
+  },
+  {
+    "id": "CE-17",
+    "req": "REQ-01",
+    "condicao": "C07 Ocupação do quarto no período",
+    "tipo": "válida",
+    "descricao": "Nenhuma reserva do quarto com interseção (inclui estadias adjacentes e outros quartos)"
+  },
+  {
+    "id": "CE-18",
+    "req": "REQ-01",
+    "condicao": "C07 Ocupação do quarto no período",
+    "tipo": "inválida",
+    "descricao": "Reserva existente do quarto com interseção de ao menos uma noite"
+  },
+  {
+    "id": "CE-31",
+    "req": "REQ-01",
+    "condicao": "C08 Sessão na consulta prévia",
+    "tipo": "válida",
+    "descricao": "Usuário autenticado"
+  },
+  {
+    "id": "CE-32",
+    "req": "REQ-01",
+    "condicao": "C08 Sessão na consulta prévia",
+    "tipo": "inválida",
+    "descricao": "Sem sessão ou sessão encerrada"
+  },
+  {
+    "id": "CE-33",
+    "req": "REQ-01",
+    "condicao": "C09 Filtro da consulta",
+    "tipo": "válida",
+    "descricao": "Sem filtro: lista geral de quartos"
+  },
+  {
+    "id": "CE-34",
+    "req": "REQ-01",
+    "condicao": "C09 Filtro da consulta",
+    "tipo": "válida",
+    "descricao": "Com período e hóspedes informados"
+  },
+  {
+    "id": "CE-37",
+    "req": "REQ-01",
+    "condicao": "C10 Nº de hóspedes na consulta",
+    "tipo": "válida",
+    "descricao": "Inteiro maior ou igual a 1"
+  },
+  {
+    "id": "CE-38",
+    "req": "REQ-01",
+    "condicao": "C10 Nº de hóspedes na consulta",
+    "tipo": "inválida",
+    "descricao": "Menor que 1"
+  },
+  {
+    "id": "CE-48",
+    "req": "REQ-01",
+    "condicao": "C10 Nº de hóspedes na consulta",
+    "tipo": "inválida",
+    "descricao": "Não inteiro (texto)"
+  },
+  {
+    "id": "CE-39",
+    "req": "REQ-01",
+    "condicao": "C11 Ocupação de cada quarto na consulta",
+    "tipo": "válida",
+    "descricao": "Livre no período: exibido"
+  },
+  {
+    "id": "CE-40",
+    "req": "REQ-01",
+    "condicao": "C11 Ocupação de cada quarto na consulta",
+    "tipo": "válida",
+    "descricao": "Ocupado no período: omitido"
+  },
+  {
+    "id": "CE-41",
+    "req": "REQ-01",
+    "condicao": "C12 Capacidade de cada quarto na consulta",
+    "tipo": "válida",
+    "descricao": "Capacidade ≥ hóspedes: exibido"
+  },
+  {
+    "id": "CE-42",
+    "req": "REQ-01",
+    "condicao": "C12 Capacidade de cada quarto na consulta",
+    "tipo": "válida",
+    "descricao": "Capacidade < hóspedes: omitido"
+  },
+  {
+    "id": "CE-03",
+    "req": "REQ-02",
+    "condicao": "C13 Entrada em relação a hoje",
+    "tipo": "válida",
+    "descricao": "Hoje ou data futura"
+  },
+  {
+    "id": "CE-04",
+    "req": "REQ-02",
+    "condicao": "C13 Entrada em relação a hoje",
+    "tipo": "inválida",
+    "descricao": "Data passada"
+  },
+  {
+    "id": "CE-43",
+    "req": "REQ-02",
+    "condicao": "C14 Formato da data de entrada",
+    "tipo": "válida",
+    "descricao": "Data válida no formato MM/DD/AAAA (reserva ou consulta)"
+  },
+  {
+    "id": "CE-44",
+    "req": "REQ-02",
+    "condicao": "C14 Formato da data de entrada",
+    "tipo": "inválida",
+    "descricao": "Data malformada, inexistente ou ausente"
+  },
+  {
+    "id": "CE-52",
+    "req": "REQ-02",
+    "condicao": "C15 Entrada × saída de estadia existente do quarto",
+    "tipo": "válida",
+    "descricao": "Entrada no dia da saída existente ou depois"
+  },
+  {
+    "id": "CE-53",
+    "req": "REQ-02",
+    "condicao": "C15 Entrada × saída de estadia existente do quarto",
+    "tipo": "inválida",
+    "descricao": "Entrada antes da saída existente, sobrepondo a estadia"
+  },
+  {
+    "id": "CE-05",
+    "req": "REQ-03",
+    "condicao": "C16 Duração da reserva (saída − entrada)",
+    "tipo": "válida",
+    "descricao": "1 noite ou mais; cada noite é uma diária cobrada"
+  },
+  {
+    "id": "CE-06",
+    "req": "REQ-03",
+    "condicao": "C16 Duração da reserva (saída − entrada)",
+    "tipo": "inválida",
+    "descricao": "0 noites (saída = entrada)"
+  },
+  {
+    "id": "CE-07",
+    "req": "REQ-03",
+    "condicao": "C16 Duração da reserva (saída − entrada)",
+    "tipo": "inválida",
+    "descricao": "Negativa (saída antes da entrada)"
+  },
+  {
+    "id": "CE-35",
+    "req": "REQ-03",
+    "condicao": "C17 Período da consulta",
+    "tipo": "válida",
+    "descricao": "Saída posterior à entrada (1 noite ou mais)"
+  },
+  {
+    "id": "CE-36",
+    "req": "REQ-03",
+    "condicao": "C17 Período da consulta",
+    "tipo": "inválida",
+    "descricao": "Saída igual ou anterior à entrada"
+  },
+  {
+    "id": "CE-49",
+    "req": "REQ-03",
+    "condicao": "C18 Formato da data de saída",
+    "tipo": "válida",
+    "descricao": "Data válida no formato MM/DD/AAAA (reserva ou consulta)"
+  },
+  {
+    "id": "CE-50",
+    "req": "REQ-03",
+    "condicao": "C18 Formato da data de saída",
+    "tipo": "inválida",
+    "descricao": "Data malformada ou inexistente"
+  },
+  {
+    "id": "CE-54",
+    "req": "REQ-03",
+    "condicao": "C19 Saída × entrada de estadia existente do quarto",
+    "tipo": "válida",
+    "descricao": "Saída no dia da entrada existente ou antes"
+  },
+  {
+    "id": "CE-55",
+    "req": "REQ-03",
+    "condicao": "C19 Saída × entrada de estadia existente do quarto",
+    "tipo": "inválida",
+    "descricao": "Saída depois da entrada existente, sobrepondo a estadia"
+  },
+  {
+    "id": "CE-21",
+    "req": "RF-08",
+    "condicao": "S1 Sessão",
+    "tipo": "válida",
+    "descricao": "Usuário autenticado"
+  },
+  {
+    "id": "CE-22",
+    "req": "RF-08",
+    "condicao": "S1 Sessão",
+    "tipo": "inválida",
+    "descricao": "Sem sessão ou sessão encerrada"
+  },
+  {
+    "id": "CE-23",
+    "req": "RF-08",
+    "condicao": "S2 Existência da reserva",
+    "tipo": "válida",
+    "descricao": "Reserva existente"
+  },
+  {
+    "id": "CE-24",
+    "req": "RF-08",
+    "condicao": "S2 Existência da reserva",
+    "tipo": "inválida",
+    "descricao": "Identificador inexistente"
+  },
+  {
+    "id": "CE-25",
+    "req": "RF-08",
+    "condicao": "S3 Titularidade",
+    "tipo": "válida",
+    "descricao": "Reserva do próprio usuário"
+  },
+  {
+    "id": "CE-26",
+    "req": "RF-08",
+    "condicao": "S3 Titularidade",
+    "tipo": "inválida",
+    "descricao": "Reserva de outro usuário"
+  },
+  {
+    "id": "CE-27",
+    "req": "RF-08",
+    "condicao": "S4 Forma da requisição",
+    "tipo": "válida",
+    "descricao": "Confirmação explícita (POST)"
+  },
+  {
+    "id": "CE-28",
+    "req": "RF-08",
+    "condicao": "S4 Forma da requisição",
+    "tipo": "inválida",
+    "descricao": "Navegação por link (GET)"
+  },
+  {
+    "id": "CE-29",
+    "req": "RF-08",
+    "condicao": "S5 Registros dependentes",
+    "tipo": "válida",
+    "descricao": "Reserva sem pagamento"
+  },
+  {
+    "id": "CE-30",
+    "req": "RF-08",
+    "condicao": "S5 Registros dependentes",
+    "tipo": "válida",
+    "descricao": "Reserva com pagamento registrado"
+  }
 ]

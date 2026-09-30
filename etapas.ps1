@@ -15,7 +15,7 @@ Write-Host '== Métricas de código (radon, pygount) sobre o upstream'
 & $python scripts/metricas_codigo.py
 if ($LASTEXITCODE -ne 0) { throw 'Falha nas métricas.' }
 
-foreach ($etapa in 'funcional-original', 'estrutural-original', 'suite-corrigida') {
+foreach ($etapa in 'funcional-original', 'estrutural-original', 'suite-corrigida', 'secundarios-original', 'secundarios-corrigida') {
     Write-Host "== Etapa $etapa"
     & $python scripts/etapas.py $etapa
     if ($LASTEXITCODE -ne 0) { throw "Falha na etapa $etapa." }

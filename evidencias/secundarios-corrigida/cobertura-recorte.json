@@ -1,0 +1,335 @@
+{
+  "recorte": {
+    "comandos": 92,
+    "comandos_cobertos": 4,
+    "desvios": 38,
+    "desvios_cobertos": 1,
+    "pct_comandos": 4.3,
+    "pct_desvios": 2.6
+  },
+  "por_funcao": {
+    "_sessao_autenticada": {
+      "comandos": 1,
+      "comandos_cobertos": 1,
+      "desvios": 0,
+      "desvios_cobertos": 0,
+      "linhas_nao_cobertas": [],
+      "desvios_nao_cobertos": []
+    },
+    "_periodos_conflitam": {
+      "comandos": 1,
+      "comandos_cobertos": 0,
+      "desvios": 0,
+      "desvios_cobertos": 0,
+      "linhas_nao_cobertas": [
+        17
+      ],
+      "desvios_nao_cobertos": []
+    },
+    "_quartos_ocupados": {
+      "comandos": 2,
+      "comandos_cobertos": 0,
+      "desvios": 0,
+      "desvios_cobertos": 0,
+      "linhas_nao_cobertas": [
+        22,
+        24
+      ],
+      "desvios_nao_cobertos": []
+    },
+    "_ler_quartos": {
+      "comandos": 8,
+      "comandos_cobertos": 0,
+      "desvios": 2,
+      "desvios_cobertos": 0,
+      "linhas_nao_cobertas": [
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36
+      ],
+      "desvios_nao_cobertos": [
+        [
+          34,
+          35
+        ],
+        [
+          34,
+          36
+        ]
+      ]
+    },
+    "show_rooms": {
+      "comandos": 13,
+      "comandos_cobertos": 3,
+      "desvios": 4,
+      "desvios_cobertos": 1,
+      "linhas_nao_cobertas": [
+        176,
+        177,
+        179,
+        180,
+        181,
+        183,
+        184,
+        185,
+        187,
+        188
+      ],
+      "desvios_nao_cobertos": [
+        [
+          175,
+          176
+        ],
+        [
+          180,
+          181
+        ],
+        [
+          180,
+          183
+        ]
+      ]
+    },
+    "check_available": {
+      "comandos": 14,
+      "comandos_cobertos": 0,
+      "desvios": 6,
+      "desvios_cobertos": 0,
+      "linhas_nao_cobertas": [
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        209
+      ],
+      "desvios_nao_cobertos": [
+        [
+          195,
+          196
+        ],
+        [
+          195,
+          208
+        ],
+        [
+          197,
+          198
+        ],
+        [
+          197,
+          207
+        ],
+        [
+          202,
+          203
+        ],
+        [
+          202,
+          205
+        ]
+      ]
+    },
+    "reserve": {
+      "comandos": 39,
+      "comandos_cobertos": 0,
+      "desvios": 20,
+      "desvios_cobertos": 0,
+      "linhas_nao_cobertas": [
+        214,
+        215,
+        216,
+        217,
+        218,
+        219,
+        220,
+        221,
+        223,
+        224,
+        225,
+        226,
+        227,
+        230,
+        231,
+        232,
+        233,
+        234,
+        235,
+        236,
+        237,
+        238,
+        239,
+        240,
+        241,
+        242,
+        243,
+        245,
+        247,
+        248,
+        249,
+        251,
+        252,
+        253,
+        254,
+        255,
+        256,
+        257,
+        258
+      ],
+      "desvios_nao_cobertos": [
+        [
+          214,
+          215
+        ],
+        [
+          214,
+          257
+        ],
+        [
+          217,
+          218
+        ],
+        [
+          217,
+          256
+        ],
+        [
+          223,
+          224
+        ],
+        [
+          223,
+          226
+        ],
+        [
+          230,
+          231
+        ],
+        [
+          230,
+          233
+        ],
+        [
+          235,
+          236
+        ],
+        [
+          235,
+          239
+        ],
+        [
+          236,
+          235
+        ],
+        [
+          236,
+          237
+        ],
+        [
+          239,
+          240
+        ],
+        [
+          239,
+          242
+        ],
+        [
+          240,
+          239
+        ],
+        [
+          240,
+          241
+        ],
+        [
+          242,
+          243
+        ],
+        [
+          242,
+          247
+        ],
+        [
+          251,
+          252
+        ],
+        [
+          251,
+          253
+        ]
+      ]
+    },
+    "cal_cost": {
+      "comandos": 14,
+      "comandos_cobertos": 0,
+      "desvios": 6,
+      "desvios_cobertos": 0,
+      "linhas_nao_cobertas": [
+        262,
+        263,
+        264,
+        265,
+        266,
+        267,
+        268,
+        269,
+        270,
+        271,
+        272,
+        273,
+        274,
+        275
+      ],
+      "desvios_nao_cobertos": [
+        [
+          265,
+          266
+        ],
+        [
+          265,
+          270
+        ],
+        [
+          267,
+          265
+        ],
+        [
+          267,
+          268
+        ],
+        [
+          268,
+          267
+        ],
+        [
+          268,
+          269
+        ]
+      ]
+    }
+  },
+  "views_py_inteiro": {
+    "comandos": 228,
+    "comandos_cobertos": 51,
+    "desvios": 84,
+    "desvios_cobertos": 8,
+    "pct_total": 18.9
+  },
+  "etapa": "secundarios-corrigida",
+  "sut": "corrigida",
+  "marcas": "secundario",
+  "casos": 68
+}

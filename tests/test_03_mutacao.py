@@ -37,32 +37,6 @@ def test_CT_056_reserva_de_todos_os_quartos_do_hotel_e_aceita(client):
 
 
 @mutacao
-@pytest.mark.ce("CE-21", "CE-23", "CE-25", "CE-27")
-def test_CT_057_titular_com_identificador_alto_cancela_propria_reserva(client):
-    # Mata delete_reservation, ReplaceComparisonOperator_NotEq_IsNot (ocorrência 1):
-    # "ruid is not uid" só coincide com "!=" para inteiros pequenos (cache do CPython, -5 a 256).
-    carla = User("Carla", "Souza", "carla", "senha123", "carla@example.test")
-    carla.uid = 1000
-    db.session.add(carla)
-    db.session.commit()
-    rid = seed_reservation(1000)
-    login(client, "carla")
-    assert path(client.post(f"/delete/{rid}")) == "/rooms"
-    assert Reservations.query.get(rid) is None
-
-
-@mutacao
-@pytest.mark.ce("CE-26")
-def test_CT_058_usuario_de_id_menor_nao_cancela_reserva_de_id_maior(client, baseline):
-    # Mata delete_reservation, ReplaceComparisonOperator_NotEq_Lt (ocorrência 1): "ruid < uid".
-    # CT-027 só cobre o sentido inverso (Bruno, uid maior, tentando cancelar reserva de Ana).
-    rid = seed_reservation(baseline["bruno"])
-    login(client, "ana")
-    assert client.post(f"/delete/{rid}").status_code == 403
-    assert Reservations.query.get(rid) is not None
-
-
-@mutacao
 @pytest.mark.ce("CE-05", "CE-19")
 def test_CT_059_custo_de_quarto_com_numero_acima_de_256(client):
     # Mata cal_cost, ReplaceComparisonOperator_Eq_Is: "is" só coincide com "==" para inteiros

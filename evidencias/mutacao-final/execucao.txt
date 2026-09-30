@@ -5,12 +5,12 @@
 module-path = "hotel/views.py"
 timeout = 30.0
 excluded-modules = []
-test-command = "\"C:/PROJETOS/MESTRADO/Verificação de Validação/GESTÃO DE TESTES/output/hotel-management-testado/.venv/Scripts/python.exe\" -m pytest -x -q -p no:cacheprovider"
+test-command = "\"C:/PROJETOS/MESTRADO/Verificação de Validação/GESTÃO DE TESTES/output/hotel-management-testado/.venv/Scripts/python.exe\" -m pytest -x -q -p no:cacheprovider -m 'funcional or estrutural or mutacao'"
 
 [cosmic-ray.distributor]
 name = "local"
 
 # Comando: exec evidencias\mutacao-final\cosmic-ray.toml evidencias\mutacao-final\sessao.sqlite
-# Duração: 271.0 s; código de saída: 0
+# Duração: 314.8 s; código de saída: 0
 
 

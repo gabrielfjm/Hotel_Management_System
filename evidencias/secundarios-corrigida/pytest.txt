@@ -1,0 +1,40 @@
+# Etapa: secundarios-corrigida
+# SUT: corrigida
+# Comando: SUT_VERSAO=corrigida -m pytest -v -rxX -m secundario --cov=hotel.views --cov-branch --cov-report=term-missing --cov-report=json:C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-corrigida\coverage.json --cov-report=html:C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-corrigida\htmlcov --junitxml=C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-corrigida\junit.xml --rastreabilidade=C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-corrigida\rastreabilidade.json
+
+============================= test session starts =============================
+platform win32 -- Python 3.9.25, pytest-8.4.2, pluggy-1.6.0 -- C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\.venv\Scripts\python.exe
+SUT_VERSAO=corrigida; hotel.views=C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\hotel\views.py
+rootdir: C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado
+configfile: pytest.ini
+testpaths: tests
+plugins: cov-6.3.0
+collecting ... collected 68 items / 60 deselected / 8 selected
+
+tests/test_04_secundarios.py::test_CT_024_titular_cancela_propria_reserva PASSED [ 12%]
+tests/test_04_secundarios.py::test_CT_025_cancelamento_sem_sessao_redireciona_e_preserva PASSED [ 25%]
+tests/test_04_secundarios.py::test_CT_026_cancelamento_de_reserva_inexistente_retorna_404 PASSED [ 37%]
+tests/test_04_secundarios.py::test_CT_027_cancelamento_de_reserva_alheia_e_negado PASSED [ 50%]
+tests/test_04_secundarios.py::test_CT_028_get_de_cancelamento_nao_altera_dados PASSED [ 62%]
+tests/test_04_secundarios.py::test_CT_029_cancelamento_com_pagamento_nao_deixa_registro_orfao PASSED [ 75%]
+tests/test_04_secundarios.py::test_CT_057_titular_com_identificador_alto_cancela_propria_reserva PASSED [ 87%]
+tests/test_04_secundarios.py::test_CT_058_usuario_de_id_menor_nao_cancela_reserva_de_id_maior PASSED [100%]
+
+============================== warnings summary ===============================
+.venv\lib\site-packages\flask_sqlalchemy\__init__.py:800
+  C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\.venv\lib\site-packages\flask_sqlalchemy\__init__.py:800: UserWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True to suppress this warning.
+    warnings.warn('SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True to suppress this warning.')
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-corrigida\junit.xml -
+=============================== tests coverage ================================
+_______________ coverage: platform win32, python 3.9.25-final-0 _______________
+
+Name             Stmts   Miss Branch BrPart  Cover   Missing
+------------------------------------------------------------
+hotel\views.py     228    177     84      2    19%   17, 22-24, 29-36, 41, 46-102, 127-135, 140-149, 154-164, 169-171, 176-188, 195-209, 214-258, 262-275, 280-288, 292
+------------------------------------------------------------
+TOTAL              228    177     84      2    19%
+Coverage HTML written to dir C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-corrigida\htmlcov
+Coverage JSON written to file C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-corrigida\coverage.json
+================= 8 passed, 60 deselected, 1 warning in 0.59s =================

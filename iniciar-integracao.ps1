@@ -12,7 +12,7 @@ $bridge = Join-Path $PSScriptRoot '../../integration/vv_bridge.py'
 if (!(Test-Path $python)) { throw 'Execute .\setup_local.ps1 primeiro.' }
 if (!(Test-Path $bridge)) { throw 'A ponte integration/vv_bridge.py precisa estar na pasta raiz do V&V TestLab.' }
 
-$funcoes = 'reserve,cal_cost,delete_reservation,check_available,show_rooms'
+$funcoes = 'reserve,cal_cost,check_available,show_rooms'
 # O Windows procura "python" primeiro na pasta do cosmic-ray.exe (.venv-mutation, sem Flask); por isso a
 # configuração usada pela ponte recebe o caminho absoluto do Python de .venv.
 New-Item -ItemType Directory -Force (Join-Path $PSScriptRoot '.vvtestlab') | Out-Null
@@ -28,7 +28,7 @@ if ($Versao -eq 'original') {
 } else {
     $env:SUT_VERSAO = 'corrigida'
     $funcoes += ',_sessao_autenticada,_periodos_conflitam,_quartos_ocupados,_ler_quartos'
-    $pytestArgs = @('tests')
+    $pytestArgs = @('tests', '-m', 'funcional or estrutural or mutacao')
     Write-Host 'Ponte no CÓDIGO CORRIGIDO. "Executar e sincronizar" e "Executar mutação" (~5 min) disponíveis.'
 }
 

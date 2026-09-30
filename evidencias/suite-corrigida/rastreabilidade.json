@@ -13,7 +13,8 @@
       "CE-15",
       "CE-17",
       "CE-19",
-      "CE-43"
+      "CE-43",
+      "CE-49"
     ],
     "defeito": ""
   },
@@ -176,7 +177,8 @@
     "teste": "tests/test_01_funcional.py::test_CT_019_sobreposicao_de_uma_noite_no_inicio_e_rejeitada",
     "etapa": "funcional",
     "classes": [
-      "CE-18"
+      "CE-18",
+      "CE-55"
     ],
     "defeito": ""
   },
@@ -185,7 +187,8 @@
     "teste": "tests/test_01_funcional.py::test_CT_020_sobreposicao_de_uma_noite_no_fim_e_rejeitada",
     "etapa": "funcional",
     "classes": [
-      "CE-18"
+      "CE-18",
+      "CE-53"
     ],
     "defeito": ""
   },
@@ -194,7 +197,8 @@
     "teste": "tests/test_01_funcional.py::test_CT_021_saida_no_dia_da_entrada_existente_e_aceita",
     "etapa": "funcional",
     "classes": [
-      "CE-17"
+      "CE-17",
+      "CE-54"
     ],
     "defeito": "DEF-01"
   },
@@ -203,7 +207,8 @@
     "teste": "tests/test_01_funcional.py::test_CT_022_entrada_no_dia_da_saida_existente_e_aceita",
     "etapa": "funcional",
     "classes": [
-      "CE-17"
+      "CE-17",
+      "CE-52"
     ],
     "defeito": "DEF-01"
   },
@@ -215,68 +220,6 @@
       "CE-17"
     ],
     "defeito": "DEF-01"
-  },
-  {
-    "caso": "CT-024",
-    "teste": "tests/test_01_funcional.py::test_CT_024_titular_cancela_propria_reserva",
-    "etapa": "funcional",
-    "classes": [
-      "CE-21",
-      "CE-23",
-      "CE-25",
-      "CE-27",
-      "CE-29"
-    ],
-    "defeito": ""
-  },
-  {
-    "caso": "CT-025",
-    "teste": "tests/test_01_funcional.py::test_CT_025_cancelamento_sem_sessao_redireciona_e_preserva",
-    "etapa": "funcional",
-    "classes": [
-      "CE-22"
-    ],
-    "defeito": "DEF-07"
-  },
-  {
-    "caso": "CT-026",
-    "teste": "tests/test_01_funcional.py::test_CT_026_cancelamento_de_reserva_inexistente_retorna_404",
-    "etapa": "funcional",
-    "classes": [
-      "CE-24"
-    ],
-    "defeito": "DEF-09"
-  },
-  {
-    "caso": "CT-027",
-    "teste": "tests/test_01_funcional.py::test_CT_027_cancelamento_de_reserva_alheia_e_negado",
-    "etapa": "funcional",
-    "classes": [
-      "CE-26"
-    ],
-    "defeito": "DEF-08"
-  },
-  {
-    "caso": "CT-028",
-    "teste": "tests/test_01_funcional.py::test_CT_028_get_de_cancelamento_nao_altera_dados",
-    "etapa": "funcional",
-    "classes": [
-      "CE-28"
-    ],
-    "defeito": "DEF-10"
-  },
-  {
-    "caso": "CT-029",
-    "teste": "tests/test_01_funcional.py::test_CT_029_cancelamento_com_pagamento_nao_deixa_registro_orfao",
-    "etapa": "funcional",
-    "classes": [
-      "CE-21",
-      "CE-23",
-      "CE-25",
-      "CE-27",
-      "CE-30"
-    ],
-    "defeito": "DEF-11"
   },
   {
     "caso": "CT-030",
@@ -309,7 +252,8 @@
       "CE-39",
       "CE-40",
       "CE-41",
-      "CE-46"
+      "CE-43",
+      "CE-49"
     ],
     "defeito": ""
   },
@@ -327,7 +271,8 @@
     "teste": "tests/test_01_funcional.py::test_CT_034_entrada_da_consulta_no_dia_da_saida_existente_exibe_quarto",
     "etapa": "funcional",
     "classes": [
-      "CE-39"
+      "CE-39",
+      "CE-52"
     ],
     "defeito": "DEF-01"
   },
@@ -336,7 +281,8 @@
     "teste": "tests/test_01_funcional.py::test_CT_035_saida_da_consulta_no_dia_da_entrada_existente_exibe_quarto",
     "etapa": "funcional",
     "classes": [
-      "CE-39"
+      "CE-39",
+      "CE-54"
     ],
     "defeito": "DEF-01"
   },
@@ -345,7 +291,8 @@
     "teste": "tests/test_01_funcional.py::test_CT_036_consulta_com_sobreposicao_de_uma_noite_omite_quarto",
     "etapa": "funcional",
     "classes": [
-      "CE-40"
+      "CE-40",
+      "CE-53"
     ],
     "defeito": ""
   },
@@ -436,7 +383,7 @@
     "teste": "tests/test_01_funcional.py::test_CT_053_consulta_com_data_malformada_e_rejeitada",
     "etapa": "funcional",
     "classes": [
-      "CE-47"
+      "CE-44"
     ],
     "defeito": "DEF-18"
   },
@@ -464,7 +411,8 @@
     "teste": "tests/test_01_funcional.py::test_CT_061_saida_um_dia_antes_da_entrada_existente_e_aceita",
     "etapa": "funcional",
     "classes": [
-      "CE-17"
+      "CE-17",
+      "CE-54"
     ],
     "defeito": "DEF-01"
   },
@@ -473,7 +421,8 @@
     "teste": "tests/test_01_funcional.py::test_CT_062_entrada_um_dia_depois_da_saida_existente_e_aceita",
     "etapa": "funcional",
     "classes": [
-      "CE-17"
+      "CE-17",
+      "CE-52"
     ],
     "defeito": "DEF-01"
   },
@@ -482,7 +431,8 @@
     "teste": "tests/test_01_funcional.py::test_CT_063_consulta_terminando_um_dia_antes_da_entrada_existente_exibe_quarto",
     "etapa": "funcional",
     "classes": [
-      "CE-39"
+      "CE-39",
+      "CE-54"
     ],
     "defeito": "DEF-01"
   },
@@ -491,9 +441,48 @@
     "teste": "tests/test_01_funcional.py::test_CT_064_consulta_comecando_um_dia_depois_da_saida_existente_exibe_quarto",
     "etapa": "funcional",
     "classes": [
-      "CE-39"
+      "CE-39",
+      "CE-52"
     ],
     "defeito": "DEF-01"
+  },
+  {
+    "caso": "CT-065",
+    "teste": "tests/test_01_funcional.py::test_CT_065_reserva_com_data_de_saida_malformada_e_rejeitada",
+    "etapa": "funcional",
+    "classes": [
+      "CE-50"
+    ],
+    "defeito": "DEF-18"
+  },
+  {
+    "caso": "CT-066",
+    "teste": "tests/test_01_funcional.py::test_CT_066_consulta_com_data_de_saida_malformada_e_rejeitada",
+    "etapa": "funcional",
+    "classes": [
+      "CE-50"
+    ],
+    "defeito": "DEF-18"
+  },
+  {
+    "caso": "CT-067",
+    "teste": "tests/test_01_funcional.py::test_CT_067_saida_define_o_numero_de_diarias_cobradas",
+    "etapa": "funcional",
+    "classes": [
+      "CE-05",
+      "CE-20",
+      "CE-49"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-068",
+    "teste": "tests/test_01_funcional.py::test_CT_068_reserva_sem_data_de_entrada_e_rejeitada",
+    "etapa": "funcional",
+    "classes": [
+      "CE-44"
+    ],
+    "defeito": "DEF-18"
   },
   {
     "caso": "CT-044",
@@ -538,7 +527,6 @@
     "etapa": "estrutural",
     "classes": [
       "CE-02",
-      "CE-22",
       "CE-32"
     ],
     "defeito": ""
@@ -581,9 +569,81 @@
     "defeito": ""
   },
   {
-    "caso": "CT-057",
-    "teste": "tests/test_03_mutacao.py::test_CT_057_titular_com_identificador_alto_cancela_propria_reserva",
+    "caso": "CT-059",
+    "teste": "tests/test_03_mutacao.py::test_CT_059_custo_de_quarto_com_numero_acima_de_256",
     "etapa": "mutacao",
+    "classes": [
+      "CE-05",
+      "CE-19"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-024",
+    "teste": "tests/test_04_secundarios.py::test_CT_024_titular_cancela_propria_reserva",
+    "etapa": "secundario",
+    "classes": [
+      "CE-21",
+      "CE-23",
+      "CE-25",
+      "CE-27",
+      "CE-29"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-025",
+    "teste": "tests/test_04_secundarios.py::test_CT_025_cancelamento_sem_sessao_redireciona_e_preserva",
+    "etapa": "secundario",
+    "classes": [
+      "CE-22"
+    ],
+    "defeito": "DEF-07"
+  },
+  {
+    "caso": "CT-026",
+    "teste": "tests/test_04_secundarios.py::test_CT_026_cancelamento_de_reserva_inexistente_retorna_404",
+    "etapa": "secundario",
+    "classes": [
+      "CE-24"
+    ],
+    "defeito": "DEF-09"
+  },
+  {
+    "caso": "CT-027",
+    "teste": "tests/test_04_secundarios.py::test_CT_027_cancelamento_de_reserva_alheia_e_negado",
+    "etapa": "secundario",
+    "classes": [
+      "CE-26"
+    ],
+    "defeito": "DEF-08"
+  },
+  {
+    "caso": "CT-028",
+    "teste": "tests/test_04_secundarios.py::test_CT_028_get_de_cancelamento_nao_altera_dados",
+    "etapa": "secundario",
+    "classes": [
+      "CE-28"
+    ],
+    "defeito": "DEF-10"
+  },
+  {
+    "caso": "CT-029",
+    "teste": "tests/test_04_secundarios.py::test_CT_029_cancelamento_com_pagamento_nao_deixa_registro_orfao",
+    "etapa": "secundario",
+    "classes": [
+      "CE-21",
+      "CE-23",
+      "CE-25",
+      "CE-27",
+      "CE-30"
+    ],
+    "defeito": "DEF-11"
+  },
+  {
+    "caso": "CT-057",
+    "teste": "tests/test_04_secundarios.py::test_CT_057_titular_com_identificador_alto_cancela_propria_reserva",
+    "etapa": "secundario",
     "classes": [
       "CE-21",
       "CE-23",
@@ -594,21 +654,11 @@
   },
   {
     "caso": "CT-058",
-    "teste": "tests/test_03_mutacao.py::test_CT_058_usuario_de_id_menor_nao_cancela_reserva_de_id_maior",
-    "etapa": "mutacao",
+    "teste": "tests/test_04_secundarios.py::test_CT_058_usuario_de_id_menor_nao_cancela_reserva_de_id_maior",
+    "etapa": "secundario",
     "classes": [
       "CE-26"
     ],
-    "defeito": ""
-  },
-  {
-    "caso": "CT-059",
-    "teste": "tests/test_03_mutacao.py::test_CT_059_custo_de_quarto_com_numero_acima_de_256",
-    "etapa": "mutacao",
-    "classes": [
-      "CE-05",
-      "CE-19"
-    ],
-    "defeito": ""
+    "defeito": "DEF-08"
   }
 ]

@@ -1,6 +1,6 @@
-Rodada inicial: 13 mutantes sobreviventes
+Rodada inicial: 11 mutantes sobreviventes
 
-=== _quartos_ocupados linha 23 | core/ReplaceComparisonOperator_Eq_GtE (ocorrência 0) | job b8187ff7ea8f42a5bb0d5646ceb68abf
+=== _quartos_ocupados linha 23 | core/ReplaceComparisonOperator_Eq_GtE (ocorrência 0) | job b3e757ceb97b4b13b86977027e9d20d6
 --- mutation diff ---
 --- ahotel\views.py
 +++ bhotel\views.py
@@ -13,7 +13,7 @@ Rodada inicial: 13 mutantes sobreviventes
      return {quarto for quarto, c1, c2 in vinculos if _periodos_conflitam(entrada, saida, c1, c2)}
  
  
-=== _ler_quartos linha 34 | core/ReplaceComparisonOperator_LtE_Lt (ocorrência 0) | job 37f37d5b748647d0b577cdd28d79c8f7
+=== _ler_quartos linha 34 | core/ReplaceComparisonOperator_LtE_Lt (ocorrência 0) | job 322f7aa306714f5d9a7814240a4c1dd3
 --- mutation diff ---
 --- ahotel\views.py
 +++ bhotel\views.py
@@ -26,7 +26,7 @@ Rodada inicial: 13 mutantes sobreviventes
          return None
      return numeros
  
-=== _ler_quartos linha 34 | core/ReplaceComparisonOperator_NotEq_IsNot (ocorrência 0) | job 73c22dad222d4dd8bbcc313a476ba41e
+=== _ler_quartos linha 34 | core/ReplaceComparisonOperator_NotEq_IsNot (ocorrência 0) | job 27acdd70aff744fabc9138e8ad1b659e
 --- mutation diff ---
 --- ahotel\views.py
 +++ bhotel\views.py
@@ -39,7 +39,7 @@ Rodada inicial: 13 mutantes sobreviventes
          return None
      return numeros
  
-=== _ler_quartos linha 34 | core/ReplaceComparisonOperator_NotEq_Lt (ocorrência 0) | job 6619abd0ec5a4869b58a0327ded20391
+=== _ler_quartos linha 34 | core/ReplaceComparisonOperator_NotEq_Lt (ocorrência 0) | job a31221675afa4be989daacd51ef6041d
 --- mutation diff ---
 --- ahotel\views.py
 +++ bhotel\views.py
@@ -52,33 +52,7 @@ Rodada inicial: 13 mutantes sobreviventes
          return None
      return numeros
  
-=== delete_reservation linha 113 | core/ReplaceComparisonOperator_NotEq_IsNot (ocorrência 1) | job 8b72540a840f4897822f964f026613dd
---- mutation diff ---
---- ahotel\views.py
-+++ bhotel\views.py
-@@ -110,7 +110,7 @@
-         if cur_res is None:
-             abort(404)  # DEF-09
-         us = User.query.filter_by(username=session['current_user']).first()
--        if cur_res.ruid != us.uid:
-+        if cur_res.ruid is not us.uid:
-             abort(403)  # DEF-08
-         # DEF-11: vínculos e pagamentos saem junto com a reserva, em uma única transação.
-         Booked.query.filter_by(brid=cur_res.rid).delete()
-=== delete_reservation linha 113 | core/ReplaceComparisonOperator_NotEq_Lt (ocorrência 1) | job 5afb8747967e4c878813e86107a20ea2
---- mutation diff ---
---- ahotel\views.py
-+++ bhotel\views.py
-@@ -110,7 +110,7 @@
-         if cur_res is None:
-             abort(404)  # DEF-09
-         us = User.query.filter_by(username=session['current_user']).first()
--        if cur_res.ruid != us.uid:
-+        if cur_res.ruid < us.uid:
-             abort(403)  # DEF-08
-         # DEF-11: vínculos e pagamentos saem junto com a reserva, em uma única transação.
-         Booked.query.filter_by(brid=cur_res.rid).delete()
-=== check_available linha 197 | core/ReplaceComparisonOperator_Eq_GtE (ocorrência 7) | job d4d72a74717b4edfbd4a7f23546ac904
+=== check_available linha 197 | core/ReplaceComparisonOperator_Eq_GtE (ocorrência 7) | job 926a5228b7fd48c29d26b5de53975083
 --- mutation diff ---
 --- ahotel\views.py
 +++ bhotel\views.py
@@ -91,7 +65,7 @@ Rodada inicial: 13 mutantes sobreviventes
              checkin = reservation.checkin_date.data
              checkout = reservation.checkout_date.data
              num = reservation.num_guests.data
-=== reserve linha 217 | core/ReplaceComparisonOperator_Eq_GtE (ocorrência 8) | job 6334b4d7d6bc4bbfa09a9dc367850502
+=== reserve linha 217 | core/ReplaceComparisonOperator_Eq_GtE (ocorrência 8) | job 10054648bf6845cea51aea88882c4eea
 --- mutation diff ---
 --- ahotel\views.py
 +++ bhotel\views.py
@@ -104,7 +78,7 @@ Rodada inicial: 13 mutantes sobreviventes
              room_list = _ler_quartos(reservation.room_numbers.data)
              num = reservation.num_guests.data
              checkin = reservation.checkin_date.data
-=== reserve linha 226 | core/NumberReplacer (ocorrência 24) | job 7a6d2b80b8da42f49b8100fbd153e2d2
+=== reserve linha 226 | core/NumberReplacer (ocorrência 24) | job df993d0417b0445e965860dac6330791
 --- mutation diff ---
 --- ahotel\views.py
 +++ bhotel\views.py
@@ -117,7 +91,7 @@ Rodada inicial: 13 mutantes sobreviventes
              d2 = datetime.datetime.combine(checkout, datetime.time(0, 0))
  
              # DEF-02: comparar a data de entrada com a data de hoje, e não com o instante atual.
-=== reserve linha 226 | core/NumberReplacer (ocorrência 26) | job f38233fa9bd44d3b8f80a336f87651be
+=== reserve linha 226 | core/NumberReplacer (ocorrência 26) | job a362d65353e1414fa6372b4ae9829bd0
 --- mutation diff ---
 --- ahotel\views.py
 +++ bhotel\views.py
@@ -130,7 +104,7 @@ Rodada inicial: 13 mutantes sobreviventes
              d2 = datetime.datetime.combine(checkout, datetime.time(0, 0))
  
              # DEF-02: comparar a data de entrada com a data de hoje, e não com o instante atual.
-=== reserve linha 247 | core/NumberReplacer (ocorrência 34) | job cdca5eeb839241c09036bb00085a0d3a
+=== reserve linha 247 | core/NumberReplacer (ocorrência 34) | job dcc32248fa0c4cfb9d7e88cc5726b786
 --- mutation diff ---
 --- ahotel\views.py
 +++ bhotel\views.py
@@ -143,7 +117,7 @@ Rodada inicial: 13 mutantes sobreviventes
              db.session.add(reserve)
              db.session.flush()
              # Storing each rooms booked into the Booked table along with reservation id
-=== reserve linha 247 | core/NumberReplacer (ocorrência 35) | job 08750b2450074e22b422aa03e63be471
+=== reserve linha 247 | core/NumberReplacer (ocorrência 35) | job cd136e75b0c1457a9ef6bf69e2fe42b0
 --- mutation diff ---
 --- ahotel\views.py
 +++ bhotel\views.py
@@ -156,7 +130,7 @@ Rodada inicial: 13 mutantes sobreviventes
              db.session.add(reserve)
              db.session.flush()
              # Storing each rooms booked into the Booked table along with reservation id
-=== cal_cost linha 268 | core/ReplaceComparisonOperator_Eq_Is (ocorrência 9) | job 1a35e5fb37b14773ae8b43f8818b0bc3
+=== cal_cost linha 268 | core/ReplaceComparisonOperator_Eq_Is (ocorrência 9) | job 1bced8239bda4717b8ed9fb07860973d
 --- mutation diff ---
 --- ahotel\views.py
 +++ bhotel\views.py

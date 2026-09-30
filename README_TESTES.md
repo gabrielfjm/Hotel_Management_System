@@ -1,6 +1,6 @@
 # Testes do Hotel Management System
 
-Fork de [CrystalWang1225/Hotel_Management_System](https://github.com/CrystalWang1225/Hotel_Management_System) (commit `71b396b`) com testes funcionais, estruturais e de mutação e com a correção dos 19 defeitos encontrados. Relatório: [docs/relatorio-tecnico.pdf](docs/relatorio-tecnico.pdf) (fonte: [docs/RELATORIO_TECNICO.md](docs/RELATORIO_TECNICO.md)). Apresentação: [docs/apresentacao-2-slides.pptx](docs/apresentacao-2-slides.pptx) (com notas do apresentador) e slides de apoio à demonstração em [docs/apresentacao-apoio-demo.pptx](docs/apresentacao-apoio-demo.pptx).
+Fork de [CrystalWang1225/Hotel_Management_System](https://github.com/CrystalWang1225/Hotel_Management_System) (commit `71b396b`) com testes funcionais, estruturais e de mutação e com a correção dos 19 defeitos encontrados. Recorte: REQ-01 Reservar quartos, REQ-02 Data de entrada e REQ-03 Data de saída; o cancelamento (RF-08) tem testes complementares. Relatório: [docs/relatorio-tecnico.pdf](docs/relatorio-tecnico.pdf) (fonte: [docs/RELATORIO_TECNICO.md](docs/RELATORIO_TECNICO.md)). Apresentação: [docs/apresentacao-2-slides.pptx](docs/apresentacao-2-slides.pptx) (com notas do apresentador) e slides de apoio à demonstração em [docs/apresentacao-apoio-demo.pptx](docs/apresentacao-apoio-demo.pptx).
 
 ## Tags
 
@@ -31,7 +31,7 @@ Linux/macOS: `./setup.sh`, `./etapas.sh` (ou `./etapas.sh --sem-mutacao`) e `./e
 
 ```powershell
 $py = '.venv/Scripts/python.exe'
-& $py -m pytest -v                                        # suíte completa no código corrigido (64 passam)
+& $py -m pytest -v                                        # código corrigido: 60 casos principais + 8 complementares passam
 $env:SUT_VERSAO='original'; & $py -m pytest -rxX          # no original: defeitos aparecem como xfail estrito
 & $py -m pytest -m funcional --cov=hotel.views --cov-branch --cov-report=term-missing
 & $py scripts/etapas.py funcional-original                # uma etapa, com evidências em evidencias/
@@ -46,10 +46,11 @@ uv run --no-project --python 3.12 --with python-pptx==1.0.2 python scripts/gerar
 
 | Caminho | Conteúdo |
 |---|---|
-| `tests/test_01_funcional.py` | CT-001 a CT-043, CT-051 a CT-054 e CT-060 a CT-064: classes de equivalência e valor limite |
+| `tests/test_01_funcional.py` | 50 casos (CT-001 a CT-023, CT-030 a CT-043, CT-051 a CT-054, CT-060 a CT-068): classes de equivalência e valor limite |
 | `tests/test_02_estrutural.py` | CT-044 a CT-050: casos guiados pela cobertura |
-| `tests/test_03_mutacao.py` | CT-055 a CT-059: casos que matam mutantes sobreviventes |
-| `tests/classes_equivalencia.json` | catálogo das 48 classes (CE-01 a CE-48) |
+| `tests/test_03_mutacao.py` | CT-055, CT-056 e CT-059: casos que matam mutantes sobreviventes |
+| `tests/test_04_secundarios.py` | CT-024 a CT-029, CT-057 e CT-058: complementares do cancelamento (marca `secundario`, fora das métricas) |
+| `tests/classes_equivalencia.json` | catálogo das 42 classes dos três requisitos e das 10 do cancelamento |
 | `tests/conftest.py` | fixtures, escolha do SUT (`SUT_VERSAO`), marcas `ce`/`defeito`, exportação da rastreabilidade |
 | `mutacao/*.toml` | configuração do Cosmic Ray por rodada |
 | `scripts/` | `etapas.py`, `mutacao.py`, `metricas_codigo.py`, `evolucao.py`, `capturar_telas.py`, `gerar_relatorio.py`, `gerar_slides.py`, `seed_demo.py`, `inspecionar_base.py` |
@@ -66,4 +67,4 @@ uv run --no-project --python 3.12 --with python-pptx==1.0.2 python scripts/gerar
 Quando este repositório está dentro da pasta da ferramenta (`output/hotel-management-testado`), `iniciar-integracao.ps1` inicia a ponte local:
 
 * `.\iniciar-integracao.ps1 -Versao original`: executa a suíte no código original; os defeitos aparecem como falhas e viram `DEF-xxx` no painel.
-* `.\iniciar-integracao.ps1`: executa a suíte no código corrigido, com cobertura das funções do recorte e mutação pelo botão **Executar mutação** (`cosmic-ray.toml` + `scripts/selecionar_mutantes.py`, os mesmos 204 mutantes).
+* `.\iniciar-integracao.ps1`: executa a suíte no código corrigido, com cobertura das funções do recorte e mutação pelo botão **Executar mutação** (`cosmic-ray.toml` + `scripts/selecionar_mutantes.py`, os mesmos 189 mutantes).

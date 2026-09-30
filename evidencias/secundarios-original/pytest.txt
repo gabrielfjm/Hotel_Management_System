@@ -1,0 +1,47 @@
+# Etapa: secundarios-original
+# SUT: original
+# Comando: SUT_VERSAO=original -m pytest -v -rxX -m secundario --cov=hotel.views --cov-branch --cov-report=term-missing --cov-report=json:C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-original\coverage.json --cov-report=html:C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-original\htmlcov --junitxml=C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-original\junit.xml --rastreabilidade=C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-original\rastreabilidade.json
+
+============================= test session starts =============================
+platform win32 -- Python 3.9.25, pytest-8.4.2, pluggy-1.6.0 -- C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\.venv\Scripts\python.exe
+SUT_VERSAO=original; hotel.views=C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\.sut-original\hotel\views.py
+rootdir: C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado
+configfile: pytest.ini
+testpaths: tests
+plugins: cov-6.3.0
+collecting ... collected 68 items / 60 deselected / 8 selected
+
+tests/test_04_secundarios.py::test_CT_024_titular_cancela_propria_reserva PASSED [ 12%]
+tests/test_04_secundarios.py::test_CT_025_cancelamento_sem_sessao_redireciona_e_preserva XFAIL [ 25%]
+tests/test_04_secundarios.py::test_CT_026_cancelamento_de_reserva_inexistente_retorna_404 XFAIL [ 37%]
+tests/test_04_secundarios.py::test_CT_027_cancelamento_de_reserva_alheia_e_negado XFAIL [ 50%]
+tests/test_04_secundarios.py::test_CT_028_get_de_cancelamento_nao_altera_dados XFAIL [ 62%]
+tests/test_04_secundarios.py::test_CT_029_cancelamento_com_pagamento_nao_deixa_registro_orfao XFAIL [ 75%]
+tests/test_04_secundarios.py::test_CT_057_titular_com_identificador_alto_cancela_propria_reserva PASSED [ 87%]
+tests/test_04_secundarios.py::test_CT_058_usuario_de_id_menor_nao_cancela_reserva_de_id_maior XFAIL [100%]
+
+============================== warnings summary ===============================
+.venv\lib\site-packages\flask_sqlalchemy\__init__.py:800
+  C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\.venv\lib\site-packages\flask_sqlalchemy\__init__.py:800: UserWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True to suppress this warning.
+    warnings.warn('SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True to suppress this warning.')
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-original\junit.xml -
+=============================== tests coverage ================================
+_______________ coverage: platform win32, python 3.9.25-final-0 _______________
+
+Name                           Stmts   Miss Branch BrPart  Cover   Missing
+--------------------------------------------------------------------------
+.sut-original\hotel\views.py     222    183     94      2    14%   13, 18-74, 88-89, 94-102, 107-116, 121-131, 136-138, 144-167, 172-181, 186-243, 247-260, 265-273, 277
+--------------------------------------------------------------------------
+TOTAL                            222    183     94      2    14%
+Coverage HTML written to dir C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-original\htmlcov
+Coverage JSON written to file C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-original\coverage.json
+=========================== short test summary info ===========================
+XFAIL tests/test_04_secundarios.py::test_CT_025_cancelamento_sem_sessao_redireciona_e_preserva - DEF-07: rota protegida sem sessão gera erro interno
+XFAIL tests/test_04_secundarios.py::test_CT_026_cancelamento_de_reserva_inexistente_retorna_404 - DEF-09: cancelamento de reserva inexistente gera erro interno
+XFAIL tests/test_04_secundarios.py::test_CT_027_cancelamento_de_reserva_alheia_e_negado - DEF-08: usuário cancela reserva de outro usuário
+XFAIL tests/test_04_secundarios.py::test_CT_028_get_de_cancelamento_nao_altera_dados - DEF-10: requisição GET exclui a reserva
+XFAIL tests/test_04_secundarios.py::test_CT_029_cancelamento_com_pagamento_nao_deixa_registro_orfao - DEF-11: pagamento fica órfão após o cancelamento
+XFAIL tests/test_04_secundarios.py::test_CT_058_usuario_de_id_menor_nao_cancela_reserva_de_id_maior - DEF-08: usuário cancela reserva de outro usuário
+=========== 2 passed, 60 deselected, 6 xfailed, 1 warning in 1.46s ============

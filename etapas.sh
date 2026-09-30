@@ -11,7 +11,7 @@ MUT=.venv-mutation/bin/python
 
 echo "== Métricas de código (radon, pygount) sobre o upstream"
 "$PY" scripts/metricas_codigo.py
-for etapa in funcional-original estrutural-original suite-corrigida; do
+for etapa in funcional-original estrutural-original suite-corrigida secundarios-original secundarios-corrigida; do
   echo "== Etapa $etapa"
   "$PY" scripts/etapas.py "$etapa"
 done

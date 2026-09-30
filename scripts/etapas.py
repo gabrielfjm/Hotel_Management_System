@@ -31,13 +31,15 @@ PYTHON = ROOT / ".venv" / ("Scripts/python.exe" if os.name == "nt" else "bin/pyt
 
 # Funções que implementam as três funcionalidades do recorte. As auxiliares
 # (prefixo "_") só existem na versão corrigida e são incluídas quando presentes.
-RECORTE = ("reserve", "cal_cost", "delete_reservation", "check_available", "show_rooms")
+RECORTE = ("reserve", "cal_cost", "check_available", "show_rooms")
 
 ETAPAS = {
     "funcional-original": ("original", "funcional"),
     "estrutural-original": ("original", "funcional or estrutural"),
     "suite-corrigida": ("corrigida", "funcional or estrutural"),
     "final-corrigida": ("corrigida", "funcional or estrutural or mutacao"),
+    "secundarios-original": ("original", "secundario"),
+    "secundarios-corrigida": ("corrigida", "secundario"),
 }
 
 

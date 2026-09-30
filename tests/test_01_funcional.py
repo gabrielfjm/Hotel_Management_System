@@ -1,8 +1,10 @@
 """Etapa 1 - teste funcional (caixa-preta).
 
 Casos derivados da especificação (README do projeto e interface web) por
-particionamento em classes de equivalência (CE-01 a CE-42) e análise do valor
-limite, sem consultar o código. Cada classe inválida tem pelo menos um caso
+particionamento em classes de equivalência e análise do valor limite, sem
+consultar o código. Recorte: REQ-01 Reservar quartos (inclui a consulta de
+quartos livres que antecede a reserva), REQ-02 Data de entrada e REQ-03 Data
+de saída; o catálogo de classes está em tests/classes_equivalencia.json. Cada classe inválida tem pelo menos um caso
 que a exercita isoladamente; as demais entradas do caso pertencem a classes
 válidas.
 
@@ -15,17 +17,17 @@ prévia, Ana ocupa o quarto 101 de D+10 a D+12 (saída exclusiva).
 import pytest
 
 from hotel.models import Booked, Payment, Reservations
-from conftest import (availability, booking, listed_rooms, login, path, seed_payment,
+from conftest import (availability, booking, listed_rooms, login, path, seed_payment, stay,
                       seed_reservation)
 
 
 funcional = pytest.mark.funcional
 
 
-# ---------------------------------------------------------------- REQ-01 Reserva
+# ------------------------------------------------ REQ-01 Reservar quartos / REQ-02 / REQ-03
 
 @funcional
-@pytest.mark.ce("CE-01", "CE-03", "CE-05", "CE-08", "CE-11", "CE-13", "CE-15", "CE-17", "CE-19", "CE-43")
+@pytest.mark.ce("CE-01", "CE-03", "CE-05", "CE-08", "CE-11", "CE-13", "CE-15", "CE-17", "CE-19", "CE-43", "CE-49")
 def test_CT_001_reserva_valida_de_um_quarto_por_duas_noites(client):
     login(client)
     response = booking(client, room_numbers="101", guests="2", offset=10, nights=2)
@@ -183,7 +185,7 @@ def test_CT_018_mesmo_quarto_no_mesmo_periodo_e_rejeitado(client, baseline):
 
 
 @funcional
-@pytest.mark.ce("CE-18")
+@pytest.mark.ce("CE-18", "CE-55")
 def test_CT_019_sobreposicao_de_uma_noite_no_inicio_e_rejeitada(client, baseline):
     seed_reservation(baseline["ana"], offset=10, nights=2)  # D+10 a D+12
     login(client)
@@ -192,7 +194,7 @@ def test_CT_019_sobreposicao_de_uma_noite_no_inicio_e_rejeitada(client, baseline
 
 
 @funcional
-@pytest.mark.ce("CE-18")
+@pytest.mark.ce("CE-18", "CE-53")
 def test_CT_020_sobreposicao_de_uma_noite_no_fim_e_rejeitada(client, baseline):
     seed_reservation(baseline["ana"], offset=10, nights=2)  # D+10 a D+12
     login(client)
@@ -201,7 +203,7 @@ def test_CT_020_sobreposicao_de_uma_noite_no_fim_e_rejeitada(client, baseline):
 
 
 @funcional
-@pytest.mark.ce("CE-17")
+@pytest.mark.ce("CE-17", "CE-54")
 @pytest.mark.defeito("DEF-01", "períodos sem interseção são tratados como conflito")
 def test_CT_021_saida_no_dia_da_entrada_existente_e_aceita(client, baseline):
     seed_reservation(baseline["ana"], offset=10, nights=2)  # D+10 a D+12
@@ -211,7 +213,7 @@ def test_CT_021_saida_no_dia_da_entrada_existente_e_aceita(client, baseline):
 
 
 @funcional
-@pytest.mark.ce("CE-17")
+@pytest.mark.ce("CE-17", "CE-52")
 @pytest.mark.defeito("DEF-01", "períodos sem interseção são tratados como conflito")
 def test_CT_022_entrada_no_dia_da_saida_existente_e_aceita(client, baseline):
     seed_reservation(baseline["ana"], offset=10, nights=2)  # D+10 a D+12
@@ -230,72 +232,7 @@ def test_CT_023_mesmo_quarto_em_periodo_distante_e_aceito(client, baseline):
     assert Reservations.query.count() == 2
 
 
-# ----------------------------------------------------------- REQ-02 Cancelamento
-
-@funcional
-@pytest.mark.ce("CE-21", "CE-23", "CE-25", "CE-27", "CE-29")
-def test_CT_024_titular_cancela_propria_reserva(client, baseline):
-    rid = seed_reservation(baseline["ana"])
-    login(client)
-    response = client.post(f"/delete/{rid}")
-    assert path(response) == "/rooms"
-    assert Reservations.query.count() == 0
-    assert Booked.query.count() == 0
-
-
-@funcional
-@pytest.mark.ce("CE-22")
-@pytest.mark.defeito("DEF-07", "rota protegida sem sessão gera erro interno")
-def test_CT_025_cancelamento_sem_sessao_redireciona_e_preserva(client, baseline):
-    rid = seed_reservation(baseline["ana"])
-    # O sistema envia o visitante à lista de quartos, que por sua vez exige login.
-    assert path(client.post(f"/delete/{rid}")) == "/rooms"
-    assert path(client.get("/rooms")) == "/"
-    assert Reservations.query.get(rid) is not None
-
-
-@funcional
-@pytest.mark.ce("CE-24")
-@pytest.mark.defeito("DEF-09", "cancelamento de reserva inexistente gera erro interno")
-def test_CT_026_cancelamento_de_reserva_inexistente_retorna_404(client):
-    login(client)
-    assert client.post("/delete/999").status_code == 404
-
-
-@funcional
-@pytest.mark.ce("CE-26")
-@pytest.mark.defeito("DEF-08", "usuário cancela reserva de outro usuário")
-def test_CT_027_cancelamento_de_reserva_alheia_e_negado(client, baseline):
-    rid = seed_reservation(baseline["ana"])
-    login(client, "bruno")
-    assert client.post(f"/delete/{rid}").status_code == 403
-    assert Reservations.query.get(rid) is not None
-    assert Booked.query.filter_by(brid=rid).count() == 1
-
-
-@funcional
-@pytest.mark.ce("CE-28")
-@pytest.mark.defeito("DEF-10", "requisição GET exclui a reserva")
-def test_CT_028_get_de_cancelamento_nao_altera_dados(client, baseline):
-    rid = seed_reservation(baseline["ana"])
-    login(client)
-    assert client.get(f"/delete/{rid}").status_code == 405
-    assert Reservations.query.get(rid) is not None
-
-
-@funcional
-@pytest.mark.ce("CE-21", "CE-23", "CE-25", "CE-27", "CE-30")
-@pytest.mark.defeito("DEF-11", "pagamento fica órfão após o cancelamento")
-def test_CT_029_cancelamento_com_pagamento_nao_deixa_registro_orfao(client, baseline):
-    rid = seed_reservation(baseline["ana"])
-    seed_payment(baseline["ana"], rid)
-    login(client)
-    assert path(client.post(f"/delete/{rid}")) == "/rooms"
-    assert Reservations.query.count() == 0
-    assert Payment.query.filter_by(prid=rid).count() == 0
-
-
-# ------------------------------------------------------ REQ-03 Disponibilidade
+# ------------------------- REQ-01 (consulta de quartos livres que antecede a reserva)
 
 @funcional
 @pytest.mark.ce("CE-31", "CE-33")
@@ -315,7 +252,7 @@ def test_CT_031_consulta_sem_sessao_redireciona_para_inicio(client):
 
 
 @funcional
-@pytest.mark.ce("CE-31", "CE-34", "CE-35", "CE-37", "CE-39", "CE-40", "CE-41", "CE-46")
+@pytest.mark.ce("CE-31", "CE-34", "CE-35", "CE-37", "CE-39", "CE-40", "CE-41", "CE-43", "CE-49")
 def test_CT_032_consulta_omite_quarto_ocupado_e_lista_livres(client, baseline):
     seed_reservation(baseline["ana"], offset=10, nights=2)
     login(client)
@@ -334,7 +271,7 @@ def test_CT_033_reserva_em_periodo_distante_nao_oculta_quarto(client, baseline):
 
 
 @funcional
-@pytest.mark.ce("CE-39")
+@pytest.mark.ce("CE-39", "CE-52")
 @pytest.mark.defeito("DEF-01", "períodos sem interseção são tratados como conflito")
 def test_CT_034_entrada_da_consulta_no_dia_da_saida_existente_exibe_quarto(client, baseline):
     seed_reservation(baseline["ana"], offset=10, nights=2)  # D+10 a D+12
@@ -344,7 +281,7 @@ def test_CT_034_entrada_da_consulta_no_dia_da_saida_existente_exibe_quarto(clien
 
 
 @funcional
-@pytest.mark.ce("CE-39")
+@pytest.mark.ce("CE-39", "CE-54")
 @pytest.mark.defeito("DEF-01", "períodos sem interseção são tratados como conflito")
 def test_CT_035_saida_da_consulta_no_dia_da_entrada_existente_exibe_quarto(client, baseline):
     seed_reservation(baseline["ana"], offset=10, nights=2)  # D+10 a D+12
@@ -354,7 +291,7 @@ def test_CT_035_saida_da_consulta_no_dia_da_entrada_existente_exibe_quarto(clien
 
 
 @funcional
-@pytest.mark.ce("CE-40")
+@pytest.mark.ce("CE-40", "CE-53")
 def test_CT_036_consulta_com_sobreposicao_de_uma_noite_omite_quarto(client, baseline):
     seed_reservation(baseline["ana"], offset=10, nights=2)  # D+10 a D+12
     login(client)
@@ -444,7 +381,7 @@ def test_CT_052_reserva_com_hospedes_nao_numerico_e_rejeitada(client):
 
 
 @funcional
-@pytest.mark.ce("CE-47")
+@pytest.mark.ce("CE-44")
 @pytest.mark.defeito("DEF-18", "data fora do formato MM/DD/AAAA gera erro interno")
 def test_CT_053_consulta_com_data_malformada_e_rejeitada(client):
     login(client)
@@ -474,7 +411,7 @@ def test_CT_060_hospedes_um_abaixo_da_capacidade_somada_sao_aceitos(client):
 
 
 @funcional
-@pytest.mark.ce("CE-17")
+@pytest.mark.ce("CE-17", "CE-54")
 @pytest.mark.defeito("DEF-01", "períodos sem interseção são tratados como conflito")
 def test_CT_061_saida_um_dia_antes_da_entrada_existente_e_aceita(client, baseline):
     seed_reservation(baseline["ana"], offset=10, nights=2)  # D+10 a D+12
@@ -484,7 +421,7 @@ def test_CT_061_saida_um_dia_antes_da_entrada_existente_e_aceita(client, baselin
 
 
 @funcional
-@pytest.mark.ce("CE-17")
+@pytest.mark.ce("CE-17", "CE-52")
 @pytest.mark.defeito("DEF-01", "períodos sem interseção são tratados como conflito")
 def test_CT_062_entrada_um_dia_depois_da_saida_existente_e_aceita(client, baseline):
     seed_reservation(baseline["ana"], offset=10, nights=2)  # D+10 a D+12
@@ -494,7 +431,7 @@ def test_CT_062_entrada_um_dia_depois_da_saida_existente_e_aceita(client, baseli
 
 
 @funcional
-@pytest.mark.ce("CE-39")
+@pytest.mark.ce("CE-39", "CE-54")
 @pytest.mark.defeito("DEF-01", "períodos sem interseção são tratados como conflito")
 def test_CT_063_consulta_terminando_um_dia_antes_da_entrada_existente_exibe_quarto(client, baseline):
     seed_reservation(baseline["ana"], offset=10, nights=2)  # D+10 a D+12
@@ -504,10 +441,56 @@ def test_CT_063_consulta_terminando_um_dia_antes_da_entrada_existente_exibe_quar
 
 
 @funcional
-@pytest.mark.ce("CE-39")
+@pytest.mark.ce("CE-39", "CE-52")
 @pytest.mark.defeito("DEF-01", "períodos sem interseção são tratados como conflito")
 def test_CT_064_consulta_comecando_um_dia_depois_da_saida_existente_exibe_quarto(client, baseline):
     seed_reservation(baseline["ana"], offset=10, nights=2)  # D+10 a D+12
     login(client)
     availability(client, offset=13, nights=2)  # D+13 a D+15
     assert listed_rooms(client) == [101, 102, 103]
+
+
+# ------------------------------------ REQ-02 / REQ-03: formato das datas e diárias
+# Casos acrescentados ao reorganizar o recorte em reserva, data de entrada e data de saída.
+
+@funcional
+@pytest.mark.ce("CE-50")
+@pytest.mark.defeito("DEF-18", "data fora do formato MM/DD/AAAA gera erro interno")
+def test_CT_065_reserva_com_data_de_saida_malformada_e_rejeitada(client):
+    login(client)
+    response = client.post("/reserve", data={"checkin_date": stay(10, 2)[0].strftime("%m/%d/%Y"),
+                                              "checkout_date": "02/30/2099", "num_guests": "2", "room_numbers": "101"})
+    assert path(response) == "/reserve"
+    assert Reservations.query.count() == 0
+
+
+@funcional
+@pytest.mark.ce("CE-50")
+@pytest.mark.defeito("DEF-18", "data fora do formato MM/DD/AAAA gera erro interno")
+def test_CT_066_consulta_com_data_de_saida_malformada_e_rejeitada(client):
+    login(client)
+    response = client.post("/available", data={"checkin_date": stay(10, 2)[0].strftime("%m/%d/%Y"),
+                                                "checkout_date": "depois", "num_guests": "2"})
+    assert path(response) == "/available"
+    assert listed_rooms(client) == [101, 102, 103]
+
+
+@funcional
+@pytest.mark.ce("CE-05", "CE-20", "CE-49")
+def test_CT_067_saida_define_o_numero_de_diarias_cobradas(client):
+    login(client)
+    assert path(booking(client, room_numbers="101,103", guests="3", offset=10, nights=4)) == "/rooms"
+    reserva = Reservations.query.one()
+    assert (reserva.checkout_date - reserva.checkin_date).days == 4
+    assert reserva.costs == (100 + 200) * 4
+
+
+@funcional
+@pytest.mark.ce("CE-44")
+@pytest.mark.defeito("DEF-18", "data fora do formato MM/DD/AAAA gera erro interno")
+def test_CT_068_reserva_sem_data_de_entrada_e_rejeitada(client):
+    login(client)
+    response = client.post("/reserve", data={"checkin_date": "", "checkout_date": stay(10, 2)[1].strftime("%m/%d/%Y"),
+                                              "num_guests": "2", "room_numbers": "101"})
+    assert path(response) == "/reserve"
+    assert Reservations.query.count() == 0

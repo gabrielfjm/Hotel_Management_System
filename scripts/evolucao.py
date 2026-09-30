@@ -55,20 +55,24 @@ def main():
     (EVID / "evolucao.json").write_text(json.dumps(linhas, ensure_ascii=False, indent=2), encoding="utf-8")
 
     classes = ler(ROOT / "tests" / "classes_equivalencia.json")
-    matriz = ler(EVID / "final-corrigida" / "rastreabilidade.json") or []
+    matriz = [m for m in (ler(EVID / "final-corrigida" / "rastreabilidade.json") or []) if m["etapa"] != "secundario"]
+    matriz += [m for m in (ler(EVID / "secundarios-corrigida" / "rastreabilidade.json") or []) if m["etapa"] == "secundario"]
     por_classe = defaultdict(list)
     for caso in matriz:
         for ce in caso["classes"]:
             por_classe[ce].append((caso["caso"], caso["etapa"]))
-    faltando = [c["id"] for c in classes if not any(etapa == "funcional" for _, etapa in por_classe[c["id"]])]
+    # Classes dos requisitos principais precisam de caso funcional; as do RF secundário, de caso complementar.
+    faltando = [c["id"] for c in classes
+                if not any(etapa == ("secundario" if c["req"].startswith("RF") else "funcional")
+                           for _, etapa in por_classe[c["id"]])]
     desconhecidas = sorted(set(por_classe) - {c["id"] for c in classes})
 
     md = ["# Rastreabilidade: classe de equivalência → casos de teste", "",
           "| Classe | Req. | Condição | Tipo | Descrição | Casos funcionais | Outros casos |",
           "|---|---|---|---|---|---|---|"]
     for c in classes:
-        func = ", ".join(n for n, e in por_classe[c["id"]] if e == "funcional")
-        outros = ", ".join(n for n, e in por_classe[c["id"]] if e != "funcional") or "—"
+        func = ", ".join(n for n, e in por_classe[c["id"]] if e in ("funcional", "secundario"))
+        outros = ", ".join(n for n, e in por_classe[c["id"]] if e not in ("funcional", "secundario")) or "—"
         md.append(f'| {c["id"]} | {c["req"]} | {c["condicao"]} | {c["tipo"]} | {c["descricao"]} | {func} | {outros} |')
     md += ["", "| Caso | Etapa | Classes | Defeito revelado no original |", "|---|---|---|---|"]
     for caso in sorted(matriz, key=lambda c: c["caso"]):

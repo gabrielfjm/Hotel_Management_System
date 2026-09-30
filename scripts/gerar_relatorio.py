@@ -65,7 +65,7 @@ def main():
 
     nomes = {"1. Funcional": ("1", "Funcional (classes de equivalência + valor limite)"),
              "2. Estrutural": ("2", "Estrutural (meta: 100% de comandos e de desvios viáveis)"),
-             "3. Correção": ("—", "Correção dos 19 defeitos; mesma suíte"),
+             "3. Correção": ("—", "Correção dos defeitos; mesma suíte"),
              "4. Mutação": ("3", "Baseada em defeitos (Cosmic Ray)")}
     resumo = ["| Etapa | Técnica | Código | Nº de casos | Cobertura de comandos | Cobertura de desvios | Escore de mutação |",
               "|---|---|---|---:|---:|---:|---:|"]
@@ -74,6 +74,18 @@ def main():
         escore = f'{e["mutacao"]} ({pct(e["escore_pct"])})' if e["escore_pct"] is not None else "—"
         resumo.append(f'| {num} | {tec} | {e["sut"]} | {e["casos"]} | {e["comandos"]} ({pct(e["pct_comandos"])}) | '
                       f'{e["desvios"]} ({pct(e["pct_desvios"])}) | {escore} |')
+
+    nomes_req = {"REQ-01": "REQ-01 Reservar quartos", "REQ-02": "REQ-02 Data de entrada",
+                 "REQ-03": "REQ-03 Data de saída"}
+    catalogo = json.loads((ROOT / "tests" / "classes_equivalencia.json").read_text(encoding="utf-8"))
+    tabela_ce = ["| Req. | Condição de entrada | Classes válidas | Classes inválidas |", "|---|---|---|---|"]
+    for req, nome_req in nomes_req.items():
+        condicoes = list(dict.fromkeys(c["condicao"] for c in catalogo if c["req"] == req))
+        for i, cond in enumerate(condicoes):
+            grupo = [c for c in catalogo if c["req"] == req and c["condicao"] == cond]
+            validas = "; ".join(f'{c["id"]} {c["descricao"]}' for c in grupo if c["tipo"] == "válida") or "—"
+            invalidas = "; ".join(f'{c["id"]} {c["descricao"]}' for c in grupo if c["tipo"] == "inválida") or "—"
+            tabela_ce.append(f'| {nome_req if i == 0 else ""} | {cond} | {validas} | {invalidas} |')
 
     telas = []
     for nome, legenda in TELAS:
@@ -84,6 +96,11 @@ def main():
     trocas = {
         "«FORK_URL»": FORK_URL,
         "«RESUMO»": "\n".join(resumo),
+        "«TABELA_CE»": "\n".join(tabela_ce),
+        "«CASOS_SECUNDARIOS»": (DOCS / "partes" / "casos_secundarios.md").read_text(encoding="utf-8"),
+        "«ORIG_CMD»": str(ler("funcional-original/cobertura-recorte.json")["recorte"]["comandos"]),
+        "«ORIG_DESV»": str(ler("funcional-original/cobertura-recorte.json")["recorte"]["desvios"]),
+        "«MUT_TOTAL»": str(mut_fim["total"]),
         "«TELAS»": "\n".join(telas),
         "«CASOS_FUNCIONAIS»": (DOCS / "partes" / "casos_funcionais.md").read_text(encoding="utf-8"),
         "«DEFEITOS»": (DOCS / "partes" / "defeitos.md").read_text(encoding="utf-8"),
@@ -96,9 +113,9 @@ def main():
         "«MUT_FINAL_TEXTO»": (
             f'{mut_fim["total"]} mutantes: {mut_fim["mortos"]} mortos, {mut_fim["sobreviventes"]} sobreviventes, '
             f'{mut_fim["incompetentes"]} incompetentes. Escore de {pct(mut_fim["escore_pct"])} '
-            f'(inicial: {pct(mut_ini["escore_pct"])}), em {mut_fim["duracao_s"]:.0f} s.** Os cinco casos novos '
-            f'mataram os cinco sobreviventes não equivalentes. Restam {mut_fim["sobreviventes"]} sobreviventes, '
-            f'todos classificados como equivalentes (S6 a S13); não equivalentes restantes: {vivos_nao_equiv}. '
+            f'(inicial: {pct(mut_ini["escore_pct"])}), em {mut_fim["duracao_s"]:.0f} s.** Os três casos novos '
+            f'mataram os três sobreviventes não equivalentes. Restam {mut_fim["sobreviventes"]} sobreviventes, '
+            f'todos classificados como equivalentes (S4 a S11); não equivalentes restantes: {vivos_nao_equiv}. '
             f'O arquivo `evidencias/mutacao-final/sobreviventes.txt` traz o diff de cada um.'),
         "«MUT_AJUSTADO»": pct(100 * mut_fim["mortos"] / (mut_fim["total"] - equivalentes)) +
                           f' ({mut_fim["mortos"]}/{mut_fim["total"] - equivalentes})',

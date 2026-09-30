@@ -3,7 +3,7 @@
 Casos acrescentados depois de medir, com coverage.py (--cov-branch), a
 cobertura dos casos funcionais sobre hotel/views.py original. Meta: 100% dos
 comandos e 100% dos desvios viáveis das funções do recorte (reserve, cal_cost,
-delete_reservation, check_available, show_rooms). O comentário de cada caso
+check_available, show_rooms). O comentário de cada caso
 indica as linhas/desvios do código original que ele passou a cobrir.
 """
 
@@ -65,7 +65,7 @@ def test_CT_047_consulta_omite_dois_quartos_ocupados_consecutivos(client, baseli
 
 
 @estrutural
-@pytest.mark.ce("CE-02", "CE-22", "CE-32")
+@pytest.mark.ce("CE-02", "CE-32")
 def test_CT_048_sessao_encerrada_redireciona_nas_rotas_do_recorte(client, baseline):
     # Original: ramos falsos de "if session['user_available']" (linhas 88-89, 166-167, 180-181, 242-243).
     rid = seed_reservation(baseline["ana"])

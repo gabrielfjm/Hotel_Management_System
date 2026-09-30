@@ -1,9 +1,9 @@
 {
   "recorte": {
-    "comandos": 106,
-    "comandos_cobertos": 106,
-    "desvios": 44,
-    "desvios_cobertos": 44,
+    "comandos": 92,
+    "comandos_cobertos": 92,
+    "desvios": 38,
+    "desvios_cobertos": 38,
     "pct_comandos": 100.0,
     "pct_desvios": 100.0
   },
@@ -37,14 +37,6 @@
       "comandos_cobertos": 8,
       "desvios": 2,
       "desvios_cobertos": 2,
-      "linhas_nao_cobertas": [],
-      "desvios_nao_cobertos": []
-    },
-    "delete_reservation": {
-      "comandos": 14,
-      "comandos_cobertos": 14,
-      "desvios": 6,
-      "desvios_cobertos": 6,
       "linhas_nao_cobertas": [],
       "desvios_nao_cobertos": []
     },
@@ -83,13 +75,13 @@
   },
   "views_py_inteiro": {
     "comandos": 228,
-    "comandos_cobertos": 139,
+    "comandos_cobertos": 128,
     "desvios": 84,
-    "desvios_cobertos": 45,
-    "pct_total": 59.0
+    "desvios_cobertos": 40,
+    "pct_total": 53.8
   },
   "etapa": "final-corrigida",
   "sut": "corrigida",
   "marcas": "funcional or estrutural or mutacao",
-  "casos": 64
+  "casos": 68
 }

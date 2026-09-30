@@ -5,7 +5,7 @@
 module-path = "hotel/views.py"
 timeout = 30.0
 excluded-modules = []
-test-command = "python -m pytest -x -q -p no:cacheprovider"
+test-command = "python -m pytest -x -q -p no:cacheprovider -m 'funcional or estrutural or mutacao'"
 
 [cosmic-ray.distributor]
 name = "local"
