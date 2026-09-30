@@ -49,3 +49,8 @@ Legenda: **P** = passou no original; **F** = falhou no original, confirmando o d
 | CT-052 | CE-45 | reserva com hóspedes `dois` | recusa | F – DEF-19 |
 | CT-053 | CE-47 | consulta com entrada `amanhã` | recusa; lista sem filtro | F – DEF-18 |
 | CT-054 | CE-48 | consulta com hóspedes `dois` | recusa | F – DEF-13 |
+| CT-060 | CE-08, CE-20 | 101,102; 4 hóspedes (um abaixo da capacidade 5); 1 noite | aceita; custo 250 | P |
+| CT-061 | CE-17 | 101 reservado D+10–12; nova D+7–9 | aceita | F – DEF-01 |
+| CT-062 | CE-17 | idem; nova D+13–15 | aceita | F – DEF-01 |
+| CT-063 | CE-39 | 101 ocupado D+10–12; consulta D+7–9 | lista 101, 102, 103 | F – DEF-01 |
+| CT-064 | CE-39 | idem; consulta D+13–15 | lista 101, 102, 103 | F – DEF-01 |

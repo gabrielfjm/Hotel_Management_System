@@ -1,6 +1,6 @@
 # Testes do Hotel Management System
 
-Fork de [CrystalWang1225/Hotel_Management_System](https://github.com/CrystalWang1225/Hotel_Management_System) (commit `71b396b`) com testes funcionais, estruturais e de mutação e com a correção dos 19 defeitos encontrados. Relatório: [docs/relatorio-tecnico.pdf](docs/relatorio-tecnico.pdf) (fonte: [docs/RELATORIO_TECNICO.md](docs/RELATORIO_TECNICO.md)). Apresentação: [docs/apresentacao-2-slides.pptx](docs/apresentacao-2-slides.pptx).
+Fork de [CrystalWang1225/Hotel_Management_System](https://github.com/CrystalWang1225/Hotel_Management_System) (commit `71b396b`) com testes funcionais, estruturais e de mutação e com a correção dos 19 defeitos encontrados. Relatório: [docs/relatorio-tecnico.pdf](docs/relatorio-tecnico.pdf) (fonte: [docs/RELATORIO_TECNICO.md](docs/RELATORIO_TECNICO.md)). Apresentação: [docs/apresentacao-2-slides.pptx](docs/apresentacao-2-slides.pptx) (com notas do apresentador) e slides de apoio à demonstração em [docs/apresentacao-apoio-demo.pptx](docs/apresentacao-apoio-demo.pptx).
 
 ## Tags
 
@@ -12,7 +12,7 @@ Fork de [CrystalWang1225/Hotel_Management_System](https://github.com/CrystalWang
 
 ## Requisitos
 
-Windows com PowerShell, [uv](https://docs.astral.sh/uv/) e git. Internet na primeira execução, para baixar Python 3.9/3.12 e os pacotes. As capturas de tela e o PDF usam o Microsoft Edge instalado.
+Windows (PowerShell) ou Linux/macOS (bash), [uv](https://docs.astral.sh/uv/) e git. Internet na primeira execução, para baixar Python 3.9/3.12 e os pacotes. As capturas de tela e o PDF usam o Microsoft Edge instalado.
 
 ## Passo a passo
 
@@ -25,11 +25,13 @@ Windows com PowerShell, [uv](https://docs.astral.sh/uv/) e git. Internet na prim
 
 Se a política do PowerShell bloquear scripts, use `powershell -ExecutionPolicy Bypass -File .\etapas.ps1`.
 
+Linux/macOS: `./setup.sh`, `./etapas.sh` (ou `./etapas.sh --sem-mutacao`) e `./executar.sh`.
+
 ## Comandos individuais
 
 ```powershell
 $py = '.venv/Scripts/python.exe'
-& $py -m pytest -v                                        # suíte completa no código corrigido (59 passam)
+& $py -m pytest -v                                        # suíte completa no código corrigido (64 passam)
 $env:SUT_VERSAO='original'; & $py -m pytest -rxX          # no original: defeitos aparecem como xfail estrito
 & $py -m pytest -m funcional --cov=hotel.views --cov-branch --cov-report=term-missing
 & $py scripts/etapas.py funcional-original                # uma etapa, com evidências em evidencias/
@@ -44,7 +46,7 @@ uv run --no-project --python 3.12 --with python-pptx==1.0.2 python scripts/gerar
 
 | Caminho | Conteúdo |
 |---|---|
-| `tests/test_01_funcional.py` | CT-001 a CT-043 e CT-051 a CT-054: classes de equivalência e valor limite |
+| `tests/test_01_funcional.py` | CT-001 a CT-043, CT-051 a CT-054 e CT-060 a CT-064: classes de equivalência e valor limite |
 | `tests/test_02_estrutural.py` | CT-044 a CT-050: casos guiados pela cobertura |
 | `tests/test_03_mutacao.py` | CT-055 a CT-059: casos que matam mutantes sobreviventes |
 | `tests/classes_equivalencia.json` | catálogo das 48 classes (CE-01 a CE-48) |
@@ -58,3 +60,10 @@ uv run --no-project --python 3.12 --with python-pptx==1.0.2 python scripts/gerar
 * `funcional`, `estrutural`, `mutacao`: etapa em que o caso foi criado (`pytest -m funcional`).
 * `ce("CE-xx", ...)`: classes exercitadas.
 * `defeito("DEF-xx", "descrição")`: defeito que o caso revela no código original. Com `SUT_VERSAO=original`, recebe `xfail(strict=True)`. No código corrigido, precisa passar.
+
+## Integração com o V&V TestLab
+
+Quando este repositório está dentro da pasta da ferramenta (`output/hotel-management-testado`), `iniciar-integracao.ps1` inicia a ponte local:
+
+* `.\iniciar-integracao.ps1 -Versao original`: executa a suíte no código original; os defeitos aparecem como falhas e viram `DEF-xxx` no painel.
+* `.\iniciar-integracao.ps1`: executa a suíte no código corrigido, com cobertura das funções do recorte e mutação pelo botão **Executar mutação** (`cosmic-ray.toml` + `scripts/selecionar_mutantes.py`, os mesmos 204 mutantes).

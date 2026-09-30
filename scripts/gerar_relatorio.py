@@ -63,6 +63,18 @@ def main():
                   "Nas etapas 1 e 2 não há escore, pois a mutação só é aplicada depois da correção dos defeitos (seção 6). "
                   "Fonte: `evidencias/evolucao.json`, gerado por `scripts/evolucao.py`.")
 
+    nomes = {"1. Funcional": ("1", "Funcional (classes de equivalência + valor limite)"),
+             "2. Estrutural": ("2", "Estrutural (meta: 100% de comandos e de desvios viáveis)"),
+             "3. Correção": ("—", "Correção dos 19 defeitos; mesma suíte"),
+             "4. Mutação": ("3", "Baseada em defeitos (Cosmic Ray)")}
+    resumo = ["| Etapa | Técnica | Código | Nº de casos | Cobertura de comandos | Cobertura de desvios | Escore de mutação |",
+              "|---|---|---|---:|---:|---:|---:|"]
+    for e in evolucao:
+        num, tec = nomes[e["etapa"]]
+        escore = f'{e["mutacao"]} ({pct(e["escore_pct"])})' if e["escore_pct"] is not None else "—"
+        resumo.append(f'| {num} | {tec} | {e["sut"]} | {e["casos"]} | {e["comandos"]} ({pct(e["pct_comandos"])}) | '
+                      f'{e["desvios"]} ({pct(e["pct_desvios"])}) | {escore} |')
+
     telas = []
     for nome, legenda in TELAS:
         if (EVID / "telas" / f"{nome}.png").exists():
@@ -71,6 +83,7 @@ def main():
 
     trocas = {
         "«FORK_URL»": FORK_URL,
+        "«RESUMO»": "\n".join(resumo),
         "«TELAS»": "\n".join(telas),
         "«CASOS_FUNCIONAIS»": (DOCS / "partes" / "casos_funcionais.md").read_text(encoding="utf-8"),
         "«DEFEITOS»": (DOCS / "partes" / "defeitos.md").read_text(encoding="utf-8"),

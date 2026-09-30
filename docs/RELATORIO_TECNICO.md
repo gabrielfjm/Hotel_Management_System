@@ -1,7 +1,7 @@
 # Teste de software de terceiros: Hotel Management System
 
-- **Disciplina:** Verificação e Validação de Software (Mestrado)
-- **Autor:** Gabriel Felipe
+- **Aluno:** Gabriel Felipe Jess Meira
+- **Disciplina:** Verificação e Validação
 - **Sistema sob teste (SUT):** [CrystalWang1225/Hotel_Management_System](https://github.com/CrystalWang1225/Hotel_Management_System), commit `71b396bab15a840deab61a05d5c762173e8ea410`
 - **Fork com testes e correções:** https://github.com/gabrielfjm/Hotel_Management_System (tags `upstream-71b396b`, `sut-original`, `sut-corrigido`)
 - **Ferramentas:** pytest 8.4.2, coverage.py via pytest-cov 6.3.0, Cosmic Ray 8.4.3, radon 6.0.1, pygount 3.1.0
@@ -12,10 +12,10 @@ As três técnicas foram aplicadas na ordem exigida (**funcional → estrutural 
 
 | Etapa | Técnica | Código | Nº de casos | Cobertura de comandos | Cobertura de desvios | Escore de mutação |
 |---|---|---|---:|---:|---:|---:|
-| 1 | Funcional (classes de equivalência + valor limite) | original | 47 | 93/103 (90,3%) | 45/54 (83,3%) | — |
-| 2 | Estrutural (meta: 100% de comandos e de desvios viáveis) | original | 54 | 103/103 (100%) | 53/54 (98,1%) | — |
-| — | Correção dos 19 defeitos; mesma suíte | corrigido | 54 | 106/106 (100%) | 44/44 (100%) | 191/204 (93,6%) |
-| 3 | Baseada em defeitos (Cosmic Ray) | corrigido | 59 | 106/106 (100,0%) | 44/44 (100,0%) | 196/204 (96,1%) |
+| 1 | Funcional (classes de equivalência + valor limite) | original | 52 | 93/103 (90,3%) | 45/54 (83,3%) | — |
+| 2 | Estrutural (meta: 100% de comandos e de desvios viáveis) | original | 59 | 103/103 (100,0%) | 53/54 (98,1%) | — |
+| — | Correção dos 19 defeitos; mesma suíte | corrigida | 59 | 106/106 (100,0%) | 44/44 (100,0%) | 191/204 (93,6%) |
+| 3 | Baseada em defeitos (Cosmic Ray) | corrigida | 64 | 106/106 (100,0%) | 44/44 (100,0%) | 196/204 (96,1%) |
 
 A cobertura considera as funções do recorte em `hotel/views.py` (seção 5). Os testes revelaram **19 defeitos** no código original. Entre eles, um predicado de conflito de datas que é uma tautologia: depois da primeira reserva, o quarto nunca mais pode ser reservado. Também há cancelamento de reservas de outros usuários e exclusão por requisição `GET`. Todos os defeitos foram corrigidos em commits separados no fork e confirmados pelos testes que os revelaram. A suíte final passa integralmente no programa corrigido. A mutação foi aplicada ao programa corrigido, que é o código submetido aos mutantes.
 
@@ -108,6 +108,12 @@ A diferença entre SLOC do radon (354) e *Code* do pygount (352) vem das duas li
 
 **Execução.** `etapas.ps1` roda tudo em sequência e grava as evidências em `evidencias/<etapa>/`: `pytest.txt` (saída `-v -rxX` e relatório `term-missing`), `junit.xml`, `coverage.json`, `htmlcov/`, `rastreabilidade.json` e `cobertura-recorte.json`. A ordem das etapas também aparece no histórico do fork (seção 6).
 
+**Gestão dos testes (V&V TestLab).** Requisitos, classes, casos, execuções, defeitos e métricas também foram organizados no V&V TestLab, uma aplicação web local de gestão de testes. Ela se conecta ao repositório por uma ponte HTTP restrita a `127.0.0.1` (`integration/vv_bridge.py`), que executa o pytest com coverage.py e o Cosmic Ray e importa o JUnit, a cobertura das funções do recorte e o escore de mutação, vinculando cada resultado ao caso pelo identificador `CT-xxx`. O projeto importável (`output/hotel-vvtestlab-projeto-inicial.json`) e o estudo completo (`output/hotel-vvtestlab-backup.json`) são gerados das mesmas evidências deste relatório.
+
+![Matriz de rastreabilidade do V&V TestLab com o estudo do hotel carregado.](../evidencias/telas-vvtestlab/04-rastreabilidade.png)
+
+*Matriz de rastreabilidade do V&V TestLab com o estudo do hotel carregado.*
+
 ## 4. Etapa 1: teste funcional
 
 ### 4.1 Classes de equivalência
@@ -151,13 +157,13 @@ Datas relativas a hoje (D). Reserva existente usada nos limites de interseção:
 | Duração da reserva (mín. = 1 noite) | 0 → rejeitar (CT-009) | 1 → aceitar, custo 100 (CT-008) | 2 → aceitar, custo 200 (CT-001) | Saída = entrada não gera diária; −1 (CT-010) representa CE-07. |
 | Hóspedes, mínimo (1) | 0 → rejeitar (CT-007) | 1 → aceitar (CT-006) | 2 → aceitar (CT-003) | Uma reserva precisa de ao menos um hóspede. |
 | Hóspedes, máximo de 1 quarto (101: 2) | 1 → aceitar (CT-006) | 2 → aceitar (CT-003) | 3 → rejeitar (CT-004) | A capacidade é o limite superior de CE-08. |
-| Hóspedes, máximo somado (101+102: 5) | — | 5 → aceitar (CT-002) | 6 → rejeitar (CT-005) | Verifica se a capacidade é somada quando há vários quartos. |
-| Fim da nova estadia × entrada existente (D+10) | saída D+11 → conflito (CT-019) | saída D+10 → livre (CT-021) | — | Com intervalo `[entrada, saída)`, sair no dia em que o outro entra não conflita. |
-| Início da nova estadia × saída existente (D+12) | entrada D+11 → conflito (CT-020) | entrada D+12 → livre (CT-022) | — | Simétrico ao anterior. |
+| Hóspedes, máximo somado (101+102: 5) | 4 → aceitar (CT-060) | 5 → aceitar (CT-002) | 6 → rejeitar (CT-005) | Verifica se a capacidade é somada quando há vários quartos. |
+| Fim da nova estadia × entrada existente (D+10) | saída D+11 → conflito (CT-019) | saída D+10 → livre (CT-021) | saída D+9 → livre (CT-061) | Com intervalo `[entrada, saída)`, sair no dia em que o outro entra não conflita. |
+| Início da nova estadia × saída existente (D+12) | entrada D+11 → conflito (CT-020) | entrada D+12 → livre (CT-022) | entrada D+13 → livre (CT-062) | Simétrico ao anterior. |
 | Período da consulta (mín. = 1 noite) | 0 → recusar (CT-038) | 1 → aceitar (CT-043) | 2 → aceitar (CT-032) | Mesma regra da reserva; −2 (CT-037) representa entrada > saída. |
 | Hóspedes na consulta (mín. 1) | 0 → recusar (CT-039) | 1 → aceitar (CT-042) | 2 → aceitar (CT-040) | — |
 | Capacidade do 101 (2) na consulta | 1 → exibe 101 (CT-042) | 2 → exibe 101 (CT-040) | 3 → omite 101 (CT-041) | Fronteira de CE-41/CE-42. |
-| Interseção na consulta | D+11 a D+13 → omite (CT-036) | D+12 a D+14 → exibe (CT-034); D+8 a D+10 → exibe (CT-035) | — | Mesmos limites da reserva, agora no filtro. |
+| Interseção na consulta | D+11 a D+13 → omite (CT-036) | D+12 a D+14 → exibe (CT-034); D+8 a D+10 → exibe (CT-035) | D+13 a D+15 → exibe (CT-064); D+7 a D+9 → exibe (CT-063) | Mesmos limites da reserva, agora no filtro. |
 
 ### 4.3 Casos funcionais e resultados no código original
 
@@ -212,9 +218,14 @@ Legenda: **P** = passou no original; **F** = falhou no original, confirmando o d
 | CT-052 | CE-45 | reserva com hóspedes `dois` | recusa | F – DEF-19 |
 | CT-053 | CE-47 | consulta com entrada `amanhã` | recusa; lista sem filtro | F – DEF-18 |
 | CT-054 | CE-48 | consulta com hóspedes `dois` | recusa | F – DEF-13 |
+| CT-060 | CE-08, CE-20 | 101,102; 4 hóspedes (um abaixo da capacidade 5); 1 noite | aceita; custo 250 | P |
+| CT-061 | CE-17 | 101 reservado D+10–12; nova D+7–9 | aceita | F – DEF-01 |
+| CT-062 | CE-17 | idem; nova D+13–15 | aceita | F – DEF-01 |
+| CT-063 | CE-39 | 101 ocupado D+10–12; consulta D+7–9 | lista 101, 102, 103 | F – DEF-01 |
+| CT-064 | CE-39 | idem; consulta D+13–15 | lista 101, 102, 103 | F – DEF-01 |
 
 
-**Resultado (código original, `evidencias/funcional-original/`):** 47 casos, **21 passaram e 26 falharam** confirmando 16 defeitos (DEF-01 a DEF-14, DEF-18 e DEF-19). As falhas têm causas distintas, conferidas com `--runxfail`: `KeyError: 'user_available'`, `ValueError` em `int('abc')`, `UnmappedInstanceError`, `TypeError` em `combine(None)`, além de redirecionamentos e listagens diferentes do oráculo. Cobertura do recorte: **93/103 comandos (90,3%) e 45/54 desvios (83,3%)**. No `views.py` inteiro, a cobertura é de 53%, porque as rotas fora do recorte não são exercitadas.
+**Resultado (código original, `evidencias/funcional-original/`):** 52 casos, **22 passaram e 30 falharam** confirmando 16 defeitos (DEF-01 a DEF-14, DEF-18 e DEF-19). As falhas têm causas distintas, conferidas com `--runxfail`: `KeyError: 'user_available'`, `ValueError` em `int('abc')`, `UnmappedInstanceError`, `TypeError` em `combine(None)`, além de redirecionamentos e listagens diferentes do oráculo. Cobertura do recorte: **93/103 comandos (90,3%) e 45/54 desvios (83,3%)**. No `views.py` inteiro, a cobertura é de 53%, porque as rotas fora do recorte não são exercitadas.
 
 ## 5. Etapa 2: teste estrutural
 
@@ -252,7 +263,7 @@ A leitura do código para essas lacunas expôs mais três defeitos, que ganharam
 | CT-049 | CE-31 | `GET /available` autenticado | formulário com `checkin_date` | passou |
 | CT-050 | CE-01 | `GET /reserve` autenticado | formulário com `room_numbers` | passou |
 
-**Resultado (código original, `evidencias/estrutural-original/`):** 54 casos, 25 passaram e 29 falharam (xfail estrito). Cobertura do recorte: **103/103 comandos (100%) e 53/54 desvios (98,1%)**. A meta foi atingida, porque o desvio restante é inviável.
+**Resultado (código original, `evidencias/estrutural-original/`):** 59 casos, 26 passaram e 33 falharam (xfail estrito). Cobertura do recorte: **103/103 comandos (100%) e 53/54 desvios (98,1%)**. A meta foi atingida, porque o desvio restante é inviável.
 
 ## 6. Correção dos defeitos antes da mutação
 
@@ -261,13 +272,13 @@ A mutação precisa de uma suíte que passe no programa mutado. Por isso os defe
 | Commit | Defeitos | Casos que passaram a passar |
 |---|---|---|
 | `8a6c4bd` | DEF-07 (sessão sem chave → `KeyError`) | CT-014, CT-025, CT-031 |
-| `2d1b2cd` | DEF-01 (tautologia), DEF-15 (produto cartesiano) | CT-021, 022, 023, 033, 034, 035, 045 |
+| `2d1b2cd` | DEF-01 (tautologia), DEF-15 (produto cartesiano) | CT-021, 022, 023, 033, 034, 035, 061–064, 045 |
 | `704bc86` | DEF-02 (entrada hoje) | CT-011 |
 | `644fd0d` | DEF-03, 04, 05, 06, 18, 19 (validação da reserva; transação única) | CT-007, 015, 016, 017, 051, 052 |
 | `1313f12` | DEF-08, 09, 10, 11 (cancelamento; template com `POST`) | CT-026, 027, 028, 029 |
 | `9e66e2d` | DEF-12, 13, 14, 16, 17, 18 (consulta; filtro na sessão) | CT-037, 038, 039, 041, 053, 054, 046, 047 |
 
-Em cada passo, a suíte inteira foi executada para confirmar que nenhum caso que já passava regrediu. **Resultado final no programa corrigido (tag `sut-corrigido`, `evidencias/suite-corrigida/`): 54/54 casos passaram**, sem `skip` nem `xfail`, com cobertura do recorte de **106/106 comandos e 44/44 desvios (100%)**. O código corrigido tem menos desvios que o original (44 contra 54) porque os laços triplos foram trocados por uma junção SQL e por compreensões de conjunto. As funções auxiliares (`_sessao_autenticada`, `_periodos_conflitam`, `_quartos_ocupados`, `_ler_quartos`) entram no recorte medido.
+Em cada passo, a suíte inteira foi executada para confirmar que nenhum caso que já passava regrediu. **Resultado final no programa corrigido (tag `sut-corrigido`, `evidencias/suite-corrigida/`): 59/59 casos passaram**, sem `skip` nem `xfail`, com cobertura do recorte de **106/106 comandos e 44/44 desvios (100%)**. O código corrigido tem menos desvios que o original (44 contra 54) porque os laços triplos foram trocados por uma junção SQL e por compreensões de conjunto. As funções auxiliares (`_sessao_autenticada`, `_periodos_conflitam`, `_quartos_ocupados`, `_ler_quartos`) entram no recorte medido.
 
 Um ajuste de oráculo foi necessário e está registrado no commit `8a6c4bd`. O CT-025 esperava que o cancelamento sem sessão redirecionasse para `/`, mas o sistema redireciona para `/rooms`, que exige login e então leva a `/`. Isso não é defeito do software: o requisito verificado, preservar a reserva, não mudou.
 
@@ -282,7 +293,7 @@ Um ajuste de oráculo foi necessário e está registrado no commit `8a6c4bd`. O 
 
 ### 7.2 Rodada inicial (suíte ao fim da etapa estrutural)
 
-**204 mutantes: 191 mortos e 13 sobreviventes. Escore de 93,6%.** Execução em 266 s.
+**204 mutantes: 191 mortos e 13 sobreviventes. Escore de 93,6%.** Execução em cerca de 4,5 minutos.
 
 | # | Função (linha) | Mutação | Classificação | Ação |
 |---|---|---|---|---|
@@ -310,7 +321,7 @@ Um ajuste de oráculo foi necessário e está registrado no commit `8a6c4bd`. O 
 | CT-058 | CE-26 | Ana (uid 1) tenta cancelar reserva de Bruno (uid 2) | 403; reserva mantida | S4 |
 | CT-059 | CE-05, CE-19 | Quarto 301 (R$ 120) por 2 noites | custo 240 | S5 |
 
-**Rodada final (suíte completa, 59 casos, `evidencias/mutacao-final/`): 204 mutantes: 196 mortos, 8 sobreviventes, 0 incompetentes. Escore de 96,1% (inicial: 93,6%), em 275 s.** Os cinco casos novos mataram os cinco sobreviventes não equivalentes. Restam 8 sobreviventes, todos classificados como equivalentes (S6 a S13); não equivalentes restantes: 0. O arquivo `evidencias/mutacao-final/sobreviventes.txt` traz o diff de cada um.
+**Rodada final (suíte completa, 64 casos, `evidencias/mutacao-final/`): 204 mutantes: 196 mortos, 8 sobreviventes, 0 incompetentes. Escore de 96,1% (inicial: 93,6%), em 271 s.** Os cinco casos novos mataram os cinco sobreviventes não equivalentes. Restam 8 sobreviventes, todos classificados como equivalentes (S6 a S13); não equivalentes restantes: 0. O arquivo `evidencias/mutacao-final/sobreviventes.txt` traz o diff de cada um.
 
 ### 7.4 Fragilidades reveladas
 
@@ -327,10 +338,10 @@ Os 8 equivalentes vêm de código defensivo ou redundante que veio do original: 
 
 | Etapa | Técnica | Código | Nº de casos | Passaram | Falharam (defeito confirmado) | Cobertura de comandos | Cobertura de desvios | Escore de mutação |
 |---|---|---|---:|---:|---:|---:|---:|---:|
-| 1. Funcional | Classes de equivalência + valor limite | original | 47 | 21 | 26 | 93/103 (90,3%) | 45/54 (83,3%) | — |
-| 2. Estrutural | Cobertura de comandos e desvios | original | 54 | 25 | 29 | 103/103 (100,0%) | 53/54 (98,1%) | — |
-| 3. Correção | Suíte funcional + estrutural no código corrigido | corrigida | 54 | 54 | 0 | 106/106 (100,0%) | 44/44 (100,0%) | 191/204 (93,6%) |
-| 4. Mutação | Casos para matar mutantes sobreviventes | corrigida | 59 | 59 | 0 | 106/106 (100,0%) | 44/44 (100,0%) | 196/204 (96,1%) |
+| 1. Funcional | Classes de equivalência + valor limite | original | 52 | 22 | 30 | 93/103 (90,3%) | 45/54 (83,3%) | — |
+| 2. Estrutural | Cobertura de comandos e desvios | original | 59 | 26 | 33 | 103/103 (100,0%) | 53/54 (98,1%) | — |
+| 3. Correção | Suíte funcional + estrutural no código corrigido | corrigida | 59 | 59 | 0 | 106/106 (100,0%) | 44/44 (100,0%) | 191/204 (93,6%) |
+| 4. Mutação | Casos para matar mutantes sobreviventes | corrigida | 64 | 64 | 0 | 106/106 (100,0%) | 44/44 (100,0%) | 196/204 (96,1%) |
 
 Na linha 3, o escore é o da rodada **inicial** do Cosmic Ray, executada com a suíte funcional + estrutural sobre o código corrigido. Na linha 4, é o da rodada **final**, com a suíte completa. Nas etapas 1 e 2 não há escore, pois a mutação só é aplicada depois da correção dos defeitos (seção 6). Fonte: `evidencias/evolucao.json`, gerado por `scripts/evolucao.py`.
 
@@ -342,7 +353,7 @@ Linhas referentes ao `hotel/views.py` original (`sut-original`). Todos os defeit
 
 | ID | Gravidade | Função (linhas) | Entrada usada | Esperado | Obtido no original | Teste(s) | Causa no código | Correção (commit) |
 |---|---|---|---|---|---|---|---|---|
-| DEF-01 | Crítica | `reserve` 208–210; `show_rooms` 160–162 | 101 reservado D+10–12; reservar 101 em D+20–22 | aceita | recusado: "not available" | CT-021, 022, 023, 033, 034, 035 | `(c1<=d1 and d2<=c2) or (d1<=c1 and d2<=c2) or (c1<=d1 and c2<=d2) or (d1<=c1 and c2<=d2)` é tautologia: para quaisquer datas, uma alternativa é verdadeira. Quarto reservado uma vez fica bloqueado para sempre | `_periodos_conflitam(a1, a2, b1, b2) = a1 < b2 and b1 < a2` (`2d1b2cd`) |
+| DEF-01 | Crítica | `reserve` 208–210; `show_rooms` 160–162 | 101 reservado D+10–12; reservar 101 em D+20–22 | aceita | recusado: "not available" | CT-021, 022, 023, 033, 034, 035, 061–064 | `(c1<=d1 and d2<=c2) or (d1<=c1 and d2<=c2) or (c1<=d1 and c2<=d2) or (d1<=c1 and c2<=d2)` é tautologia: para quaisquer datas, uma alternativa é verdadeira. Quarto reservado uma vez fica bloqueado para sempre | `_periodos_conflitam(a1, a2, b1, b2) = a1 < b2 and b1 < a2` (`2d1b2cd`) |
 | DEF-02 | Média | `reserve` 199 | entrada hoje, 1 noite | aceita | recusado: "at least today" | CT-011 | `d1` (hoje 00:00) comparado com `datetime.now()` | `d1.date() < date.today()` (`704bc86`) |
 | DEF-03 | Alta | `reserve` 217 | 101, 0 hóspedes | recusa | reserva gravada com 0 hóspedes e custo 200 | CT-007 | só há limite superior `num > total_num` | exigir `num >= 1` antes de gravar (`644fd0d`) |
 | DEF-04 | Média | `reserve` 208, 215 | quartos `abc` | recusa com mensagem | 500 `ValueError: invalid literal for int()` | CT-015 | `int(each)` sem tratamento | `_ler_quartos` converte com `try/except` (`644fd0d`) |
@@ -367,7 +378,7 @@ Linhas referentes ao `hotel/views.py` original (`sut-original`). Todos os defeit
 
 ## 10. Interpretação da cobertura e limitações
 
-* **Cobertura não é ausência de defeitos.** Na etapa 2, o código original tinha 100% de comandos cobertos e 29 casos falhando. Em `show_rooms`, por exemplo, a linha do predicado tautológico era executada em todos os casos da consulta e sempre errava. Cobertura mede o que foi *executado*, não o que foi *verificado*. Quem revela o defeito é o oráculo.
+* **Cobertura não é ausência de defeitos.** Na etapa 2, o código original tinha 100% de comandos cobertos e 33 casos falhando. Em `show_rooms`, por exemplo, a linha do predicado tautológico era executada em todos os casos da consulta e sempre errava. Cobertura mede o que foi *executado*, não o que foi *verificado*. Quem revela o defeito é o oráculo.
 * **Comandos × desvios.** Depois da etapa 1, a cobertura de comandos (90,3%) era 7 pontos maior que a de desvios (83,3%). Os desvios 205→204 e 208→205 estavam em linhas executadas, mas um dos lados da decisão nunca ocorreu. Esse lado era o caso "vínculo de outro quarto", que depois levou ao DEF-15.
 * **Desvio inviável.** O 230→229 do original não pode ser coberto porque as consultas retornam as reservas em ordem de chave primária. A correção eliminou esse laço.
 * **Global × recorte.** No `views.py` inteiro, a cobertura final é de 59,0%. O restante corresponde a rotas fora do escopo. É uma lacuna declarada, não um defeito da suíte.
@@ -384,7 +395,7 @@ Linhas referentes ao `hotel/views.py` original (`sut-original`). Todos os defeit
 1. **A técnica funcional encontrou a maior parte dos defeitos** (16 de 19) sem olhar o código, porque as classes inválidas e os limites foram tratados um a um. O limite "entrada hoje" e as estadias adjacentes expuseram defeitos que valores típicos não mostrariam.
 2. **A técnica estrutural encontrou o que a especificação não sugere:** estado global compartilhado, remoção durante a iteração e produto cartesiano. Ela também mostrou que um defeito (DEF-15) pode ficar **mascarado** por outro (DEF-01), só aparecendo depois da primeira correção.
 3. **A mutação avaliou os próprios testes.** Com 100% de desvios, a suíte ainda tinha fragilidades concretas (dados homogêneos, oráculos assimétricos), corrigidas com 5 casos pequenos.
-4. **Corrigir antes de mutar é indispensável.** Mutar o original, com 29 testes falhando, invalidaria o escore, porque um mutante que "corrige" um defeito seria contado como vivo ou morto por acaso.
+4. **Corrigir antes de mutar é indispensável.** Mutar o original, com 33 testes falhando, invalidaria o escore, porque um mutante que "corrige" um defeito seria contado como vivo ou morto por acaso.
 5. **Dificuldades:**
     * dependências de 2019 incompatíveis com o Python atual, resolvidas com ambientes separados e `compat.py`;
     * a execução do Cosmic Ray no Windows (caminho relativo do interpretador);
@@ -417,7 +428,7 @@ Comandos isolados:
 | CE-05 | REQ-01 | C03 Duração (saída − entrada) | válida | 1 noite ou mais | CT-001, CT-008 | CT-059 |
 | CE-06 | REQ-01 | C03 Duração (saída − entrada) | inválida | 0 noites (saída = entrada) | CT-009 | — |
 | CE-07 | REQ-01 | C03 Duração (saída − entrada) | inválida | Negativa (saída antes da entrada) | CT-010 | — |
-| CE-08 | REQ-01 | C04 Nº de hóspedes | válida | Inteiro de 1 até a capacidade somada dos quartos | CT-001, CT-002, CT-003, CT-006 | — |
+| CE-08 | REQ-01 | C04 Nº de hóspedes | válida | Inteiro de 1 até a capacidade somada dos quartos | CT-001, CT-002, CT-003, CT-006, CT-060 | — |
 | CE-09 | REQ-01 | C04 Nº de hóspedes | inválida | Menor que 1 | CT-007 | — |
 | CE-10 | REQ-01 | C04 Nº de hóspedes | inválida | Maior que a capacidade somada | CT-004, CT-005 | — |
 | CE-45 | REQ-01 | C04 Nº de hóspedes | inválida | Não inteiro (texto) | CT-052 | — |
@@ -427,10 +438,10 @@ Comandos isolados:
 | CE-14 | REQ-01 | C06 Existência dos quartos | inválida | Algum quarto não existe | CT-016 | — |
 | CE-15 | REQ-01 | C07 Repetição de quartos | válida | Sem repetição | CT-001 | — |
 | CE-16 | REQ-01 | C07 Repetição de quartos | inválida | Quarto repetido | CT-017 | — |
-| CE-17 | REQ-01 | C08 Ocupação no período | válida | Nenhuma reserva do quarto com interseção (inclui estadias adjacentes) | CT-001, CT-021, CT-022, CT-023 | CT-044, CT-045, CT-055 |
+| CE-17 | REQ-01 | C08 Ocupação no período | válida | Nenhuma reserva do quarto com interseção (inclui estadias adjacentes) | CT-001, CT-021, CT-022, CT-023, CT-061, CT-062 | CT-044, CT-045, CT-055 |
 | CE-18 | REQ-01 | C08 Ocupação no período | inválida | Reserva existente do quarto com interseção de ao menos uma noite | CT-018, CT-019, CT-020 | — |
 | CE-19 | REQ-01 | C09 Quantidade de quartos | válida | Um quarto | CT-001 | CT-044, CT-059 |
-| CE-20 | REQ-01 | C09 Quantidade de quartos | válida | Vários quartos (custo e capacidade somados) | CT-002 | CT-056 |
+| CE-20 | REQ-01 | C09 Quantidade de quartos | válida | Vários quartos (custo e capacidade somados) | CT-002, CT-060 | CT-056 |
 | CE-43 | REQ-01 | C10 Formato das datas | válida | Datas válidas no formato MM/DD/AAAA | CT-001 | — |
 | CE-44 | REQ-01 | C10 Formato das datas | inválida | Data malformada ou inexistente | CT-051 | — |
 | CE-21 | REQ-02 | C11 Sessão | válida | Usuário autenticado | CT-024, CT-029 | CT-057 |
@@ -454,7 +465,7 @@ Comandos isolados:
 | CE-37 | REQ-03 | C20 Nº de hóspedes | válida | Inteiro maior ou igual a 1 | CT-032, CT-042 | — |
 | CE-38 | REQ-03 | C20 Nº de hóspedes | inválida | Menor que 1 | CT-039 | — |
 | CE-48 | REQ-03 | C20 Nº de hóspedes | inválida | Não inteiro (texto) | CT-054 | — |
-| CE-39 | REQ-03 | C21 Ocupação de cada quarto | válida | Livre no período: exibido | CT-032, CT-033, CT-034, CT-035 | — |
+| CE-39 | REQ-03 | C21 Ocupação de cada quarto | válida | Livre no período: exibido | CT-032, CT-033, CT-034, CT-035, CT-063, CT-064 | — |
 | CE-40 | REQ-03 | C21 Ocupação de cada quarto | válida | Ocupado no período: omitido | CT-032, CT-036 | CT-047 |
 | CE-41 | REQ-03 | C22 Capacidade de cada quarto | válida | Capacidade ≥ hóspedes: exibido | CT-032, CT-040, CT-042 | — |
 | CE-42 | REQ-03 | C22 Capacidade de cada quarto | válida | Capacidade < hóspedes: omitido | CT-041 | — |
