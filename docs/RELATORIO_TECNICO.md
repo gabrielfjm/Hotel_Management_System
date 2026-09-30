@@ -112,7 +112,7 @@ A diferença entre SLOC do radon (354) e *Code* do pygount (352) vem das duas li
 
 ### 4.1 Classes de equivalência
 
-As 22 condições de entrada das três funcionalidades foram particionadas em **48 classes** (31 válidas e 17 inválidas). As condições C10 e C19 (formato das datas) e a classe CE-45/CE-48 (hóspedes não inteiros) foram acrescentadas na revisão da tabela (commit `59a74f0`), antes das correções. Os IDs CE-43 a CE-48 refletem essa inclusão.
+As 22 condições de entrada das três funcionalidades foram particionadas em **48 classes** (31 válidas e 17 inválidas). As condições C10 e C19 (formato das datas) e a classe CE-45/CE-48 (hóspedes não inteiros) foram acrescentadas na revisão da tabela (commit `8bf46d8`), antes das correções. Os IDs CE-43 a CE-48 refletem essa inclusão.
 
 | Req. | Condição de entrada | Classes válidas | Classes inválidas |
 |---|---|---|---|
@@ -260,16 +260,16 @@ A mutação precisa de uma suíte que passe no programa mutado. Por isso os defe
 
 | Commit | Defeitos | Casos que passaram a passar |
 |---|---|---|
-| `87a3ed0` | DEF-07 (sessão sem chave → `KeyError`) | CT-014, CT-025, CT-031 |
-| `1d83c69` | DEF-01 (tautologia), DEF-15 (produto cartesiano) | CT-021, 022, 023, 033, 034, 035, 045 |
-| `1528b3f` | DEF-02 (entrada hoje) | CT-011 |
-| `de3c5f0` | DEF-03, 04, 05, 06, 18, 19 (validação da reserva; transação única) | CT-007, 015, 016, 017, 051, 052 |
-| `477469c` | DEF-08, 09, 10, 11 (cancelamento; template com `POST`) | CT-026, 027, 028, 029 |
-| `ef15941` | DEF-12, 13, 14, 16, 17, 18 (consulta; filtro na sessão) | CT-037, 038, 039, 041, 053, 054, 046, 047 |
+| `8a6c4bd` | DEF-07 (sessão sem chave → `KeyError`) | CT-014, CT-025, CT-031 |
+| `2d1b2cd` | DEF-01 (tautologia), DEF-15 (produto cartesiano) | CT-021, 022, 023, 033, 034, 035, 045 |
+| `704bc86` | DEF-02 (entrada hoje) | CT-011 |
+| `644fd0d` | DEF-03, 04, 05, 06, 18, 19 (validação da reserva; transação única) | CT-007, 015, 016, 017, 051, 052 |
+| `1313f12` | DEF-08, 09, 10, 11 (cancelamento; template com `POST`) | CT-026, 027, 028, 029 |
+| `9e66e2d` | DEF-12, 13, 14, 16, 17, 18 (consulta; filtro na sessão) | CT-037, 038, 039, 041, 053, 054, 046, 047 |
 
 Em cada passo, a suíte inteira foi executada para confirmar que nenhum caso que já passava regrediu. **Resultado final no programa corrigido (tag `sut-corrigido`, `evidencias/suite-corrigida/`): 54/54 casos passaram**, sem `skip` nem `xfail`, com cobertura do recorte de **106/106 comandos e 44/44 desvios (100%)**. O código corrigido tem menos desvios que o original (44 contra 54) porque os laços triplos foram trocados por uma junção SQL e por compreensões de conjunto. As funções auxiliares (`_sessao_autenticada`, `_periodos_conflitam`, `_quartos_ocupados`, `_ler_quartos`) entram no recorte medido.
 
-Um ajuste de oráculo foi necessário e está registrado no commit `87a3ed0`. O CT-025 esperava que o cancelamento sem sessão redirecionasse para `/`, mas o sistema redireciona para `/rooms`, que exige login e então leva a `/`. Isso não é defeito do software: o requisito verificado, preservar a reserva, não mudou.
+Um ajuste de oráculo foi necessário e está registrado no commit `8a6c4bd`. O CT-025 esperava que o cancelamento sem sessão redirecionasse para `/`, mas o sistema redireciona para `/rooms`, que exige login e então leva a `/`. Isso não é defeito do software: o requisito verificado, preservar a reserva, não mudou.
 
 ## 7. Etapa 3: teste baseado em defeitos (mutação)
 
@@ -334,7 +334,7 @@ Os 8 equivalentes vêm de código defensivo ou redundante que veio do original: 
 
 Na linha 3, o escore é o da rodada **inicial** do Cosmic Ray, executada com a suíte funcional + estrutural sobre o código corrigido. Na linha 4, é o da rodada **final**, com a suíte completa. Nas etapas 1 e 2 não há escore, pois a mutação só é aplicada depois da correção dos defeitos (seção 6). Fonte: `evidencias/evolucao.json`, gerado por `scripts/evolucao.py`.
 
-A ordem **Funcional → Estrutural → (correção) → Mutação** está no histórico do fork: `f5ea02a` (etapa 1), `296b85d` (etapa 2), seis commits de correção, e `92dfed5` (etapa 3). Cada etapa só acrescenta casos. Nenhum caso das etapas anteriores foi removido ou marcado com `skip`.
+A ordem **Funcional → Estrutural → (correção) → Mutação** está no histórico do fork: `afeb312` (etapa 1), `ac975b7` (etapa 2), seis commits de correção, e `324e29a` (etapa 3). Cada etapa só acrescenta casos. Nenhum caso das etapas anteriores foi removido ou marcado com `skip`.
 
 ## 9. Registro de defeitos
 
@@ -342,25 +342,25 @@ Linhas referentes ao `hotel/views.py` original (`sut-original`). Todos os defeit
 
 | ID | Gravidade | Função (linhas) | Entrada usada | Esperado | Obtido no original | Teste(s) | Causa no código | Correção (commit) |
 |---|---|---|---|---|---|---|---|---|
-| DEF-01 | Crítica | `reserve` 208–210; `show_rooms` 160–162 | 101 reservado D+10–12; reservar 101 em D+20–22 | aceita | recusado: "not available" | CT-021, 022, 023, 033, 034, 035 | `(c1<=d1 and d2<=c2) or (d1<=c1 and d2<=c2) or (c1<=d1 and c2<=d2) or (d1<=c1 and c2<=d2)` é tautologia: para quaisquer datas, uma alternativa é verdadeira. Quarto reservado uma vez fica bloqueado para sempre | `_periodos_conflitam(a1, a2, b1, b2) = a1 < b2 and b1 < a2` (`1d83c69`) |
-| DEF-02 | Média | `reserve` 199 | entrada hoje, 1 noite | aceita | recusado: "at least today" | CT-011 | `d1` (hoje 00:00) comparado com `datetime.now()` | `d1.date() < date.today()` (`1528b3f`) |
-| DEF-03 | Alta | `reserve` 217 | 101, 0 hóspedes | recusa | reserva gravada com 0 hóspedes e custo 200 | CT-007 | só há limite superior `num > total_num` | exigir `num >= 1` antes de gravar (`de3c5f0`) |
-| DEF-04 | Média | `reserve` 208, 215 | quartos `abc` | recusa com mensagem | 500 `ValueError: invalid literal for int()` | CT-015 | `int(each)` sem tratamento | `_ler_quartos` converte com `try/except` (`de3c5f0`) |
-| DEF-05 | Alta | `reserve` 213–216, 233–236 | quartos `101,999`, 2 hóspedes | recusa | gravado; vínculo com quarto 999 inexistente | CT-016 | a existência só influencia indiretamente a soma de capacidades | `_ler_quartos` exige `set(numeros) <= existentes` (`de3c5f0`) |
-| DEF-06 | Alta | `reserve` 213–216, 233–236 | quartos `101,101`, 2 hóspedes | recusa | 2 vínculos, capacidade 4 e custo 400 (dobro) | CT-017 | lista não é deduplicada nem validada | `_ler_quartos` recusa repetição (`de3c5f0`) |
-| DEF-07 | Média | `delete_reservation` 79; `show_rooms` 144; `check_available` 172; `reserve` 186 | visitante sem login abre `/reserve` | redirecionar ao início | 500 `KeyError: 'user_available'` | CT-014, 025, 031 | `session['user_available']` sem a chave, que só existe após login/logout | `_sessao_autenticada()` com `session.get(..., False)` (`87a3ed0`) |
-| DEF-08 | Crítica | `delete_reservation` 79–86 | Bruno envia `POST /delete/<rid de Ana>` | 403, reserva mantida | reserva de Ana excluída | CT-027 (e CT-058) | só verifica se *alguém* está logado, não o titular | 403 se `reserva.ruid != usuário.uid` (`477469c`) |
-| DEF-09 | Média | `delete_reservation` 80–81 | `POST /delete/999` | 404 | 500 `UnmappedInstanceError` | CT-026 | `query.get` devolve `None` e `db.session.delete(None)` falha | `abort(404)` (`477469c`) |
-| DEF-10 | Crítica | rota `/delete/<rid>` (77); `about_user.html` | `GET /delete/<rid>` | 405, nada alterado | reserva excluída | CT-028 | exclusão por `GET`: links, pré-carregamento do navegador ou robôs apagam dados | rota só `POST`; lixeira vira formulário `POST` com confirmação (`477469c`) |
-| DEF-11 | Alta | `delete_reservation` 81–86 | cancelar reserva com pagamento | nenhum registro órfão | `payment.prid` aponta para reserva inexistente | CT-029 | exclusão ignora `Payment` e usa vários `commit()` | apaga `Booked` e `Payment` junto, em uma transação (`477469c`) |
-| DEF-12 | Média | `check_available` 175–178; `show_rooms` 162 | consulta com entrada D+12, saída D+10 | recusar com mensagem | aceita e lista todos os quartos, sem aviso | CT-037, 038 | nenhum teste do período; `show_rooms` ignora o filtro em silêncio com `c_in < c_out` | valida `checkout > checkin` (`ef15941`) |
-| DEF-13 | Média | `check_available` 175–178 | consulta com 0 ou `dois` hóspedes | recusar | aceita | CT-039, 054 | `num_guests` não é validado | exige inteiro `>= 1` (`ef15941`) |
-| DEF-14 | Média | `show_rooms` 155–163 | consulta com 3 hóspedes | omitir o 101 (capacidade 2) | 101 listado | CT-041 | o número de hóspedes informado nunca é usado | filtra `capacity >= hóspedes` (`ef15941`) |
-| DEF-15 | Alta | `reserve` 203–210; `show_rooms` 155–160 | 101 de Ana em D+10, 102 de Bruno em D+20; reservar 101 em D+20 | aceita | recusado (vínculo do 101 × datas da reserva do 102) | CT-045 (e CT-055) | laço triplo reservas × vínculos sem `brid == rid`; **mascarado por DEF-01** | junção `Booked.brid == Reservations.rid` em `_quartos_ocupados` (`1d83c69`) |
-| DEF-16 | Alta | `global_avail` 140; `check_available` 176–177; `show_rooms` 149–164 | Ana consulta D+10; Bruno abre `/rooms` | Bruno vê todos os quartos | Bruno vê a lista filtrada de Ana | CT-046 | filtro guardado em variável de módulo compartilhada por todas as sessões | filtro em `session['filtro_disponibilidade']` (`ef15941`) |
-| DEF-17 | Alta | `show_rooms` 163 | 101 e 102 ocupados; consulta 1 hóspede | só o 103 | 102 aparece | CT-047 | `all_rooms.remove(each)` dentro de `for each in all_rooms` pula o elemento seguinte | lista nova por compreensão (`ef15941`) |
-| DEF-18 | Média | `reserve` 191–192; `show_rooms` 153–154 | data `2026-13-01` | recusar | 500 `TypeError: combine() argument 1 must be datetime.date, not None` | CT-051, 053 | `DateField` inválido deixa `data = None` | valida datas antes de usar (`de3c5f0`, `ef15941`) |
-| DEF-19 | Média | `reserve` 217 | hóspedes `dois` | recusar | 500 `TypeError: '>' not supported` | CT-052 | `IntegerField` inválido deixa `None` | exige inteiro `>= 1` (`de3c5f0`) |
+| DEF-01 | Crítica | `reserve` 208–210; `show_rooms` 160–162 | 101 reservado D+10–12; reservar 101 em D+20–22 | aceita | recusado: "not available" | CT-021, 022, 023, 033, 034, 035 | `(c1<=d1 and d2<=c2) or (d1<=c1 and d2<=c2) or (c1<=d1 and c2<=d2) or (d1<=c1 and c2<=d2)` é tautologia: para quaisquer datas, uma alternativa é verdadeira. Quarto reservado uma vez fica bloqueado para sempre | `_periodos_conflitam(a1, a2, b1, b2) = a1 < b2 and b1 < a2` (`2d1b2cd`) |
+| DEF-02 | Média | `reserve` 199 | entrada hoje, 1 noite | aceita | recusado: "at least today" | CT-011 | `d1` (hoje 00:00) comparado com `datetime.now()` | `d1.date() < date.today()` (`704bc86`) |
+| DEF-03 | Alta | `reserve` 217 | 101, 0 hóspedes | recusa | reserva gravada com 0 hóspedes e custo 200 | CT-007 | só há limite superior `num > total_num` | exigir `num >= 1` antes de gravar (`644fd0d`) |
+| DEF-04 | Média | `reserve` 208, 215 | quartos `abc` | recusa com mensagem | 500 `ValueError: invalid literal for int()` | CT-015 | `int(each)` sem tratamento | `_ler_quartos` converte com `try/except` (`644fd0d`) |
+| DEF-05 | Alta | `reserve` 213–216, 233–236 | quartos `101,999`, 2 hóspedes | recusa | gravado; vínculo com quarto 999 inexistente | CT-016 | a existência só influencia indiretamente a soma de capacidades | `_ler_quartos` exige `set(numeros) <= existentes` (`644fd0d`) |
+| DEF-06 | Alta | `reserve` 213–216, 233–236 | quartos `101,101`, 2 hóspedes | recusa | 2 vínculos, capacidade 4 e custo 400 (dobro) | CT-017 | lista não é deduplicada nem validada | `_ler_quartos` recusa repetição (`644fd0d`) |
+| DEF-07 | Média | `delete_reservation` 79; `show_rooms` 144; `check_available` 172; `reserve` 186 | visitante sem login abre `/reserve` | redirecionar ao início | 500 `KeyError: 'user_available'` | CT-014, 025, 031 | `session['user_available']` sem a chave, que só existe após login/logout | `_sessao_autenticada()` com `session.get(..., False)` (`8a6c4bd`) |
+| DEF-08 | Crítica | `delete_reservation` 79–86 | Bruno envia `POST /delete/<rid de Ana>` | 403, reserva mantida | reserva de Ana excluída | CT-027 (e CT-058) | só verifica se *alguém* está logado, não o titular | 403 se `reserva.ruid != usuário.uid` (`1313f12`) |
+| DEF-09 | Média | `delete_reservation` 80–81 | `POST /delete/999` | 404 | 500 `UnmappedInstanceError` | CT-026 | `query.get` devolve `None` e `db.session.delete(None)` falha | `abort(404)` (`1313f12`) |
+| DEF-10 | Crítica | rota `/delete/<rid>` (77); `about_user.html` | `GET /delete/<rid>` | 405, nada alterado | reserva excluída | CT-028 | exclusão por `GET`: links, pré-carregamento do navegador ou robôs apagam dados | rota só `POST`; lixeira vira formulário `POST` com confirmação (`1313f12`) |
+| DEF-11 | Alta | `delete_reservation` 81–86 | cancelar reserva com pagamento | nenhum registro órfão | `payment.prid` aponta para reserva inexistente | CT-029 | exclusão ignora `Payment` e usa vários `commit()` | apaga `Booked` e `Payment` junto, em uma transação (`1313f12`) |
+| DEF-12 | Média | `check_available` 175–178; `show_rooms` 162 | consulta com entrada D+12, saída D+10 | recusar com mensagem | aceita e lista todos os quartos, sem aviso | CT-037, 038 | nenhum teste do período; `show_rooms` ignora o filtro em silêncio com `c_in < c_out` | valida `checkout > checkin` (`9e66e2d`) |
+| DEF-13 | Média | `check_available` 175–178 | consulta com 0 ou `dois` hóspedes | recusar | aceita | CT-039, 054 | `num_guests` não é validado | exige inteiro `>= 1` (`9e66e2d`) |
+| DEF-14 | Média | `show_rooms` 155–163 | consulta com 3 hóspedes | omitir o 101 (capacidade 2) | 101 listado | CT-041 | o número de hóspedes informado nunca é usado | filtra `capacity >= hóspedes` (`9e66e2d`) |
+| DEF-15 | Alta | `reserve` 203–210; `show_rooms` 155–160 | 101 de Ana em D+10, 102 de Bruno em D+20; reservar 101 em D+20 | aceita | recusado (vínculo do 101 × datas da reserva do 102) | CT-045 (e CT-055) | laço triplo reservas × vínculos sem `brid == rid`; **mascarado por DEF-01** | junção `Booked.brid == Reservations.rid` em `_quartos_ocupados` (`2d1b2cd`) |
+| DEF-16 | Alta | `global_avail` 140; `check_available` 176–177; `show_rooms` 149–164 | Ana consulta D+10; Bruno abre `/rooms` | Bruno vê todos os quartos | Bruno vê a lista filtrada de Ana | CT-046 | filtro guardado em variável de módulo compartilhada por todas as sessões | filtro em `session['filtro_disponibilidade']` (`9e66e2d`) |
+| DEF-17 | Alta | `show_rooms` 163 | 101 e 102 ocupados; consulta 1 hóspede | só o 103 | 102 aparece | CT-047 | `all_rooms.remove(each)` dentro de `for each in all_rooms` pula o elemento seguinte | lista nova por compreensão (`9e66e2d`) |
+| DEF-18 | Média | `reserve` 191–192; `show_rooms` 153–154 | data `2026-13-01` | recusar | 500 `TypeError: combine() argument 1 must be datetime.date, not None` | CT-051, 053 | `DateField` inválido deixa `data = None` | valida datas antes de usar (`644fd0d`, `9e66e2d`) |
+| DEF-19 | Média | `reserve` 217 | hóspedes `dois` | recusar | 500 `TypeError: '>' not supported` | CT-052 | `IntegerField` inválido deixa `None` | exige inteiro `>= 1` (`644fd0d`) |
 
 
 **Fora do recorte:** `update_reservation`, `about_user` e `payment` repetem a causa de DEF-07 (`session['user_available']`), e `update_reservation` repete a de DEF-01 e DEF-15. Eles não foram corrigidos nem testados por estarem fora do escopo. A correção seria a mesma, reutilizando `_sessao_autenticada` e `_quartos_ocupados`.

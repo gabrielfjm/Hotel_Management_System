@@ -223,7 +223,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <p><strong>Execução.</strong> <code>etapas.ps1</code> roda tudo em sequência e grava as evidências em <code>evidencias/&lt;etapa&gt;/</code>: <code>pytest.txt</code> (saída <code>-v -rxX</code> e relatório <code>term-missing</code>), <code>junit.xml</code>, <code>coverage.json</code>, <code>htmlcov/</code>, <code>rastreabilidade.json</code> e <code>cobertura-recorte.json</code>. A ordem das etapas também aparece no histórico do fork (seção 6).</p>
 <h2>4. Etapa 1: teste funcional</h2>
 <h3>4.1 Classes de equivalência</h3>
-<p>As 22 condições de entrada das três funcionalidades foram particionadas em <strong>48 classes</strong> (31 válidas e 17 inválidas). As condições C10 e C19 (formato das datas) e a classe CE-45/CE-48 (hóspedes não inteiros) foram acrescentadas na revisão da tabela (commit <code>59a74f0</code>), antes das correções. Os IDs CE-43 a CE-48 refletem essa inclusão.</p>
+<p>As 22 condições de entrada das três funcionalidades foram particionadas em <strong>48 classes</strong> (31 válidas e 17 inválidas). As condições C10 e C19 (formato das datas) e a classe CE-45/CE-48 (hóspedes não inteiros) foram acrescentadas na revisão da tabela (commit <code>8bf46d8</code>), antes das correções. Os IDs CE-43 a CE-48 refletem essa inclusão.</p>
 <table>
 <thead>
 <tr>
@@ -929,39 +929,39 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 </thead>
 <tbody>
 <tr>
-<td><code>87a3ed0</code></td>
+<td><code>8a6c4bd</code></td>
 <td>DEF-07 (sessão sem chave → <code>KeyError</code>)</td>
 <td>CT-014, CT-025, CT-031</td>
 </tr>
 <tr>
-<td><code>1d83c69</code></td>
+<td><code>2d1b2cd</code></td>
 <td>DEF-01 (tautologia), DEF-15 (produto cartesiano)</td>
 <td>CT-021, 022, 023, 033, 034, 035, 045</td>
 </tr>
 <tr>
-<td><code>1528b3f</code></td>
+<td><code>704bc86</code></td>
 <td>DEF-02 (entrada hoje)</td>
 <td>CT-011</td>
 </tr>
 <tr>
-<td><code>de3c5f0</code></td>
+<td><code>644fd0d</code></td>
 <td>DEF-03, 04, 05, 06, 18, 19 (validação da reserva; transação única)</td>
 <td>CT-007, 015, 016, 017, 051, 052</td>
 </tr>
 <tr>
-<td><code>477469c</code></td>
+<td><code>1313f12</code></td>
 <td>DEF-08, 09, 10, 11 (cancelamento; template com <code>POST</code>)</td>
 <td>CT-026, 027, 028, 029</td>
 </tr>
 <tr>
-<td><code>ef15941</code></td>
+<td><code>9e66e2d</code></td>
 <td>DEF-12, 13, 14, 16, 17, 18 (consulta; filtro na sessão)</td>
 <td>CT-037, 038, 039, 041, 053, 054, 046, 047</td>
 </tr>
 </tbody>
 </table>
 <p>Em cada passo, a suíte inteira foi executada para confirmar que nenhum caso que já passava regrediu. <strong>Resultado final no programa corrigido (tag <code>sut-corrigido</code>, <code>evidencias/suite-corrigida/</code>): 54/54 casos passaram</strong>, sem <code>skip</code> nem <code>xfail</code>, com cobertura do recorte de <strong>106/106 comandos e 44/44 desvios (100%)</strong>. O código corrigido tem menos desvios que o original (44 contra 54) porque os laços triplos foram trocados por uma junção SQL e por compreensões de conjunto. As funções auxiliares (<code>_sessao_autenticada</code>, <code>_periodos_conflitam</code>, <code>_quartos_ocupados</code>, <code>_ler_quartos</code>) entram no recorte medido.</p>
-<p>Um ajuste de oráculo foi necessário e está registrado no commit <code>87a3ed0</code>. O CT-025 esperava que o cancelamento sem sessão redirecionasse para <code>/</code>, mas o sistema redireciona para <code>/rooms</code>, que exige login e então leva a <code>/</code>. Isso não é defeito do software: o requisito verificado, preservar a reserva, não mudou.</p>
+<p>Um ajuste de oráculo foi necessário e está registrado no commit <code>8a6c4bd</code>. O CT-025 esperava que o cancelamento sem sessão redirecionasse para <code>/</code>, mas o sistema redireciona para <code>/rooms</code>, que exige login e então leva a <code>/</code>. Isso não é defeito do software: o requisito verificado, preservar a reserva, não mudou.</p>
 <h2>7. Etapa 3: teste baseado em defeitos (mutação)</h2>
 <h3>7.1 Configuração e escopo</h3>
 <ul>
@@ -1198,7 +1198,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 </tbody>
 </table>
 <p>Na linha 3, o escore é o da rodada <strong>inicial</strong> do Cosmic Ray, executada com a suíte funcional + estrutural sobre o código corrigido. Na linha 4, é o da rodada <strong>final</strong>, com a suíte completa. Nas etapas 1 e 2 não há escore, pois a mutação só é aplicada depois da correção dos defeitos (seção 6). Fonte: <code>evidencias/evolucao.json</code>, gerado por <code>scripts/evolucao.py</code>.</p>
-<p>A ordem <strong>Funcional → Estrutural → (correção) → Mutação</strong> está no histórico do fork: <code>f5ea02a</code> (etapa 1), <code>296b85d</code> (etapa 2), seis commits de correção, e <code>92dfed5</code> (etapa 3). Cada etapa só acrescenta casos. Nenhum caso das etapas anteriores foi removido ou marcado com <code>skip</code>.</p>
+<p>A ordem <strong>Funcional → Estrutural → (correção) → Mutação</strong> está no histórico do fork: <code>afeb312</code> (etapa 1), <code>ac975b7</code> (etapa 2), seis commits de correção, e <code>324e29a</code> (etapa 3). Cada etapa só acrescenta casos. Nenhum caso das etapas anteriores foi removido ou marcado com <code>skip</code>.</p>
 <h2>9. Registro de defeitos</h2>
 <p>Linhas referentes ao <code>hotel/views.py</code> original (<code>sut-original</code>). Todos os defeitos têm teste automatizado que falha no original e passa no corrigido.</p>
 <table>
@@ -1225,7 +1225,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>recusado: "not available"</td>
 <td>CT-021, 022, 023, 033, 034, 035</td>
 <td><code>(c1&lt;=d1 and d2&lt;=c2) or (d1&lt;=c1 and d2&lt;=c2) or (c1&lt;=d1 and c2&lt;=d2) or (d1&lt;=c1 and c2&lt;=d2)</code> é tautologia: para quaisquer datas, uma alternativa é verdadeira. Quarto reservado uma vez fica bloqueado para sempre</td>
-<td><code>_periodos_conflitam(a1, a2, b1, b2) = a1 &lt; b2 and b1 &lt; a2</code> (<code>1d83c69</code>)</td>
+<td><code>_periodos_conflitam(a1, a2, b1, b2) = a1 &lt; b2 and b1 &lt; a2</code> (<code>2d1b2cd</code>)</td>
 </tr>
 <tr>
 <td>DEF-02</td>
@@ -1236,7 +1236,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>recusado: "at least today"</td>
 <td>CT-011</td>
 <td><code>d1</code> (hoje 00:00) comparado com <code>datetime.now()</code></td>
-<td><code>d1.date() &lt; date.today()</code> (<code>1528b3f</code>)</td>
+<td><code>d1.date() &lt; date.today()</code> (<code>704bc86</code>)</td>
 </tr>
 <tr>
 <td>DEF-03</td>
@@ -1247,7 +1247,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>reserva gravada com 0 hóspedes e custo 200</td>
 <td>CT-007</td>
 <td>só há limite superior <code>num &gt; total_num</code></td>
-<td>exigir <code>num &gt;= 1</code> antes de gravar (<code>de3c5f0</code>)</td>
+<td>exigir <code>num &gt;= 1</code> antes de gravar (<code>644fd0d</code>)</td>
 </tr>
 <tr>
 <td>DEF-04</td>
@@ -1258,7 +1258,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>500 <code>ValueError: invalid literal for int()</code></td>
 <td>CT-015</td>
 <td><code>int(each)</code> sem tratamento</td>
-<td><code>_ler_quartos</code> converte com <code>try/except</code> (<code>de3c5f0</code>)</td>
+<td><code>_ler_quartos</code> converte com <code>try/except</code> (<code>644fd0d</code>)</td>
 </tr>
 <tr>
 <td>DEF-05</td>
@@ -1269,7 +1269,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>gravado; vínculo com quarto 999 inexistente</td>
 <td>CT-016</td>
 <td>a existência só influencia indiretamente a soma de capacidades</td>
-<td><code>_ler_quartos</code> exige <code>set(numeros) &lt;= existentes</code> (<code>de3c5f0</code>)</td>
+<td><code>_ler_quartos</code> exige <code>set(numeros) &lt;= existentes</code> (<code>644fd0d</code>)</td>
 </tr>
 <tr>
 <td>DEF-06</td>
@@ -1280,7 +1280,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>2 vínculos, capacidade 4 e custo 400 (dobro)</td>
 <td>CT-017</td>
 <td>lista não é deduplicada nem validada</td>
-<td><code>_ler_quartos</code> recusa repetição (<code>de3c5f0</code>)</td>
+<td><code>_ler_quartos</code> recusa repetição (<code>644fd0d</code>)</td>
 </tr>
 <tr>
 <td>DEF-07</td>
@@ -1291,7 +1291,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>500 <code>KeyError: 'user_available'</code></td>
 <td>CT-014, 025, 031</td>
 <td><code>session['user_available']</code> sem a chave, que só existe após login/logout</td>
-<td><code>_sessao_autenticada()</code> com <code>session.get(..., False)</code> (<code>87a3ed0</code>)</td>
+<td><code>_sessao_autenticada()</code> com <code>session.get(..., False)</code> (<code>8a6c4bd</code>)</td>
 </tr>
 <tr>
 <td>DEF-08</td>
@@ -1302,7 +1302,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>reserva de Ana excluída</td>
 <td>CT-027 (e CT-058)</td>
 <td>só verifica se <em>alguém</em> está logado, não o titular</td>
-<td>403 se <code>reserva.ruid != usuário.uid</code> (<code>477469c</code>)</td>
+<td>403 se <code>reserva.ruid != usuário.uid</code> (<code>1313f12</code>)</td>
 </tr>
 <tr>
 <td>DEF-09</td>
@@ -1313,7 +1313,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>500 <code>UnmappedInstanceError</code></td>
 <td>CT-026</td>
 <td><code>query.get</code> devolve <code>None</code> e <code>db.session.delete(None)</code> falha</td>
-<td><code>abort(404)</code> (<code>477469c</code>)</td>
+<td><code>abort(404)</code> (<code>1313f12</code>)</td>
 </tr>
 <tr>
 <td>DEF-10</td>
@@ -1324,7 +1324,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>reserva excluída</td>
 <td>CT-028</td>
 <td>exclusão por <code>GET</code>: links, pré-carregamento do navegador ou robôs apagam dados</td>
-<td>rota só <code>POST</code>; lixeira vira formulário <code>POST</code> com confirmação (<code>477469c</code>)</td>
+<td>rota só <code>POST</code>; lixeira vira formulário <code>POST</code> com confirmação (<code>1313f12</code>)</td>
 </tr>
 <tr>
 <td>DEF-11</td>
@@ -1335,7 +1335,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td><code>payment.prid</code> aponta para reserva inexistente</td>
 <td>CT-029</td>
 <td>exclusão ignora <code>Payment</code> e usa vários <code>commit()</code></td>
-<td>apaga <code>Booked</code> e <code>Payment</code> junto, em uma transação (<code>477469c</code>)</td>
+<td>apaga <code>Booked</code> e <code>Payment</code> junto, em uma transação (<code>1313f12</code>)</td>
 </tr>
 <tr>
 <td>DEF-12</td>
@@ -1346,7 +1346,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>aceita e lista todos os quartos, sem aviso</td>
 <td>CT-037, 038</td>
 <td>nenhum teste do período; <code>show_rooms</code> ignora o filtro em silêncio com <code>c_in &lt; c_out</code></td>
-<td>valida <code>checkout &gt; checkin</code> (<code>ef15941</code>)</td>
+<td>valida <code>checkout &gt; checkin</code> (<code>9e66e2d</code>)</td>
 </tr>
 <tr>
 <td>DEF-13</td>
@@ -1357,7 +1357,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>aceita</td>
 <td>CT-039, 054</td>
 <td><code>num_guests</code> não é validado</td>
-<td>exige inteiro <code>&gt;= 1</code> (<code>ef15941</code>)</td>
+<td>exige inteiro <code>&gt;= 1</code> (<code>9e66e2d</code>)</td>
 </tr>
 <tr>
 <td>DEF-14</td>
@@ -1368,7 +1368,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>101 listado</td>
 <td>CT-041</td>
 <td>o número de hóspedes informado nunca é usado</td>
-<td>filtra <code>capacity &gt;= hóspedes</code> (<code>ef15941</code>)</td>
+<td>filtra <code>capacity &gt;= hóspedes</code> (<code>9e66e2d</code>)</td>
 </tr>
 <tr>
 <td>DEF-15</td>
@@ -1379,7 +1379,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>recusado (vínculo do 101 × datas da reserva do 102)</td>
 <td>CT-045 (e CT-055)</td>
 <td>laço triplo reservas × vínculos sem <code>brid == rid</code>; <strong>mascarado por DEF-01</strong></td>
-<td>junção <code>Booked.brid == Reservations.rid</code> em <code>_quartos_ocupados</code> (<code>1d83c69</code>)</td>
+<td>junção <code>Booked.brid == Reservations.rid</code> em <code>_quartos_ocupados</code> (<code>2d1b2cd</code>)</td>
 </tr>
 <tr>
 <td>DEF-16</td>
@@ -1390,7 +1390,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>Bruno vê a lista filtrada de Ana</td>
 <td>CT-046</td>
 <td>filtro guardado em variável de módulo compartilhada por todas as sessões</td>
-<td>filtro em <code>session['filtro_disponibilidade']</code> (<code>ef15941</code>)</td>
+<td>filtro em <code>session['filtro_disponibilidade']</code> (<code>9e66e2d</code>)</td>
 </tr>
 <tr>
 <td>DEF-17</td>
@@ -1401,7 +1401,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>102 aparece</td>
 <td>CT-047</td>
 <td><code>all_rooms.remove(each)</code> dentro de <code>for each in all_rooms</code> pula o elemento seguinte</td>
-<td>lista nova por compreensão (<code>ef15941</code>)</td>
+<td>lista nova por compreensão (<code>9e66e2d</code>)</td>
 </tr>
 <tr>
 <td>DEF-18</td>
@@ -1412,7 +1412,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>500 <code>TypeError: combine() argument 1 must be datetime.date, not None</code></td>
 <td>CT-051, 053</td>
 <td><code>DateField</code> inválido deixa <code>data = None</code></td>
-<td>valida datas antes de usar (<code>de3c5f0</code>, <code>ef15941</code>)</td>
+<td>valida datas antes de usar (<code>644fd0d</code>, <code>9e66e2d</code>)</td>
 </tr>
 <tr>
 <td>DEF-19</td>
@@ -1423,7 +1423,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>500 <code>TypeError: '&gt;' not supported</code></td>
 <td>CT-052</td>
 <td><code>IntegerField</code> inválido deixa <code>None</code></td>
-<td>exige inteiro <code>&gt;= 1</code> (<code>de3c5f0</code>)</td>
+<td>exige inteiro <code>&gt;= 1</code> (<code>644fd0d</code>)</td>
 </tr>
 </tbody>
 </table>

@@ -85,7 +85,7 @@ A diferença entre SLOC do radon (354) e *Code* do pygount (352) vem das duas li
 
 ### 4.1 Classes de equivalência
 
-As 22 condições de entrada das três funcionalidades foram particionadas em **48 classes** (31 válidas e 17 inválidas). As condições C10 e C19 (formato das datas) e a classe CE-45/CE-48 (hóspedes não inteiros) foram acrescentadas na revisão da tabela (commit `59a74f0`), antes das correções. Os IDs CE-43 a CE-48 refletem essa inclusão.
+As 22 condições de entrada das três funcionalidades foram particionadas em **48 classes** (31 válidas e 17 inválidas). As condições C10 e C19 (formato das datas) e a classe CE-45/CE-48 (hóspedes não inteiros) foram acrescentadas na revisão da tabela (commit `8bf46d8`), antes das correções. Os IDs CE-43 a CE-48 refletem essa inclusão.
 
 | Req. | Condição de entrada | Classes válidas | Classes inválidas |
 |---|---|---|---|
@@ -182,16 +182,16 @@ A mutação precisa de uma suíte que passe no programa mutado. Por isso os defe
 
 | Commit | Defeitos | Casos que passaram a passar |
 |---|---|---|
-| `87a3ed0` | DEF-07 (sessão sem chave → `KeyError`) | CT-014, CT-025, CT-031 |
-| `1d83c69` | DEF-01 (tautologia), DEF-15 (produto cartesiano) | CT-021, 022, 023, 033, 034, 035, 045 |
-| `1528b3f` | DEF-02 (entrada hoje) | CT-011 |
-| `de3c5f0` | DEF-03, 04, 05, 06, 18, 19 (validação da reserva; transação única) | CT-007, 015, 016, 017, 051, 052 |
-| `477469c` | DEF-08, 09, 10, 11 (cancelamento; template com `POST`) | CT-026, 027, 028, 029 |
-| `ef15941` | DEF-12, 13, 14, 16, 17, 18 (consulta; filtro na sessão) | CT-037, 038, 039, 041, 053, 054, 046, 047 |
+| `8a6c4bd` | DEF-07 (sessão sem chave → `KeyError`) | CT-014, CT-025, CT-031 |
+| `2d1b2cd` | DEF-01 (tautologia), DEF-15 (produto cartesiano) | CT-021, 022, 023, 033, 034, 035, 045 |
+| `704bc86` | DEF-02 (entrada hoje) | CT-011 |
+| `644fd0d` | DEF-03, 04, 05, 06, 18, 19 (validação da reserva; transação única) | CT-007, 015, 016, 017, 051, 052 |
+| `1313f12` | DEF-08, 09, 10, 11 (cancelamento; template com `POST`) | CT-026, 027, 028, 029 |
+| `9e66e2d` | DEF-12, 13, 14, 16, 17, 18 (consulta; filtro na sessão) | CT-037, 038, 039, 041, 053, 054, 046, 047 |
 
 Em cada passo, a suíte inteira foi executada para confirmar que nenhum caso que já passava regrediu. **Resultado final no programa corrigido (tag `sut-corrigido`, `evidencias/suite-corrigida/`): 54/54 casos passaram**, sem `skip` nem `xfail`, com cobertura do recorte de **106/106 comandos e 44/44 desvios (100%)**. O código corrigido tem menos desvios que o original (44 contra 54) porque os laços triplos foram trocados por uma junção SQL e por compreensões de conjunto. As funções auxiliares (`_sessao_autenticada`, `_periodos_conflitam`, `_quartos_ocupados`, `_ler_quartos`) entram no recorte medido.
 
-Um ajuste de oráculo foi necessário e está registrado no commit `87a3ed0`. O CT-025 esperava que o cancelamento sem sessão redirecionasse para `/`, mas o sistema redireciona para `/rooms`, que exige login e então leva a `/`. Isso não é defeito do software: o requisito verificado, preservar a reserva, não mudou.
+Um ajuste de oráculo foi necessário e está registrado no commit `8a6c4bd`. O CT-025 esperava que o cancelamento sem sessão redirecionasse para `/`, mas o sistema redireciona para `/rooms`, que exige login e então leva a `/`. Isso não é defeito do software: o requisito verificado, preservar a reserva, não mudou.
 
 ## 7. Etapa 3: teste baseado em defeitos (mutação)
 
@@ -249,7 +249,7 @@ Os 8 equivalentes vêm de código defensivo ou redundante que veio do original: 
 
 «EVOLUCAO»
 
-A ordem **Funcional → Estrutural → (correção) → Mutação** está no histórico do fork: `f5ea02a` (etapa 1), `296b85d` (etapa 2), seis commits de correção, e `92dfed5` (etapa 3). Cada etapa só acrescenta casos. Nenhum caso das etapas anteriores foi removido ou marcado com `skip`.
+A ordem **Funcional → Estrutural → (correção) → Mutação** está no histórico do fork: `afeb312` (etapa 1), `ac975b7` (etapa 2), seis commits de correção, e `324e29a` (etapa 3). Cada etapa só acrescenta casos. Nenhum caso das etapas anteriores foi removido ou marcado com `skip`.
 
 ## 9. Registro de defeitos
 
