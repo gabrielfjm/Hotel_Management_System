@@ -23,6 +23,18 @@ def _quartos_ocupados(entrada, saida):
     return {quarto for quarto, c1, c2 in vinculos if _periodos_conflitam(entrada, saida, c1, c2)}
 
 
+def _ler_quartos(texto):
+    # DEF-04/05/06: aceita apenas números inteiros de quartos existentes, sem repetição.
+    try:
+        numeros = [int(parte) for parte in texto.split(",")]
+    except ValueError:
+        return None
+    existentes = {quarto.room_number for quarto in Rooms.query.all()}
+    if len(set(numeros)) != len(numeros) or not set(numeros) <= existentes:
+        return None
+    return numeros
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -195,12 +207,16 @@ def reserve():
         reservation = ReserveForm(request.form)
         us = User.query.filter_by(username=session['current_user']).first()
         if request.method == 'POST':
-            room_list = reservation.room_numbers.data.split(",")
-            d1 = datetime.datetime.combine(reservation.checkin_date.data, datetime.time(0, 0))
-            d2 = datetime.datetime.combine(reservation.checkout_date.data, datetime.time(0, 0))
+            room_list = _ler_quartos(reservation.room_numbers.data)
             num = reservation.num_guests.data
-
-            all_rooms = Rooms.query.all()
+            checkin = reservation.checkin_date.data
+            checkout = reservation.checkout_date.data
+            # DEF-03/18/19: dados malformados ou menos de um hóspede são rejeitados antes de gravar.
+            if room_list is None or num is None or num < 1 or checkin is None or checkout is None:
+                flash("Please recheck the room numbers, the number of guests and the dates!")
+                return redirect(url_for('reserve'))
+            d1 = datetime.datetime.combine(checkin, datetime.time(0, 0))
+            d2 = datetime.datetime.combine(checkout, datetime.time(0, 0))
 
             # DEF-02: comparar a data de entrada com a data de hoje, e não com o instante atual.
             if d2 <= d1 or d1.date() < datetime.date.today():
@@ -209,35 +225,24 @@ def reserve():
             total_num = 0
             ocupados = _quartos_ocupados(d1, d2)
             for each in room_list:
-                if int(each) in ocupados:
+                if each in ocupados:
                     flash("The room you are reserving is not available at the time you selected!")
                     return redirect(url_for('reserve'))
-            for each in room_list:
-                for each_room in all_rooms:
-                    if int(each) == each_room.room_number:
-                        total_num += each_room.capacity
+            for each_room in Rooms.query.all():
+                if each_room.room_number in room_list:
+                    total_num += each_room.capacity
             if num > total_num:
                 flash(
                     "The rooms you selected can't fit the number of guests you entered. Please restart the reservation!")
                 return redirect(url_for('reserve'))
-            reserve = Reservations(us.uid, reservation.checkin_date.data, reservation.checkout_date.data,
-                                   reservation.num_guests.data, 0)
+            # Reserva, vínculos e custo gravados em uma única transação; flush() obtém o rid.
+            reserve = Reservations(us.uid, checkin, checkout, num, 0)
             db.session.add(reserve)
-            db.session.commit()
-            reservations_committed = Reservations.query.filter_by(ruid=us.uid).all()
-
-            # Getting the most current reservation the user made
-            current_id = 0
-            for each in reservations_committed:
-                if each.rid > current_id:
-                    current_id = each.rid
+            db.session.flush()
             # Storing each rooms booked into the Booked table along with reservation id
             for each in room_list:
-                single_room = Booked(current_id, each)
-                db.session.add(single_room)
-                db.session.commit()
-            cur_res = Reservations.query.get(current_id)
-            cur_res.costs = cal_cost(current_id)
+                db.session.add(Booked(reserve.rid, each))
+            reserve.costs = cal_cost(reserve.rid)
             db.session.commit()
             return redirect(url_for('show_rooms'))
         return render_template('reservation.html', reservation=reservation)
