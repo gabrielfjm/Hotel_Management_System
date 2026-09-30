@@ -248,7 +248,9 @@ def test_CT_024_titular_cancela_propria_reserva(client, baseline):
 @pytest.mark.defeito("DEF-07", "rota protegida sem sessão gera erro interno")
 def test_CT_025_cancelamento_sem_sessao_redireciona_e_preserva(client, baseline):
     rid = seed_reservation(baseline["ana"])
-    assert path(client.post(f"/delete/{rid}")) == "/"
+    # O sistema envia o visitante à lista de quartos, que por sua vez exige login.
+    assert path(client.post(f"/delete/{rid}")) == "/rooms"
+    assert path(client.get("/rooms")) == "/"
     assert Reservations.query.get(rid) is not None
 
 

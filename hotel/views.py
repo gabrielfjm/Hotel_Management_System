@@ -7,6 +7,10 @@ from hotel import app
 import datetime
 
 
+def _sessao_autenticada():
+    # DEF-07: session['user_available'] lança KeyError quando a chave não existe.
+    return session.get('user_available', False)
+
 
 @app.route('/')
 def index():
@@ -76,7 +80,7 @@ def update_reservation(rid):
 
 @app.route('/delete/<rid>', methods=('GET', 'POST'))
 def delete_reservation(rid):
-    if session['user_available']:
+    if _sessao_autenticada():
         cur_res = Reservations.query.get(rid)
         db.session.delete(cur_res)
         db.session.commit()
@@ -141,7 +145,7 @@ global_avail = None
 
 @app.route('/rooms')
 def show_rooms():
-    if session['user_available']:
+    if _sessao_autenticada():
         all_reserves = Reservations.query.all()
         all_bookings = Booked.query.all()
         all_rooms = Rooms.query.all()
@@ -169,7 +173,7 @@ def show_rooms():
 
 @app.route('/available', methods=['GET', 'POST'])
 def check_available():
-    if session['user_available']:
+    if _sessao_autenticada():
         reservation = CheckAvailForm(request.form)
         us = User.query.filter_by(username=session['current_user']).first()
         if request.method == 'POST':
@@ -183,7 +187,7 @@ def check_available():
 
 @app.route('/reserve', methods=['GET', 'POST'])
 def reserve():
-    if session['user_available']:
+    if _sessao_autenticada():
         reservation = ReserveForm(request.form)
         us = User.query.filter_by(username=session['current_user']).first()
         if request.method == 'POST':
