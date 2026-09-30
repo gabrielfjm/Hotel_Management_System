@@ -1,0 +1,11 @@
+# Configuração usada pela ponte do V&V TestLab (Executar mutação).
+# iniciar-integracao.ps1 troca "python" pelo caminho absoluto de .venv e grava .vvtestlab/cosmic-ray-ponte.toml.
+# Para as rodadas documentadas no relatório, use scripts/mutacao.py (mutacao/*.toml).
+[cosmic-ray]
+module-path = "hotel/views.py"
+timeout = 30.0
+excluded-modules = []
+test-command = "python -m pytest -x -q -p no:cacheprovider"
+
+[cosmic-ray.distributor]
+name = "local"

@@ -48,6 +48,13 @@ def funcao_da_linha(funcoes, linha):
     return next((nome for nome, (ini, fim) in funcoes.items() if ini <= linha <= fim), None)
 
 
+def itens_do_recorte(funcoes=None):
+    """Todos os mutantes dos operadores padrão cujas linhas pertencem às funções do recorte."""
+    funcoes = funcoes or funcoes_do_recorte()
+    return [item for item in _all_work_items([SOURCE], {})
+            if funcao_da_linha(funcoes, item.mutations[0].start_pos[0])]
+
+
 def main():
     if len(sys.argv) != 2 or sys.argv[1] not in ("inicial", "final"):
         raise SystemExit("Uso: scripts/mutacao.py inicial|final")
@@ -64,8 +71,7 @@ def main():
     sessao = saida / "sessao.sqlite"
 
     funcoes = funcoes_do_recorte()
-    itens = [item for item in _all_work_items([SOURCE], {})
-             if funcao_da_linha(funcoes, item.mutations[0].start_pos[0])]
+    itens = itens_do_recorte(funcoes)
     with use_db(str(sessao), WorkDB.Mode.create) as db:
         db.clear()
         db.add_work_items(itens)
