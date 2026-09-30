@@ -417,3 +417,46 @@ def test_CT_043_consulta_de_uma_noite_limite_inferior_e_aceita(client):
     login(client)
     assert path(availability(client, nights=1)) == "/rooms"
     assert listed_rooms(client) == [101, 102, 103]
+
+
+# ------------------------------------------- Revisão da tabela de classes
+# Condições de entrada acrescentadas ao revisar a especificação do formulário
+# (datas no formato MM/DD/AAAA e número de hóspedes inteiro): CE-43 a CE-48.
+
+@funcional
+@pytest.mark.ce("CE-44")
+@pytest.mark.defeito("DEF-18", "data fora do formato MM/DD/AAAA gera erro interno")
+def test_CT_051_reserva_com_data_malformada_e_rejeitada(client):
+    login(client)
+    response = client.post("/reserve", data={"checkin_date": "2026-13-01", "checkout_date": "01/20/2099",
+                                              "num_guests": "2", "room_numbers": "101"})
+    assert path(response) == "/reserve"
+    assert Reservations.query.count() == 0
+
+
+@funcional
+@pytest.mark.ce("CE-45")
+@pytest.mark.defeito("DEF-19", "número de hóspedes não inteiro gera erro interno")
+def test_CT_052_reserva_com_hospedes_nao_numerico_e_rejeitada(client):
+    login(client)
+    assert path(booking(client, guests="dois")) == "/reserve"
+    assert Reservations.query.count() == 0
+
+
+@funcional
+@pytest.mark.ce("CE-47")
+@pytest.mark.defeito("DEF-18", "data fora do formato MM/DD/AAAA gera erro interno")
+def test_CT_053_consulta_com_data_malformada_e_rejeitada(client):
+    login(client)
+    response = client.post("/available", data={"checkin_date": "amanhã", "checkout_date": "01/20/2099",
+                                                "num_guests": "2"})
+    assert path(response) == "/available"
+    assert listed_rooms(client) == [101, 102, 103]
+
+
+@funcional
+@pytest.mark.ce("CE-48")
+@pytest.mark.defeito("DEF-13", "consulta aceita quantidade de hóspedes inválida")
+def test_CT_054_consulta_com_hospedes_nao_numerico_e_rejeitada(client):
+    login(client)
+    assert path(availability(client, guests="dois")) == "/available"
