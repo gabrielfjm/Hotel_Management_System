@@ -91,5 +91,5 @@
   "etapa": "final-corrigida",
   "sut": "corrigida",
   "marcas": "funcional or estrutural or mutacao",
-  "casos": 59
+  "casos": 64
 }

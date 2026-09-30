@@ -2,7 +2,7 @@
   "rodada": "final",
   "configuracao": "evidencias\\mutacao-final\\cosmic-ray.toml",
   "comando": "exec evidencias\\mutacao-final\\cosmic-ray.toml evidencias\\mutacao-final\\sessao.sqlite",
-  "duracao_s": 275.2,
+  "duracao_s": 271.0,
   "funcoes": {
     "_sessao_autenticada": [
       10,
@@ -307,56 +307,56 @@
   },
   "sobreviventes_lista": [
     {
-      "job_id": "e4b465c03a724064aaf72c7c7daa7686",
+      "job_id": "4e18d084a2c54c0f9e8af6c9cba0d405",
       "funcao": "check_available",
       "linha": 197,
       "operador": "core/ReplaceComparisonOperator_Eq_GtE",
       "ocorrencia": 7
     },
     {
-      "job_id": "f9ad23c33aee452283ddff014e95f9ae",
+      "job_id": "d31bd29a312d4bd0be3f03997af670e3",
       "funcao": "reserve",
       "linha": 217,
       "operador": "core/ReplaceComparisonOperator_Eq_GtE",
       "ocorrencia": 8
     },
     {
-      "job_id": "d55d5adbeb41461386bf5fed837b3cdc",
+      "job_id": "79f1ce55212b4541a294b3b313c17062",
       "funcao": "_ler_quartos",
       "linha": 34,
       "operador": "core/ReplaceComparisonOperator_NotEq_Lt",
       "ocorrencia": 0
     },
     {
-      "job_id": "f029e3da1b1d4e2d948b9a7a1d30b62f",
+      "job_id": "5e80133a43d645749d2838c2bfd045a9",
       "funcao": "_ler_quartos",
       "linha": 34,
       "operador": "core/ReplaceComparisonOperator_NotEq_IsNot",
       "ocorrencia": 0
     },
     {
-      "job_id": "f41b4a35b8194e5a824127415f4c109f",
+      "job_id": "76d46434cb2a43fc998e10946f5a0bcf",
       "funcao": "reserve",
       "linha": 226,
       "operador": "core/NumberReplacer",
       "ocorrencia": 24
     },
     {
-      "job_id": "0bb361c09d89461bbbaf8207aa8722ef",
+      "job_id": "cbab0c049e9f4cd4bcb553a0c492ca28",
       "funcao": "reserve",
       "linha": 226,
       "operador": "core/NumberReplacer",
       "ocorrencia": 26
     },
     {
-      "job_id": "55c4b11b8a6b4e0eb2c66dcc66a0abd7",
+      "job_id": "4cc32d11bb7a4562a58cb40e5fc37395",
       "funcao": "reserve",
       "linha": 247,
       "operador": "core/NumberReplacer",
       "ocorrencia": 34
     },
     {
-      "job_id": "827edd1b9abb4176a77ae4a3e64591a0",
+      "job_id": "494326571f3440e29656e5b86c623909",
       "funcao": "reserve",
       "linha": 247,
       "operador": "core/NumberReplacer",

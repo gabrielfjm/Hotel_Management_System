@@ -450,6 +450,52 @@
     "defeito": "DEF-13"
   },
   {
+    "caso": "CT-060",
+    "teste": "tests/test_01_funcional.py::test_CT_060_hospedes_um_abaixo_da_capacidade_somada_sao_aceitos",
+    "etapa": "funcional",
+    "classes": [
+      "CE-08",
+      "CE-20"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-061",
+    "teste": "tests/test_01_funcional.py::test_CT_061_saida_um_dia_antes_da_entrada_existente_e_aceita",
+    "etapa": "funcional",
+    "classes": [
+      "CE-17"
+    ],
+    "defeito": "DEF-01"
+  },
+  {
+    "caso": "CT-062",
+    "teste": "tests/test_01_funcional.py::test_CT_062_entrada_um_dia_depois_da_saida_existente_e_aceita",
+    "etapa": "funcional",
+    "classes": [
+      "CE-17"
+    ],
+    "defeito": "DEF-01"
+  },
+  {
+    "caso": "CT-063",
+    "teste": "tests/test_01_funcional.py::test_CT_063_consulta_terminando_um_dia_antes_da_entrada_existente_exibe_quarto",
+    "etapa": "funcional",
+    "classes": [
+      "CE-39"
+    ],
+    "defeito": "DEF-01"
+  },
+  {
+    "caso": "CT-064",
+    "teste": "tests/test_01_funcional.py::test_CT_064_consulta_comecando_um_dia_depois_da_saida_existente_exibe_quarto",
+    "etapa": "funcional",
+    "classes": [
+      "CE-39"
+    ],
+    "defeito": "DEF-01"
+  },
+  {
     "caso": "CT-044",
     "teste": "tests/test_02_estrutural.py::test_CT_044_reserva_existente_de_outro_quarto_nao_gera_conflito",
     "etapa": "estrutural",

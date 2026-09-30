@@ -460,3 +460,54 @@ def test_CT_053_consulta_com_data_malformada_e_rejeitada(client):
 def test_CT_054_consulta_com_hospedes_nao_numerico_e_rejeitada(client):
     login(client)
     assert path(availability(client, guests="dois")) == "/available"
+
+
+# ---------------------------------------- Complemento da análise do valor limite
+# Pontos "imediatamente abaixo/acima" que faltavam na tabela de limites (CT-060 a CT-064).
+
+@funcional
+@pytest.mark.ce("CE-08", "CE-20")
+def test_CT_060_hospedes_um_abaixo_da_capacidade_somada_sao_aceitos(client):
+    login(client)
+    assert path(booking(client, room_numbers="101,102", guests="4", nights=1)) == "/rooms"
+    assert Reservations.query.one().costs == 100 + 150
+
+
+@funcional
+@pytest.mark.ce("CE-17")
+@pytest.mark.defeito("DEF-01", "períodos sem interseção são tratados como conflito")
+def test_CT_061_saida_um_dia_antes_da_entrada_existente_e_aceita(client, baseline):
+    seed_reservation(baseline["ana"], offset=10, nights=2)  # D+10 a D+12
+    login(client)
+    assert path(booking(client, offset=7, nights=2)) == "/rooms"  # D+7 a D+9
+    assert Reservations.query.count() == 2
+
+
+@funcional
+@pytest.mark.ce("CE-17")
+@pytest.mark.defeito("DEF-01", "períodos sem interseção são tratados como conflito")
+def test_CT_062_entrada_um_dia_depois_da_saida_existente_e_aceita(client, baseline):
+    seed_reservation(baseline["ana"], offset=10, nights=2)  # D+10 a D+12
+    login(client)
+    assert path(booking(client, offset=13, nights=2)) == "/rooms"  # D+13 a D+15
+    assert Reservations.query.count() == 2
+
+
+@funcional
+@pytest.mark.ce("CE-39")
+@pytest.mark.defeito("DEF-01", "períodos sem interseção são tratados como conflito")
+def test_CT_063_consulta_terminando_um_dia_antes_da_entrada_existente_exibe_quarto(client, baseline):
+    seed_reservation(baseline["ana"], offset=10, nights=2)  # D+10 a D+12
+    login(client)
+    availability(client, offset=7, nights=2)  # D+7 a D+9
+    assert listed_rooms(client) == [101, 102, 103]
+
+
+@funcional
+@pytest.mark.ce("CE-39")
+@pytest.mark.defeito("DEF-01", "períodos sem interseção são tratados como conflito")
+def test_CT_064_consulta_comecando_um_dia_depois_da_saida_existente_exibe_quarto(client, baseline):
+    seed_reservation(baseline["ana"], offset=10, nights=2)  # D+10 a D+12
+    login(client)
+    availability(client, offset=13, nights=2)  # D+13 a D+15
+    assert listed_rooms(client) == [101, 102, 103]

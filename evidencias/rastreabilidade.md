@@ -9,7 +9,7 @@
 | CE-05 | REQ-01 | C03 Duração (saída − entrada) | válida | 1 noite ou mais | CT-001, CT-008 | CT-059 |
 | CE-06 | REQ-01 | C03 Duração (saída − entrada) | inválida | 0 noites (saída = entrada) | CT-009 | — |
 | CE-07 | REQ-01 | C03 Duração (saída − entrada) | inválida | Negativa (saída antes da entrada) | CT-010 | — |
-| CE-08 | REQ-01 | C04 Nº de hóspedes | válida | Inteiro de 1 até a capacidade somada dos quartos | CT-001, CT-002, CT-003, CT-006 | — |
+| CE-08 | REQ-01 | C04 Nº de hóspedes | válida | Inteiro de 1 até a capacidade somada dos quartos | CT-001, CT-002, CT-003, CT-006, CT-060 | — |
 | CE-09 | REQ-01 | C04 Nº de hóspedes | inválida | Menor que 1 | CT-007 | — |
 | CE-10 | REQ-01 | C04 Nº de hóspedes | inválida | Maior que a capacidade somada | CT-004, CT-005 | — |
 | CE-45 | REQ-01 | C04 Nº de hóspedes | inválida | Não inteiro (texto) | CT-052 | — |
@@ -19,10 +19,10 @@
 | CE-14 | REQ-01 | C06 Existência dos quartos | inválida | Algum quarto não existe | CT-016 | — |
 | CE-15 | REQ-01 | C07 Repetição de quartos | válida | Sem repetição | CT-001 | — |
 | CE-16 | REQ-01 | C07 Repetição de quartos | inválida | Quarto repetido | CT-017 | — |
-| CE-17 | REQ-01 | C08 Ocupação no período | válida | Nenhuma reserva do quarto com interseção (inclui estadias adjacentes) | CT-001, CT-021, CT-022, CT-023 | CT-044, CT-045, CT-055 |
+| CE-17 | REQ-01 | C08 Ocupação no período | válida | Nenhuma reserva do quarto com interseção (inclui estadias adjacentes) | CT-001, CT-021, CT-022, CT-023, CT-061, CT-062 | CT-044, CT-045, CT-055 |
 | CE-18 | REQ-01 | C08 Ocupação no período | inválida | Reserva existente do quarto com interseção de ao menos uma noite | CT-018, CT-019, CT-020 | — |
 | CE-19 | REQ-01 | C09 Quantidade de quartos | válida | Um quarto | CT-001 | CT-044, CT-059 |
-| CE-20 | REQ-01 | C09 Quantidade de quartos | válida | Vários quartos (custo e capacidade somados) | CT-002 | CT-056 |
+| CE-20 | REQ-01 | C09 Quantidade de quartos | válida | Vários quartos (custo e capacidade somados) | CT-002, CT-060 | CT-056 |
 | CE-43 | REQ-01 | C10 Formato das datas | válida | Datas válidas no formato MM/DD/AAAA | CT-001 | — |
 | CE-44 | REQ-01 | C10 Formato das datas | inválida | Data malformada ou inexistente | CT-051 | — |
 | CE-21 | REQ-02 | C11 Sessão | válida | Usuário autenticado | CT-024, CT-029 | CT-057 |
@@ -46,7 +46,7 @@
 | CE-37 | REQ-03 | C20 Nº de hóspedes | válida | Inteiro maior ou igual a 1 | CT-032, CT-042 | — |
 | CE-38 | REQ-03 | C20 Nº de hóspedes | inválida | Menor que 1 | CT-039 | — |
 | CE-48 | REQ-03 | C20 Nº de hóspedes | inválida | Não inteiro (texto) | CT-054 | — |
-| CE-39 | REQ-03 | C21 Ocupação de cada quarto | válida | Livre no período: exibido | CT-032, CT-033, CT-034, CT-035 | — |
+| CE-39 | REQ-03 | C21 Ocupação de cada quarto | válida | Livre no período: exibido | CT-032, CT-033, CT-034, CT-035, CT-063, CT-064 | — |
 | CE-40 | REQ-03 | C21 Ocupação de cada quarto | válida | Ocupado no período: omitido | CT-032, CT-036 | CT-047 |
 | CE-41 | REQ-03 | C22 Capacidade de cada quarto | válida | Capacidade ≥ hóspedes: exibido | CT-032, CT-040, CT-042 | — |
 | CE-42 | REQ-03 | C22 Capacidade de cada quarto | válida | Capacidade < hóspedes: omitido | CT-041 | — |
@@ -112,3 +112,8 @@
 | CT-057 | mutacao | CE-21, CE-23, CE-25, CE-27 | — |
 | CT-058 | mutacao | CE-26 | — |
 | CT-059 | mutacao | CE-05, CE-19 | — |
+| CT-060 | funcional | CE-08, CE-20 | — |
+| CT-061 | funcional | CE-17 | DEF-01 |
+| CT-062 | funcional | CE-17 | DEF-01 |
+| CT-063 | funcional | CE-39 | DEF-01 |
+| CT-064 | funcional | CE-39 | DEF-01 |

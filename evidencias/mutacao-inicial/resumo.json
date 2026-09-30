@@ -2,7 +2,7 @@
   "rodada": "inicial",
   "configuracao": "evidencias\\mutacao-inicial\\cosmic-ray.toml",
   "comando": "exec evidencias\\mutacao-inicial\\cosmic-ray.toml evidencias\\mutacao-inicial\\sessao.sqlite",
-  "duracao_s": 266.5,
+  "duracao_s": 277.6,
   "funcoes": {
     "_sessao_autenticada": [
       10,
@@ -310,91 +310,91 @@
   },
   "sobreviventes_lista": [
     {
-      "job_id": "86d4a1bd1b2642d3899d4697de538044",
+      "job_id": "b8187ff7ea8f42a5bb0d5646ceb68abf",
       "funcao": "_quartos_ocupados",
       "linha": 23,
       "operador": "core/ReplaceComparisonOperator_Eq_GtE",
       "ocorrencia": 0
     },
     {
-      "job_id": "91df199d5fd4442e9b712d4b06112ad3",
+      "job_id": "d4d72a74717b4edfbd4a7f23546ac904",
       "funcao": "check_available",
       "linha": 197,
       "operador": "core/ReplaceComparisonOperator_Eq_GtE",
       "ocorrencia": 7
     },
     {
-      "job_id": "fd775f2c8a444ed9831bdf8f7bae6a16",
+      "job_id": "6334b4d7d6bc4bbfa09a9dc367850502",
       "funcao": "reserve",
       "linha": 217,
       "operador": "core/ReplaceComparisonOperator_Eq_GtE",
       "ocorrencia": 8
     },
     {
-      "job_id": "5fbd4d5421374d259822ec1f9a09657d",
+      "job_id": "1a35e5fb37b14773ae8b43f8818b0bc3",
       "funcao": "cal_cost",
       "linha": 268,
       "operador": "core/ReplaceComparisonOperator_Eq_Is",
       "ocorrencia": 9
     },
     {
-      "job_id": "396aa927229f41d6881a06149cbf32f3",
+      "job_id": "6619abd0ec5a4869b58a0327ded20391",
       "funcao": "_ler_quartos",
       "linha": 34,
       "operador": "core/ReplaceComparisonOperator_NotEq_Lt",
       "ocorrencia": 0
     },
     {
-      "job_id": "ef5e259abe094961931ec128f9c69cdb",
+      "job_id": "5afb8747967e4c878813e86107a20ea2",
       "funcao": "delete_reservation",
       "linha": 113,
       "operador": "core/ReplaceComparisonOperator_NotEq_Lt",
       "ocorrencia": 1
     },
     {
-      "job_id": "8b55f4300c0745629ec34dffbd683ab2",
+      "job_id": "73c22dad222d4dd8bbcc313a476ba41e",
       "funcao": "_ler_quartos",
       "linha": 34,
       "operador": "core/ReplaceComparisonOperator_NotEq_IsNot",
       "ocorrencia": 0
     },
     {
-      "job_id": "3c99a6b1d8ec4efc834472d40a587256",
+      "job_id": "8b72540a840f4897822f964f026613dd",
       "funcao": "delete_reservation",
       "linha": 113,
       "operador": "core/ReplaceComparisonOperator_NotEq_IsNot",
       "ocorrencia": 1
     },
     {
-      "job_id": "c99d4336a6d54b5594d125da046a8cf7",
+      "job_id": "37f37d5b748647d0b577cdd28d79c8f7",
       "funcao": "_ler_quartos",
       "linha": 34,
       "operador": "core/ReplaceComparisonOperator_LtE_Lt",
       "ocorrencia": 0
     },
     {
-      "job_id": "4f275ca589724eca94c8e93c8294f691",
+      "job_id": "7a6d2b80b8da42f49b8100fbd153e2d2",
       "funcao": "reserve",
       "linha": 226,
       "operador": "core/NumberReplacer",
       "ocorrencia": 24
     },
     {
-      "job_id": "4bbab1651fc24951ab58eebae256bcc2",
+      "job_id": "f38233fa9bd44d3b8f80a336f87651be",
       "funcao": "reserve",
       "linha": 226,
       "operador": "core/NumberReplacer",
       "ocorrencia": 26
     },
     {
-      "job_id": "d2d1be05d0fb452a92b544e14feb8fbe",
+      "job_id": "cdca5eeb839241c09036bb00085a0d3a",
       "funcao": "reserve",
       "linha": 247,
       "operador": "core/NumberReplacer",
       "ocorrencia": 34
     },
     {
-      "job_id": "7ae87c9301ed4fb789905f6de7a56d9f",
+      "job_id": "08750b2450074e22b422aa03e63be471",
       "funcao": "reserve",
       "linha": 247,
       "operador": "core/NumberReplacer",
