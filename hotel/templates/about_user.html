@@ -100,7 +100,7 @@
     <div><h3 class="panel-title">Reservation Number: {{i.rid}}</h3></div>
       <div id="icon">
       <a class="glyphicon glyphicon-pencil" href="/update/{{ i.rid }}"></a>&nbsp &nbsp
-      <a class="glyphicon glyphicon-trash" id="del" href="/delete/{{ i.rid }}"></a>&nbsp &nbsp
+      <form action="/delete/{{ i.rid }}" method="POST" style="display:inline" onsubmit="return confirm('Cancel reservation {{ i.rid }}?');"><button type="submit" class="glyphicon glyphicon-trash" id="del" style="border:0;background:none;color:#337ab7;padding:0" title="Cancel reservation"></button></form>&nbsp &nbsp
         <a class="glyphicon glyphicon-usd"  href="/payment/{{ i.rid }}"></a>
     </div>
   </div>

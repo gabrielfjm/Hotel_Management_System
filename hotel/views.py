@@ -1,4 +1,4 @@
-from flask import Flask, request, session, redirect, url_for, render_template, flash
+from flask import Flask, request, session, redirect, url_for, render_template, flash, abort
 
 from .models import User, db, Rooms, Room_type, Booked, Reservations, Payment
 from .forms import PaymentForm, SignUpForm, SignInForm, AboutUserForm, CheckAvailForm, ReserveForm
@@ -101,16 +101,21 @@ def update_reservation(rid):
     return redirect(url_for('show_rooms'))
 
 
-@app.route('/delete/<rid>', methods=('GET', 'POST'))
+# DEF-10: exclusão apenas por POST; GET (link, pré-carregamento, robô) recebe 405.
+@app.route('/delete/<rid>', methods=('POST',))
 def delete_reservation(rid):
     if _sessao_autenticada():
         cur_res = Reservations.query.get(rid)
+        if cur_res is None:
+            abort(404)  # DEF-09
+        us = User.query.filter_by(username=session['current_user']).first()
+        if cur_res.ruid != us.uid:
+            abort(403)  # DEF-08
+        # DEF-11: vínculos e pagamentos saem junto com a reserva, em uma única transação.
+        Booked.query.filter_by(brid=cur_res.rid).delete()
+        Payment.query.filter_by(prid=cur_res.rid).delete()
         db.session.delete(cur_res)
         db.session.commit()
-        cbooked = Booked.query.filter_by(brid=rid).all()
-        for each in cbooked:
-            db.session.delete(each)
-            db.session.commit()
         return redirect(url_for('show_rooms'))
     flash('You are not a valid user to Delete this Reservation!')
     return redirect(url_for('show_rooms'))
