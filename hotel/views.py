@@ -19,7 +19,8 @@ def _periodos_conflitam(entrada_a, saida_a, entrada_b, saida_b):
 
 def _quartos_ocupados(entrada, saida):
     # DEF-15: cada vínculo de quarto é comparado apenas com a própria reserva (brid == rid).
-    vinculos = db.session.query(Booked.room_id, Reservations.checkin_date, Reservations.checkout_date)         .join(Reservations, Booked.brid == Reservations.rid)
+    vinculos = db.session.query(Booked.room_id, Reservations.checkin_date, Reservations.checkout_date).join(
+        Reservations, Booked.brid == Reservations.rid)
     return {quarto for quarto, c1, c2 in vinculos if _periodos_conflitam(entrada, saida, c1, c2)}
 
 
