@@ -337,7 +337,7 @@ def slide_roteiro(prs):
         ("V&V TestLab", "raiz → npm run dev → Dados e exportação → importar output/hotel-vvtestlab-projeto-inicial.json"),
         ("Ponte no original", ".\\iniciar-integracao.ps1 -Versao original → Integração Python → Executar e sincronizar: falhas viram defeitos"),
         ("Ponte no corrigido", "Ctrl+C e .\\iniciar-integracao.ps1 → Executar e sincronizar: todos aprovados, 100% dos desvios"),
-        ("Mutação", "Executar mutação (~5 min) → 196/204 mortos; Execução e métricas mostra a evolução"),
+        ("Mutação", "Executar mutação (~6 min) → 181/189 mortos; Execução e métricas mostra a evolução"),
     ]
     y = 1.4
     for n, (titulo, detalhe) in enumerate(passos, 1):

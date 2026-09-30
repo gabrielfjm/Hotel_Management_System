@@ -16,6 +16,7 @@ mutacao = pytest.mark.mutacao
 
 @mutacao
 @pytest.mark.ce("CE-17")
+@pytest.mark.defeito("DEF-01", "períodos sem interseção são tratados como conflito")
 def test_CT_055_vinculo_so_e_comparado_com_a_propria_reserva(client, baseline):
     # Mata _quartos_ocupados, ReplaceComparisonOperator_Eq_GtE: join Booked.brid >= Reservations.rid.
     # O vínculo do 101 (reserva 2, D+20) não pode herdar as datas da reserva 1 (quarto 102, D+10).
