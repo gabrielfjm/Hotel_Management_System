@@ -1,0 +1,117 @@
+{
+  "recorte": {
+    "comandos": 103,
+    "comandos_cobertos": 93,
+    "desvios": 54,
+    "desvios_cobertos": 45,
+    "pct_comandos": 90.3,
+    "pct_desvios": 83.3
+  },
+  "por_funcao": {
+    "delete_reservation": {
+      "comandos": 11,
+      "comandos_cobertos": 9,
+      "desvios": 4,
+      "desvios_cobertos": 3,
+      "linhas_nao_cobertas": [
+        88,
+        89
+      ],
+      "desvios_nao_cobertos": [
+        [
+          79,
+          88
+        ]
+      ]
+    },
+    "show_rooms": {
+      "comandos": 20,
+      "comandos_cobertos": 18,
+      "desvios": 12,
+      "desvios_cobertos": 11,
+      "linhas_nao_cobertas": [
+        166,
+        167
+      ],
+      "desvios_nao_cobertos": [
+        [
+          144,
+          166
+        ]
+      ]
+    },
+    "check_available": {
+      "comandos": 9,
+      "comandos_cobertos": 6,
+      "desvios": 4,
+      "desvios_cobertos": 2,
+      "linhas_nao_cobertas": [
+        179,
+        180,
+        181
+      ],
+      "desvios_nao_cobertos": [
+        [
+          172,
+          180
+        ],
+        [
+          175,
+          179
+        ]
+      ]
+    },
+    "reserve": {
+      "comandos": 49,
+      "comandos_cobertos": 46,
+      "desvios": 28,
+      "desvios_cobertos": 23,
+      "linhas_nao_cobertas": [
+        241,
+        242,
+        243
+      ],
+      "desvios_nao_cobertos": [
+        [
+          186,
+          242
+        ],
+        [
+          189,
+          241
+        ],
+        [
+          205,
+          204
+        ],
+        [
+          208,
+          205
+        ],
+        [
+          230,
+          229
+        ]
+      ]
+    },
+    "cal_cost": {
+      "comandos": 14,
+      "comandos_cobertos": 14,
+      "desvios": 6,
+      "desvios_cobertos": 6,
+      "linhas_nao_cobertas": [],
+      "desvios_nao_cobertos": []
+    }
+  },
+  "views_py_inteiro": {
+    "comandos": 222,
+    "comandos_cobertos": 123,
+    "desvios": 94,
+    "desvios_cobertos": 46,
+    "pct_total": 53.5
+  },
+  "etapa": "funcional-original",
+  "sut": "original",
+  "marcas": "funcional",
+  "casos": 43
+}
