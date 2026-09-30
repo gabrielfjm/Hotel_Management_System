@@ -169,25 +169,22 @@ def logout():
     session['user_available'] = False
     return redirect(url_for('index'))
 
-global_avail = None
-
 @app.route('/rooms')
 def show_rooms():
     if _sessao_autenticada():
         all_rooms = Rooms.query.all()
         all_room_type = Room_type.query.all()
-        global global_avail
-        if global_avail is None:
+        # DEF-16: o filtro vem da sessão do próprio usuário e vale para uma exibição.
+        filtro = session.pop('filtro_disponibilidade', None)
+        if filtro is None:
             return render_template('rooms.html', rooms=all_rooms, room_type=all_room_type)
         # If entered information on check availability page, only display rooms available at that point
-        c_in = datetime.datetime.combine(global_avail.checkin_date.data, datetime.time(0, 0))
-        c_out = datetime.datetime.combine(global_avail.checkout_date.data, datetime.time(0, 0))
+        c_in = datetime.datetime.strptime(filtro[0], '%Y-%m-%d')
+        c_out = datetime.datetime.strptime(filtro[1], '%Y-%m-%d')
         ocupados = _quartos_ocupados(c_in, c_out)
-        for each in all_rooms:
-            if each.room_number in ocupados and (c_in < c_out):
-                all_rooms.remove(each)
-        global_avail = None
-        return render_template('rooms.html', rooms=all_rooms, room_type=all_room_type)
+        # DEF-14/17: nova lista filtrada por ocupação e capacidade, sem remover itens durante a iteração.
+        rooms = [each for each in all_rooms if each.room_number not in ocupados and each.capacity >= filtro[2]]
+        return render_template('rooms.html', rooms=rooms, room_type=all_room_type)
     flash('User is not Authenticated')
     return redirect(url_for('index'))
 
@@ -196,10 +193,15 @@ def show_rooms():
 def check_available():
     if _sessao_autenticada():
         reservation = CheckAvailForm(request.form)
-        us = User.query.filter_by(username=session['current_user']).first()
         if request.method == 'POST':
-            global global_avail
-            global_avail = reservation
+            checkin = reservation.checkin_date.data
+            checkout = reservation.checkout_date.data
+            num = reservation.num_guests.data
+            # DEF-12/13/18: período vazio ou invertido, data malformada e hóspedes < 1 são recusados.
+            if checkin is None or checkout is None or checkout <= checkin or num is None or num < 1:
+                flash("Please recheck the dates and the number of guests!")
+                return redirect(url_for('check_available'))
+            session['filtro_disponibilidade'] = [checkin.isoformat(), checkout.isoformat(), num]
             return redirect(url_for('show_rooms'))
         return render_template('add_room.html', reservation=reservation)
     flash('User is not Authenticated')
