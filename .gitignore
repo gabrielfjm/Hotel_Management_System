@@ -1,0 +1,11 @@
+.venv/
+.venv-mutation/
+.pytest_cache/
+__pycache__/
+*.pyc
+.coverage
+.coverage.*
+hotel/hotel_local.db
+.sut-original/
+.vvtestlab/
+iniciar-integracao.ps1
