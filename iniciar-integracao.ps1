@@ -1,5 +1,5 @@
 ﻿# Inicia a ponte do V&V TestLab (integration/vv_bridge.py, na raiz da ferramenta) para este repositório.
-# Uso:  .\iniciar-integracao.ps1                    -> código corrigido: 25 casos devem passar; mutação disponível
+# Uso:  .\iniciar-integracao.ps1                    -> código corrigido: os 15 casos (22 testes) devem passar; mutação disponível
 #       .\iniciar-integracao.ps1 -Versao original   -> código original (tag sut-original): os defeitos aparecem
 #                                                      como falhas e viram DEF-xxx no painel
 param([ValidateSet('corrigida', 'original')][string]$Versao = 'corrigida')

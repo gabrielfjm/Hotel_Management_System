@@ -1,7 +1,7 @@
 [
   {
     "caso": "CT-001",
-    "teste": "tests/test_01_funcional.py::test_CT_001_reserva_valida_de_um_quarto_para_um_hospede",
+    "teste": "tests/test_01_funcional.py::test_CT_001_reserva_simples_de_um_quarto_e_aceita",
     "etapa": "funcional",
     "classes": [
       "CE-01",
@@ -19,7 +19,7 @@
   },
   {
     "caso": "CT-002",
-    "teste": "tests/test_01_funcional.py::test_CT_002_varios_quartos_com_hospedes_no_limite_da_capacidade_somada",
+    "teste": "tests/test_01_funcional.py::test_CT_002_reserva_de_dois_quartos_com_lotacao_maxima_e_aceita",
     "etapa": "funcional",
     "classes": [
       "CE-10",
@@ -29,7 +29,7 @@
   },
   {
     "caso": "CT-003",
-    "teste": "tests/test_01_funcional.py::test_CT_003_entrada_no_dia_da_saida_de_outra_estadia_e_aceita",
+    "teste": "tests/test_01_funcional.py::test_CT_003_estadia_que_comeca_quando_outra_termina_e_aceita",
     "etapa": "funcional",
     "classes": [
       "CE-15",
@@ -39,7 +39,7 @@
   },
   {
     "caso": "CT-004",
-    "teste": "tests/test_01_funcional.py::test_CT_004_entrada_hoje_por_uma_noite_e_aceita",
+    "teste": "tests/test_01_funcional.py::test_CT_004_entrada_hoje_e_aceita",
     "etapa": "funcional",
     "classes": [
       "CE-17",
@@ -49,7 +49,7 @@
   },
   {
     "caso": "CT-005",
-    "teste": "tests/test_01_funcional.py::test_CT_005_reserva_sem_sessao_redireciona_para_inicio",
+    "teste": "tests/test_01_funcional.py::test_CT_005_visitante_sem_login_nao_reserva",
     "etapa": "funcional",
     "classes": [
       "CE-02"
@@ -58,7 +58,7 @@
   },
   {
     "caso": "CT-006",
-    "teste": "tests/test_01_funcional.py::test_CT_006_numero_de_quarto_nao_numerico_e_rejeitado",
+    "teste": "tests/test_01_funcional.py::test_CT_006_quarto_escrito_em_texto_e_recusado",
     "etapa": "funcional",
     "classes": [
       "CE-04"
@@ -67,7 +67,7 @@
   },
   {
     "caso": "CT-007",
-    "teste": "tests/test_01_funcional.py::test_CT_007_quarto_inexistente_e_rejeitado",
+    "teste": "tests/test_01_funcional.py::test_CT_007_quarto_que_nao_existe_e_recusado",
     "etapa": "funcional",
     "classes": [
       "CE-06"
@@ -76,7 +76,7 @@
   },
   {
     "caso": "CT-008",
-    "teste": "tests/test_01_funcional.py::test_CT_008_quarto_repetido_e_rejeitado",
+    "teste": "tests/test_01_funcional.py::test_CT_008_quarto_repetido_e_recusado",
     "etapa": "funcional",
     "classes": [
       "CE-08"
@@ -85,7 +85,7 @@
   },
   {
     "caso": "CT-009",
-    "teste": "tests/test_01_funcional.py::test_CT_009_zero_hospedes_e_rejeitado",
+    "teste": "tests/test_01_funcional.py::test_CT_009_reserva_sem_hospedes_e_recusada",
     "etapa": "funcional",
     "classes": [
       "CE-12"
@@ -94,7 +94,7 @@
   },
   {
     "caso": "CT-010",
-    "teste": "tests/test_01_funcional.py::test_CT_010_hospedes_acima_da_capacidade_somada_sao_rejeitados",
+    "teste": "tests/test_01_funcional.py::test_CT_010_hospedes_acima_da_capacidade_sao_recusados",
     "etapa": "funcional",
     "classes": [
       "CE-13"
@@ -103,7 +103,7 @@
   },
   {
     "caso": "CT-011",
-    "teste": "tests/test_01_funcional.py::test_CT_011_hospedes_nao_numerico_e_rejeitado",
+    "teste": "tests/test_01_funcional.py::test_CT_011_hospedes_escritos_por_extenso_sao_recusados",
     "etapa": "funcional",
     "classes": [
       "CE-14"
@@ -112,7 +112,7 @@
   },
   {
     "caso": "CT-012",
-    "teste": "tests/test_01_funcional.py::test_CT_012_sobreposicao_de_uma_noite_e_rejeitada",
+    "teste": "tests/test_01_funcional.py::test_CT_012_quarto_ocupado_no_periodo_e_recusado",
     "etapa": "funcional",
     "classes": [
       "CE-16"
@@ -121,7 +121,7 @@
   },
   {
     "caso": "CT-013",
-    "teste": "tests/test_01_funcional.py::test_CT_013_entrada_ontem_e_rejeitada",
+    "teste": "tests/test_01_funcional.py::test_CT_013_entrada_no_passado_e_recusada",
     "etapa": "funcional",
     "classes": [
       "CE-18"
@@ -130,7 +130,7 @@
   },
   {
     "caso": "CT-014",
-    "teste": "tests/test_01_funcional.py::test_CT_014_data_de_entrada_malformada_e_rejeitada",
+    "teste": "tests/test_01_funcional.py::test_CT_014_data_em_formato_errado_e_recusada",
     "etapa": "funcional",
     "classes": [
       "CE-20"
@@ -139,7 +139,7 @@
   },
   {
     "caso": "CT-015",
-    "teste": "tests/test_01_funcional.py::test_CT_015_saida_igual_a_entrada_e_rejeitada",
+    "teste": "tests/test_01_funcional.py::test_CT_015_saida_igual_a_entrada_e_recusada",
     "etapa": "funcional",
     "classes": [
       "CE-22"
@@ -147,17 +147,18 @@
     "defeito": ""
   },
   {
-    "caso": "CT-016",
-    "teste": "tests/test_02_estrutural.py::test_CT_016_formulario_de_reserva_abre_para_usuario_autenticado",
+    "caso": "CT-001",
+    "teste": "tests/test_02_estrutural.py::test_CT_001_ampliacao_formulario_aberto_antes_e_outro_quarto_ocupado",
     "etapa": "estrutural",
     "classes": [
-      "CE-01"
+      "CE-01",
+      "CE-15"
     ],
     "defeito": ""
   },
   {
-    "caso": "CT-017",
-    "teste": "tests/test_02_estrutural.py::test_CT_017_sessao_encerrada_redireciona_para_inicio",
+    "caso": "CT-005",
+    "teste": "tests/test_02_estrutural.py::test_CT_005_ampliacao_usuario_que_saiu_nao_reserva",
     "etapa": "estrutural",
     "classes": [
       "CE-02"
@@ -165,18 +166,8 @@
     "defeito": ""
   },
   {
-    "caso": "CT-018",
-    "teste": "tests/test_02_estrutural.py::test_CT_018_reserva_existente_de_outro_quarto_nao_gera_conflito",
-    "etapa": "estrutural",
-    "classes": [
-      "CE-15",
-      "CE-09"
-    ],
-    "defeito": ""
-  },
-  {
-    "caso": "CT-019",
-    "teste": "tests/test_02_estrutural.py::test_CT_019_reserva_de_outro_quarto_no_periodo_nao_bloqueia_quarto_livre",
+    "caso": "CT-012",
+    "teste": "tests/test_02_estrutural.py::test_CT_012_ampliacao_reserva_de_outro_quarto_nao_bloqueia",
     "etapa": "estrutural",
     "classes": [
       "CE-15"
@@ -184,8 +175,19 @@
     "defeito": "DEF-15"
   },
   {
-    "caso": "CT-020",
-    "teste": "tests/test_03_mutacao.py::test_CT_020_saida_no_dia_da_entrada_de_outra_estadia_e_aceita",
+    "caso": "CT-002",
+    "teste": "tests/test_03_mutacao.py::test_CT_002_ampliacao_reserva_de_todos_os_quartos_do_hotel",
+    "etapa": "mutacao",
+    "classes": [
+      "CE-05",
+      "CE-10",
+      "CE-11"
+    ],
+    "defeito": ""
+  },
+  {
+    "caso": "CT-003",
+    "teste": "tests/test_03_mutacao.py::test_CT_003_ampliacao_estadias_antes_da_reserva_existente",
     "etapa": "mutacao",
     "classes": [
       "CE-15",
@@ -194,8 +196,8 @@
     "defeito": ""
   },
   {
-    "caso": "CT-021",
-    "teste": "tests/test_03_mutacao.py::test_CT_021_estadia_que_termina_antes_de_outra_comecar_e_aceita",
+    "caso": "CT-012",
+    "teste": "tests/test_03_mutacao.py::test_CT_012_ampliacao_ocupacao_de_outra_reserva_nao_e_herdada",
     "etapa": "mutacao",
     "classes": [
       "CE-15"
@@ -203,40 +205,11 @@
     "defeito": ""
   },
   {
-    "caso": "CT-022",
-    "teste": "tests/test_03_mutacao.py::test_CT_022_vinculo_so_e_comparado_com_a_propria_reserva",
-    "etapa": "mutacao",
-    "classes": [
-      "CE-15"
-    ],
-    "defeito": ""
-  },
-  {
-    "caso": "CT-023",
-    "teste": "tests/test_03_mutacao.py::test_CT_023_reserva_de_todos_os_quartos_do_hotel_e_aceita",
-    "etapa": "mutacao",
-    "classes": [
-      "CE-05",
-      "CE-10"
-    ],
-    "defeito": ""
-  },
-  {
-    "caso": "CT-024",
-    "teste": "tests/test_03_mutacao.py::test_CT_024_saida_anterior_a_entrada_e_rejeitada",
+    "caso": "CT-015",
+    "teste": "tests/test_03_mutacao.py::test_CT_015_ampliacao_saida_antes_da_entrada_e_recusada",
     "etapa": "mutacao",
     "classes": [
       "CE-22"
-    ],
-    "defeito": ""
-  },
-  {
-    "caso": "CT-025",
-    "teste": "tests/test_03_mutacao.py::test_CT_025_custo_de_quarto_com_numero_acima_de_256",
-    "etapa": "mutacao",
-    "classes": [
-      "CE-09",
-      "CE-21"
     ],
     "defeito": ""
   },

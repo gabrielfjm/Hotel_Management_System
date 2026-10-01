@@ -1,6 +1,6 @@
 Rodada final: 7 mutantes sobreviventes
 
-=== _ler_quartos linha 34 | core/ReplaceComparisonOperator_NotEq_IsNot (ocorrência 0) | job 6d7f5ba913e04c77aa4a4c313b9723e2
+=== _ler_quartos linha 34 | core/ReplaceComparisonOperator_NotEq_IsNot (ocorrência 0) | job c0ab1d36ad16448ca79d41a174bc446c
 --- mutation diff ---
 --- ahotel\views.py
 +++ bhotel\views.py
@@ -13,7 +13,7 @@ Rodada final: 7 mutantes sobreviventes
          return None
      return numeros
  
-=== _ler_quartos linha 34 | core/ReplaceComparisonOperator_NotEq_Lt (ocorrência 0) | job cdbb089da3ac4775a47f69761140774b
+=== _ler_quartos linha 34 | core/ReplaceComparisonOperator_NotEq_Lt (ocorrência 0) | job e28a7c0f47564b3089747d5244a39d6b
 --- mutation diff ---
 --- ahotel\views.py
 +++ bhotel\views.py
@@ -26,7 +26,7 @@ Rodada final: 7 mutantes sobreviventes
          return None
      return numeros
  
-=== reserve linha 217 | core/ReplaceComparisonOperator_Eq_GtE (ocorrência 8) | job 7ca9e47ee48e4745ab5e753071e05f81
+=== reserve linha 217 | core/ReplaceComparisonOperator_Eq_GtE (ocorrência 8) | job 27526c3e62bd4ad3bb247846de9f8c2b
 --- mutation diff ---
 --- ahotel\views.py
 +++ bhotel\views.py
@@ -39,7 +39,7 @@ Rodada final: 7 mutantes sobreviventes
              room_list = _ler_quartos(reservation.room_numbers.data)
              num = reservation.num_guests.data
              checkin = reservation.checkin_date.data
-=== reserve linha 226 | core/NumberReplacer (ocorrência 24) | job 86af8e5ead214cb78fbb7d78a2c27612
+=== reserve linha 226 | core/NumberReplacer (ocorrência 24) | job a4eaea0afbdf48e49f727655e1c876f8
 --- mutation diff ---
 --- ahotel\views.py
 +++ bhotel\views.py
@@ -52,7 +52,7 @@ Rodada final: 7 mutantes sobreviventes
              d2 = datetime.datetime.combine(checkout, datetime.time(0, 0))
  
              # DEF-02: comparar a data de entrada com a data de hoje, e não com o instante atual.
-=== reserve linha 226 | core/NumberReplacer (ocorrência 26) | job ea4bb8d5c83e4aa0a473def5cc03e08f
+=== reserve linha 226 | core/NumberReplacer (ocorrência 26) | job afb839d654d84728a1d2073c569bc631
 --- mutation diff ---
 --- ahotel\views.py
 +++ bhotel\views.py
@@ -65,7 +65,7 @@ Rodada final: 7 mutantes sobreviventes
              d2 = datetime.datetime.combine(checkout, datetime.time(0, 0))
  
              # DEF-02: comparar a data de entrada com a data de hoje, e não com o instante atual.
-=== reserve linha 247 | core/NumberReplacer (ocorrência 34) | job 1ce1b3b9fe0e403db544d8ab0c0be48f
+=== reserve linha 247 | core/NumberReplacer (ocorrência 34) | job 6dc634ca849848298a97364f1ea22a94
 --- mutation diff ---
 --- ahotel\views.py
 +++ bhotel\views.py
@@ -78,7 +78,7 @@ Rodada final: 7 mutantes sobreviventes
              db.session.add(reserve)
              db.session.flush()
              # Storing each rooms booked into the Booked table along with reservation id
-=== reserve linha 247 | core/NumberReplacer (ocorrência 35) | job 3e1d328721d648b0ba08d4d276607f4b
+=== reserve linha 247 | core/NumberReplacer (ocorrência 35) | job c6c8a88c75e5491ea63b4d47aedb8ae4
 --- mutation diff ---
 --- ahotel\views.py
 +++ bhotel\views.py

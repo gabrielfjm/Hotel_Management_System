@@ -15,7 +15,7 @@ Marcas usadas:
 * ``defeito("DEF-01", "descrição")``: defeito que o caso revela no original.
 """
 
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 import json
 import os
 from pathlib import Path
@@ -75,7 +75,7 @@ def pytest_collection_modifyitems(config, items):
 
 @pytest.fixture
 def baseline():
-    """Três quartos (101: R$100/2 pessoas; 102: R$150/3; 103: R$200/4) e dois usuários."""
+    """Três quartos (101: R$100/2 pessoas; 102: R$150/3; 301: R$200/4) e dois usuários."""
     app.config.update(TESTING=True, WTF_CSRF_ENABLED=False)
     db.session.remove()
     db.drop_all()
@@ -88,7 +88,7 @@ def baseline():
     other = User("Bruno", "Costa", "bruno", "senha123", "bruno@example.test")
     db.session.add_all([room_type, owner, other])
     db.session.commit()
-    for number, cost, capacity in [(101, 100, 2), (102, 150, 3), (103, 200, 4)]:
+    for number, cost, capacity in [(101, 100, 2), (102, 150, 3), (301, 200, 4)]:
         room = Rooms(room_type.tid, cost, capacity, "available")
         room.room_number = number
         db.session.add(room)
@@ -154,6 +154,45 @@ def seed_reservation(user_id, room_numbers=(101,), offset=10, nights=2, guests=2
         db.session.add(Booked(reservation.rid, room))
     db.session.commit()
     return reservation.rid
+
+
+# ------------------------------------------------ auxiliares com datas reais (casos principais)
+# As datas são escritas como no Brasil (DD/MM/AAAA). O formulário do sistema usa MM/DD/AAAA.
+
+def hoje(dias=0):
+    """Data relativa ao dia da execução, para os casos de 'hoje' e 'ontem' (DD/MM/AAAA)."""
+    return (date.today() + timedelta(days=dias)).strftime("%d/%m/%Y")
+
+
+def _data(texto):
+    return datetime.strptime(texto, "%d/%m/%Y").date()
+
+
+def reservar(client, quartos="101", hospedes=2, entrada="10/03/2030", saida="12/03/2030"):
+    """Envia o formulário de reserva (POST /reserve) como a usuária logada."""
+    return client.post("/reserve", data={
+        "room_numbers": quartos, "num_guests": str(hospedes),
+        "checkin_date": _data(entrada).strftime("%m/%d/%Y"), "checkout_date": _data(saida).strftime("%m/%d/%Y"),
+    })
+
+
+def reserva_existente(usuario, quartos=(101,), entrada="10/03/2030", saida="12/03/2030", hospedes=2, custo=200):
+    """Grava direto no banco uma reserva que já existia antes do teste."""
+    reservation = Reservations(usuario, _data(entrada), _data(saida), hospedes, custo)
+    db.session.add(reservation)
+    db.session.commit()
+    for quarto in quartos:
+        db.session.add(Booked(reservation.rid, quarto))
+    db.session.commit()
+    return reservation.rid
+
+
+def consultar(client, hospedes=2, entrada="10/03/2030", saida="12/03/2030"):
+    """Envia o formulário de consulta de disponibilidade (POST /available)."""
+    return client.post("/available", data={
+        "num_guests": str(hospedes),
+        "checkin_date": _data(entrada).strftime("%m/%d/%Y"), "checkout_date": _data(saida).strftime("%m/%d/%Y"),
+    })
 
 
 def seed_payment(user_id, rid):

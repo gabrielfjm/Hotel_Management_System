@@ -1,63 +1,64 @@
-"""Etapa 2 - teste estrutural (caixa-branca).
+"""Etapa 2 - teste estrutural (caixa-branca): reaproveitamento dos casos funcionais.
 
-Casos acrescentados depois de medir, com coverage.py (--cov-branch), a
-cobertura dos casos funcionais sobre hotel/views.py original. Meta: 100% dos
-comandos e 100% dos desvios viáveis das funções do recorte (reserve e
-cal_cost). O comentário de cada caso indica as linhas/desvios do código
-original que ele passou a cobrir.
+Nenhum caso novo é criado. Depois de medir com coverage.py (--cov-branch) a
+cobertura dos 15 casos funcionais sobre hotel/views.py original, cinco deles
+foram reaproveitados para desenhar e percorrer os grafos de fluxo de reserve:
+CT-001 (reserva aceita), CT-005 (sem login), CT-009 (dado inválido),
+CT-012 (quarto ocupado) e CT-013 (data no passado). Três desses casos foram
+ampliados com o cenário que deixava trechos sem cobertura. Cada ampliação usa
+o identificador do caso que amplia; o comentário indica as linhas/desvios do
+código original que ela passou a cobrir. Meta: 100% dos comandos e 100% dos
+desvios viáveis das funções do recorte (reserve e cal_cost).
 """
 
 import pytest
 
 from hotel.models import Booked, Reservations
-from conftest import booking, login, path, seed_reservation
+from conftest import login, path, reserva_existente, reservar
 
 
 estrutural = pytest.mark.estrutural
 
 
 @estrutural
-@pytest.mark.ce("CE-01")
-def test_CT_016_formulario_de_reserva_abre_para_usuario_autenticado(client):
-    # Original: desvio 189->241 e linha 241 (GET renderiza o formulário).
+@pytest.mark.ce("CE-01", "CE-15")
+def test_CT_001_ampliacao_formulario_aberto_antes_e_outro_quarto_ocupado(client, baseline):
+    # Original: desvio 189->241 e linha 241 (abrir o formulário com GET, sem enviar) e
+    # desvios 208->205 e 205->204 (reserva já existente de OUTRO quarto no mesmo período).
+    reserva_existente(baseline["bruno"], quartos=(102,), entrada="10/03/2030", saida="12/03/2030")
     login(client)
-    response = client.get("/reserve")
-    assert response.status_code == 200
-    assert b'name="room_numbers"' in response.data
-    assert Booked.query.count() == 0
+    formulario = client.get("/reserve")
+    assert formulario.status_code == 200
+    assert b'name="room_numbers"' in formulario.data
+    assert path(reservar(client, quartos="101", entrada="10/03/2030", saida="12/03/2030")) == "/rooms"
+    assert Reservations.query.count() == 2
 
 
 @estrutural
 @pytest.mark.ce("CE-02")
-def test_CT_017_sessao_encerrada_redireciona_para_inicio(client):
+def test_CT_005_ampliacao_usuario_que_saiu_nao_reserva(client):
     # Original: desvio 186->242 e linhas 242-243 (ramo falso de "if session['user_available']").
-    # Os casos funcionais sem login não criam a chave e o original lança KeyError antes do if;
-    # o ramo falso só roda com a chave valendo False, estado deixado pelo logout.
-    with client.session_transaction() as session:
-        session["user_available"] = False
+    # Sem a chave na sessão o original quebra antes do if; o ramo falso só roda depois de um logout.
+    with client.session_transaction() as sessao:
+        sessao["user_available"] = False
     assert path(client.get("/reserve")) == "/"
-    assert path(booking(client)) == "/"
+    assert path(reservar(client)) == "/"
     assert Reservations.query.count() == 0
-
-
-@estrutural
-@pytest.mark.ce("CE-15", "CE-09")
-def test_CT_018_reserva_existente_de_outro_quarto_nao_gera_conflito(client, baseline):
-    # Original: desvio 208->205 (vínculo de outro quarto) e 205->204 (fim do laço interno).
-    seed_reservation(baseline["bruno"], room_numbers=(102,), offset=10)
-    login(client)
-    assert path(booking(client, room_numbers="101", offset=10)) == "/rooms"
-    assert Reservations.query.count() == 2
 
 
 @estrutural
 @pytest.mark.ce("CE-15")
 @pytest.mark.defeito("DEF-15", "vínculo de quarto é comparado com reservas de outros quartos")
-def test_CT_019_reserva_de_outro_quarto_no_periodo_nao_bloqueia_quarto_livre(client, baseline):
-    # Laço triplo reservas x vínculos sem brid == rid (linhas 203-212): a reserva de Bruno
-    # (102, D+20) é combinada com o vínculo do 101 (reserva de Ana, D+10) e gera falso conflito.
-    seed_reservation(baseline["ana"], room_numbers=(101,), offset=10)
-    seed_reservation(baseline["bruno"], room_numbers=(102,), offset=20)
+def test_CT_012_ampliacao_reserva_de_outro_quarto_nao_bloqueia(client, baseline):
+    # Lendo o laço triplo das linhas 203-212 para cobrir o desvio 208->205: ele combina cada
+    # quarto reservado com as datas de TODAS as reservas (falta brid == rid). Aqui o 101 está
+    # livre em 20/03, mas o original o recusa por causa da reserva do Bruno (quarto 102).
+    reserva_existente(baseline["ana"], quartos=(101,), entrada="10/03/2030", saida="12/03/2030")
+    reserva_existente(baseline["bruno"], quartos=(102,), entrada="20/03/2030", saida="22/03/2030")
     login(client)
-    assert path(booking(client, room_numbers="101", offset=20)) == "/rooms"
+    assert path(reservar(client, quartos="101", entrada="20/03/2030", saida="22/03/2030")) == "/rooms"
     assert Reservations.query.count() == 3
+
+
+# Os casos CT-009 (dado inválido) e CT-013 (data no passado) foram reaproveitados sem ampliação:
+# eles já percorrem os caminhos de recusa das linhas 223-225 e 230-232.

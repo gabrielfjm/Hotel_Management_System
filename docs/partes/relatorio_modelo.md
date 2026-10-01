@@ -8,7 +8,7 @@
 
 ## Sumário executivo
 
-As três técnicas foram aplicadas na ordem exigida (**funcional → estrutural → baseada em defeitos**) sobre os três requisitos principais do sistema, todos ligados à reserva de quartos: **REQ-01 Reservar quartos**, **REQ-02 Data de entrada** e **REQ-03 Data de saída**. Os demais requisitos funcionais foram catalogados (seção 1.2). A suíte final tem **25 casos**: 15 funcionais, 4 estruturais e 6 criados na etapa de mutação.
+As três técnicas foram aplicadas na ordem exigida (**funcional → estrutural → baseada em defeitos**) sobre os três requisitos principais do sistema, todos ligados à reserva de quartos: **REQ-01 Reservar quartos**, **REQ-02 Data de entrada** e **REQ-03 Data de saída**. Os demais requisitos funcionais foram catalogados (seção 1.2). Os **mesmos 15 casos de teste** foram usados nas três etapas: a etapa estrutural reaproveitou 5 deles para percorrer os grafos de fluxo e ampliou 3 com o cenário que faltava para a cobertura; a de mutação rodou os 15 contra cada mutante e ampliou 4 para matar os sobreviventes. Nenhum caso novo foi criado depois da etapa funcional.
 
 «RESUMO»
 
@@ -74,11 +74,11 @@ A diferença entre SLOC do radon (354) e *Code* do pygount (352) vem das duas li
 
 **Oráculos.** Os resultados esperados vêm do README ("check-in no passado", "quartos indisponíveis no período", "quartos que não comportam o número de hóspedes", "a reserva só pode ser alterada/excluída pelo usuário em *My Account*") e da interface, que traz os formulários com datas `MM/DD/AAAA`, hóspedes inteiros e quartos separados por vírgula. Para o que o README não fixa, foram adotadas convenções declaradas: estadia como intervalo semiaberto `[entrada, saída)`, em que um hóspede pode entrar no dia em que outro sai; métodos HTTP seguros, em que `GET` não altera dados; e integridade referencial ao cancelar.
 
-**Ambiente.** Windows 11, Python 3.9.25 (aplicação e pytest) e Python 3.12 (Cosmic Ray, em ambiente separado porque exige SQLAlchemy ≥ 1.4, incompatível com Flask-SQLAlchemy 2.1). Cada caso usa SQLite em memória recriado pela fixture `baseline`, com três quartos (101: R$ 100/noite, 2 pessoas; 102: R$ 150, 3; 103: R$ 200, 4) e dois usuários (Ana e Bruno). As datas são relativas ao dia da execução, para manter a suíte reproduzível.
+**Ambiente.** Windows 11, Python 3.9.25 (aplicação e pytest) e Python 3.12 (Cosmic Ray, em ambiente separado porque exige SQLAlchemy ≥ 1.4, incompatível com Flask-SQLAlchemy 2.1). Cada caso usa SQLite em memória recriado pela fixture `baseline`, com três quartos (101: R$ 100/noite, 2 pessoas; 102: R$ 150, 3; 301: R$ 200, 4) e dois usuários (Ana e Bruno). As datas dos casos são reais e fixas (março de 2030, no futuro, para a suíte continuar válida); só os casos de "hoje" e "ontem" usam a data do dia da execução.
 
 **Versões do SUT.** A variável `SUT_VERSAO` escolhe o código importado pelos testes. Com `original`, é usado `.sut-original/hotel`, extraído da tag `sut-original`. Com `corrigida`, é usado `hotel/`. Na versão original, cada caso marcado `@pytest.mark.defeito("DEF-xx", ...)` recebe `xfail(strict=True)`: ele **precisa falhar** para confirmar que o defeito existe. Se um defeito "sumir", o `XPASS` estrito quebra a execução. Na versão corrigida, nenhum caso é marcado e todos precisam passar.
 
-**Rastreabilidade.** Cada função de teste leva o identificador do caso no nome (`test_CT_001_...`), a etapa em que foi criado (`@pytest.mark.funcional`, `estrutural` ou `mutacao`), as classes que exercita (`@pytest.mark.ce("CE-01", ...)`) e, quando é o caso, o defeito revelado. O plugin em `tests/conftest.py` exporta essa matriz (`--rastreabilidade`), e `scripts/evolucao.py` verifica que **toda classe de equivalência tem ao menos um caso funcional** (Apêndice A). A cadeia é REQ → CE → CT → execução pytest → DEF → commit de correção.
+**Rastreabilidade.** Cada função de teste leva o identificador do caso no nome (`test_CT_001_...`). A parte funcional de cada caso tem a marca `@pytest.mark.funcional`; as ampliações feitas nas etapas seguintes são outras funções com o **mesmo identificador** e a marca da etapa (`estrutural` ou `mutacao`), como `test_CT_001_ampliacao_...`. Cada função traz ainda as classes que exercita (`@pytest.mark.ce("CE-01", ...)`) e, quando é o caso, o defeito revelado. O plugin em `tests/conftest.py` exporta essa matriz (`--rastreabilidade`), e `scripts/evolucao.py` verifica que **toda classe de equivalência tem ao menos um caso funcional** (Apêndice A). A cadeia é REQ → CE → CT → execução pytest → DEF → commit de correção.
 
 **Execução.** `etapas.ps1` roda tudo em sequência e grava as evidências em `evidencias/<etapa>/`: `pytest.txt` (saída `-v -rxX` e relatório `term-missing`), `junit.xml`, `coverage.json`, `htmlcov/`, `rastreabilidade.json` e `cobertura-recorte.json`. A ordem das etapas também aparece no histórico do fork (seção 6).
 
@@ -100,17 +100,17 @@ As condições de entrada dos três requisitos foram particionadas em **22 class
 
 ### 4.2 Análise do valor limite
 
-Datas relativas a hoje (D). Reserva existente usada nos limites de interseção: quarto 101 de D+10 a D+12. Para manter a suíte enxuta, os pontos de limite foram embutidos nos próprios casos de classe: o caso de cada classe inválida usa o valor imediatamente fora do limite, e os casos válidos usam o valor exatamente no limite.
+Hoje = dia da execução (D). Reserva existente usada nos limites de interseção: quarto 101 de 10/03/2030 a 12/03/2030. Para manter a suíte enxuta, os pontos de limite foram embutidos nos próprios casos de classe: o caso de cada classe inválida usa o valor imediatamente fora do limite, e os casos válidos usam o valor exatamente no limite.
 
 | Req. | Variável (limite) | Imediatamente fora | No limite | Justificativa |
 |---|---|---|---|---|
 | REQ-01 | Hóspedes, mínimo (1) | 0 → rejeitar (CT-009) | 1 → aceitar (CT-001) | Uma reserva precisa de ao menos um hóspede. |
 | REQ-01 | Hóspedes, máximo somado (101+102: 5) | 6 → rejeitar (CT-010) | 5 → aceitar (CT-002) | Verifica se a capacidade é somada quando há vários quartos. |
 | REQ-02 | Data de entrada (mín. = hoje) | D−1 → rejeitar (CT-013) | D → aceitar (CT-004) | O README exige "pelo menos hoje"; a fronteira passado/presente é onde se costuma errar comparando data com data-hora. |
-| REQ-02 | Entrada × saída existente (D+12) | entrada D+11 → conflito (CT-012) | entrada D+12 → livre (CT-003) | Com intervalo `[entrada, saída)`, entrar no dia em que o outro sai não conflita. |
+| REQ-02 | Entrada × saída existente (12/03/2030) | entrada 11/03/2030 → conflito (CT-012) | entrada 12/03/2030 → livre (CT-003) | Com intervalo `[entrada, saída)`, entrar no dia em que o outro sai não conflita. |
 | REQ-03 | Duração da reserva (mín. = 1 noite) | 0 → rejeitar (CT-015) | 1 → aceitar, custo 100 (CT-004) | Saída = entrada não gera diária; 2 noites custam 200 (CT-001). |
 
-O limite simétrico "saída no dia da entrada de outra estadia" não entrou na etapa funcional; a mutação mostrou essa lacuna e ele foi acrescentado como CT-020 (seção 7.3).
+O limite simétrico "saída no dia da entrada de outra estadia" não entrou na etapa funcional; a mutação mostrou essa lacuna e ele foi acrescentado como ampliação do CT-003 (seção 7.3).
 
 ### 4.3 Casos funcionais e resultados no código original
 
@@ -132,25 +132,28 @@ Justificativa:
 
 A medição é restrita ao recorte porque medir `views.py` inteiro misturaria rotas deliberadamente não testadas (cadastro, login, consulta, alteração, pagamento) e tornaria qualquer meta global arbitrária.
 
-### 5.2 Lacunas após a etapa funcional e casos acrescentados
+### 5.2 Casos reaproveitados, lacunas e ampliações
 
-| Trecho não coberto (original) | Por que ficou de fora | Caso estrutural |
+Nenhum caso novo foi criado nesta etapa. Cinco casos funcionais foram reaproveitados para percorrer os grafos de fluxo de `reserve`, um para cada caminho principal da função: **CT-001** (reserva aceita), **CT-005** (sem login), **CT-009** (dado inválido), **CT-012** (quarto ocupado) e **CT-013** (data no passado). O V&V TestLab mostra, em cada grafo, os nós e arestas que cada caso executou.
+
+As lacunas de cobertura foram fechadas **ampliando** três desses casos com o cenário que faltava. A ampliação é outra função pytest com o mesmo identificador e a marca `estrutural`.
+
+| Trecho não coberto (original) | Por que ficou de fora | Caso ampliado |
 |---|---|---|
-| `reserve` 241 (desvio 189→241) | A etapa funcional só fazia `POST`; o formulário (`GET`) nunca era aberto por um usuário autenticado | CT-016 |
-| `reserve` 242–243 (desvio 186→242, ramo falso de `if session['user_available']`) | O caso funcional sem sessão não cria a chave, e o original lança `KeyError` antes do `if`; o ramo falso só roda com a chave valendo `False`, estado deixado pelo `logout` | CT-017 |
-| `reserve` desvios 208→205 e 205→204 (vínculo de outro quarto; fim do laço interno sem conflito) | Nos casos funcionais, todas as reservas prévias eram do mesmo quarto | CT-018 |
+| `reserve` 241 (desvio 189→241) | A etapa funcional só enviava o formulário (`POST`); nunca o abria (`GET`) com usuário autenticado | CT-001 |
+| `reserve` desvios 208→205 e 205→204 (vínculo de outro quarto; fim do laço interno sem conflito) | Nos casos funcionais, todas as reservas prévias eram do mesmo quarto | CT-001 |
+| `reserve` 242–243 (desvio 186→242, ramo falso de `if session['user_available']`) | O caso sem sessão não cria a chave, e o original lança `KeyError` antes do `if`; o ramo falso só roda com a chave valendo `False`, estado deixado pelo `logout` | CT-005 |
 | `reserve` desvio 230→229 (`if each.rid > current_id` falso) | **Inviável:** os IDs vêm em ordem crescente de chave primária, então cada `rid` supera o máximo anterior | — |
 
-A leitura do laço triplo para cobrir os desvios 208→205 e 205→204 expôs mais um defeito, que ganhou caso próprio: CT-019 (DEF-15, vínculo comparado com reservas de outros quartos, porque falta `brid == rid`).
+A leitura do laço triplo para cobrir os desvios 208→205 e 205→204 expôs mais um defeito: o laço compara cada quarto reservado com as datas de todas as reservas, porque falta `brid == rid`. O CT-012 (quarto ocupado) foi ampliado com o cenário que prova isso e revelou o DEF-15.
 
-| Caso | Classes | Cenário | Esperado | Original |
+| Ampliação | Classes | Cenário | Esperado | Original |
 |---|---|---|---|---|
-| CT-016 | CE-01 | `GET /reserve` autenticado | formulário com `room_numbers` | passou |
-| CT-017 | CE-02 | `user_available = False` em `GET` e `POST /reserve` | redireciona a `/`; nada gravado | passou |
-| CT-018 | CE-09, CE-15 | Bruno tem o 102 em D+10; Ana reserva o 101 em D+10 | aceita | passou |
-| CT-019 | CE-15 | Ana tem o 101 em D+10, Bruno tem o 102 em D+20; reservar o 101 em D+20 | aceita | **falhou – DEF-15** (mascarado por DEF-01) |
+| CT-001 (estrutural) | CE-01, CE-15 | Bruno tem o 102 de 10/03/2030 a 12/03/2030; Ana abre o formulário e reserva o 101 nas mesmas datas | formulário exibido; reserva aceita | passou |
+| CT-005 (estrutural) | CE-02 | `user_available = False` (depois de logout) em `GET` e `POST /reserve` | redireciona a `/`; nada gravado | passou |
+| CT-012 (estrutural) | CE-15 | Ana tem o 101 de 10/03/2030 a 12/03/2030 e Bruno o 102 de 20/03/2030 a 22/03/2030; reservar o 101 de 20/03/2030 a 22/03/2030 | aceita | **falhou – DEF-15** (mascarado por DEF-01) |
 
-**Resultado (código original, `evidencias/estrutural-original/`):** 19 casos, 9 passaram e 10 falharam (xfail estrito). Cobertura do recorte: **63/63 comandos (100%) e 33/34 desvios (97,1%)**. A meta foi atingida, porque o desvio restante é inviável.
+**Resultado (código original, `evidencias/estrutural-original/`):** os mesmos 15 casos (18 funções pytest); 5 casos passaram e 10 falharam (xfail estrito). Cobertura do recorte: **63/63 comandos (100%) e 33/34 desvios (97,1%)**. A meta foi atingida, porque o desvio restante é inviável.
 
 ## 6. Correção dos defeitos antes da mutação
 
@@ -159,13 +162,13 @@ A mutação precisa de uma suíte que passe no programa mutado. Por isso os defe
 | Commit | Defeitos | Casos que passaram a passar |
 |---|---|---|
 | `8a6c4bd` | DEF-07 (sessão sem chave → `KeyError`) | CT-005 (e CT-102, complementar) |
-| `2d1b2cd` | DEF-01 (tautologia), DEF-15 (produto cartesiano) | CT-003, CT-019 |
+| `2d1b2cd` | DEF-01 (tautologia), DEF-15 (produto cartesiano) | CT-003, CT-012 (ampliação) |
 | `704bc86` | DEF-02 (entrada hoje) | CT-004 |
 | `644fd0d` | DEF-03, 04, 05, 06, 18, 19 (validação da reserva; transação única) | CT-006, 007, 008, 009, 011, 014 |
 | `1313f12` | DEF-08, 09, 10, 11 (RF-08 cancelamento, secundário; template com `POST`) | CT-103 a CT-106 (complementares) |
 | `9e66e2d` | DEF-12, 13, 14, 16, 17, 18 (RF-04 consulta, secundário; filtro na sessão) | CT-112 a CT-116 (complementares) |
 
-As mensagens desses commits citam a numeração de casos da primeira versão da suíte (seção 8). Em cada passo, a suíte inteira foi executada para confirmar que nenhum caso que já passava regrediu. **Resultado final no programa corrigido (tag `sut-corrigido`, `evidencias/suite-corrigida/`): 19/19 casos passaram**, sem `skip` nem `xfail`, com cobertura do recorte de **65/65 comandos e 28/28 desvios (100%)**. Os 14 complementares também passam. O código corrigido tem menos desvios que o original (28 contra 34) porque o laço triplo foi trocado por uma junção SQL e por compreensões de conjunto. As funções auxiliares (`_sessao_autenticada`, `_periodos_conflitam`, `_quartos_ocupados`, `_ler_quartos`) entram no recorte medido.
+As mensagens desses commits citam a numeração de casos da primeira versão da suíte (seção 8). Em cada passo, a suíte inteira foi executada para confirmar que nenhum caso que já passava regrediu. **Resultado final no programa corrigido (tag `sut-corrigido`, `evidencias/suite-corrigida/`): 15/15 casos passaram** (18 funções pytest), sem `skip` nem `xfail`, com cobertura do recorte de **65/65 comandos e 28/28 desvios (100%)**. Os 14 complementares também passam. O código corrigido tem menos desvios que o original (28 contra 34) porque o laço triplo foi trocado por uma junção SQL e por compreensões de conjunto. As funções auxiliares (`_sessao_autenticada`, `_periodos_conflitam`, `_quartos_ocupados`, `_ler_quartos`) entram no recorte medido.
 
 Um ajuste de oráculo foi necessário e está registrado no commit `8a6c4bd`. O CT-102 (complementar) esperava que o cancelamento sem sessão redirecionasse para `/`, mas o sistema redireciona para `/rooms`, que exige login e então leva a `/`. Isso não é defeito do software: o requisito verificado, preservar a reserva, não mudou.
 
@@ -180,17 +183,17 @@ Um ajuste de oráculo foi necessário e está registrado no commit `8a6c4bd`. O 
 
 ### 7.2 Rodada inicial (suíte ao fim da etapa estrutural)
 
-**141 mutantes: 127 mortos e 14 sobreviventes. Escore de 90,1%.** Execução em cerca de 3 minutos.
+Os 15 casos (com as ampliações estruturais, 18 funções pytest) rodaram contra cada mutante. **141 mutantes: 127 mortos e 14 sobreviventes. Escore de 90,1%.** Execução em cerca de 4 minutos.
 
 | # | Função (linha) | Mutação | Classificação | Ação |
 |---|---|---|---|---|
-| S1 | `_periodos_conflitam` (17) | `entrada_b < saida_a` → `<=` | **Não equivalente.** Nenhum caso tinha a nova estadia terminando no dia em que outra começa; a etapa funcional só testou o limite do outro lado (CT-003) | **CT-020** |
-| S2 | `_periodos_conflitam` (17) | `entrada_b < saida_a` → `is not` | **Não equivalente.** Mesmo cenário: entre objetos de data distintos, `is not` é sempre verdadeiro | **CT-020** |
-| S3 | `_periodos_conflitam` (17) | `entrada_b < saida_a` → `!=` | **Não equivalente.** Acusa conflito com qualquer estadia posterior não adjacente; nenhum caso reservava um período inteiramente anterior a uma reserva existente | **CT-021** |
-| S4 | `_quartos_ocupados` (23) | `Booked.brid == Reservations.rid` → `>=` | **Não equivalente.** Nenhum caso tinha um vínculo de reserva *posterior* capaz de herdar as datas de uma reserva *anterior* de outro quarto | **CT-022** |
-| S5 | `_ler_quartos` (34) | `set(numeros) <= existentes` → `<` | **Não equivalente.** Nenhum caso reservava *todos* os quartos do hotel | **CT-023** |
-| S6 | `reserve` (230) | `d2 <= d1` → `d2 == d1` | **Não equivalente.** A classe CE-22 (saída igual ou anterior à entrada) foi testada só com 0 noites; uma saída anterior à entrada passaria | **CT-024** |
-| S7 | `cal_cost` (268) | `each_room_id == e.room_number` → `is` | **Não equivalente.** `is` só coincide com `==` para inteiros de −5 a 256, que o CPython mantém em cache; os quartos da base eram 101–103 | **CT-025** (quarto 301) |
+| S1 | `_periodos_conflitam` (17) | `entrada_b < saida_a` → `<=` | **Não equivalente.** Nenhum caso tinha a nova estadia terminando no dia em que outra começa; a etapa funcional só testou o limite do outro lado (CT-003) | **ampliação do CT-003** |
+| S2 | `_periodos_conflitam` (17) | `entrada_b < saida_a` → `is not` | **Não equivalente.** Mesmo cenário: entre objetos de data distintos, `is not` é sempre verdadeiro | **ampliação do CT-003** |
+| S3 | `_periodos_conflitam` (17) | `entrada_b < saida_a` → `!=` | **Não equivalente.** Acusa conflito com qualquer estadia posterior não adjacente; nenhum caso reservava um período inteiramente anterior a uma reserva existente | **ampliação do CT-003** |
+| S4 | `_quartos_ocupados` (23) | `Booked.brid == Reservations.rid` → `>=` | **Não equivalente.** Nenhum caso tinha um vínculo de reserva *posterior* capaz de herdar as datas de uma reserva *anterior* de outro quarto | **ampliação do CT-012** |
+| S5 | `_ler_quartos` (34) | `set(numeros) <= existentes` → `<` | **Não equivalente.** Nenhum caso reservava *todos* os quartos do hotel | **ampliação do CT-002** |
+| S6 | `reserve` (230) | `d2 <= d1` → `d2 == d1` | **Não equivalente.** A classe CE-22 (saída igual ou anterior à entrada) foi testada só com 0 noites; uma saída anterior à entrada passaria | **ampliação do CT-015** |
+| S7 | `cal_cost` (268) | `each_room_id == e.room_number` → `is` | **Não equivalente.** `is` só coincide com `==` para inteiros de −5 a 256, que o CPython mantém em cache; nenhum caso reservava o quarto 301 | **ampliação do CT-002** |
 | S8 | `reserve` (217) | `request.method == 'POST'` → `>=` | **Equivalente.** A rota só admite `GET`, `POST`, `HEAD` e `OPTIONS`, e nenhum método diferente de `POST` é ≥ `'POST'` na ordem lexicográfica | — |
 | S9 | `reserve` (226) | `time(0, 0)` → `time(1, 0)` em `d1` | **Equivalente.** `d1` só é comparado com datas à meia-noite (`d2` e datas gravadas) e com `date.today()` via `d1.date()`; deslocar a hora de `d1` dentro do mesmo dia não inverte nenhuma comparação, e o valor gravado é `checkin`, não `d1` | — |
 | S10 | `reserve` (226) | `time(0, 0)` → `time(0, 1)` | **Equivalente** (idem) | — |
@@ -199,18 +202,18 @@ Um ajuste de oráculo foi necessário e está registrado no commit `8a6c4bd`. O 
 | S13 | `_ler_quartos` (34) | `len(set(n)) != len(n)` → `<` | **Equivalente.** Um conjunto nunca tem mais elementos que a lista de origem, então `!=` e `<` são a mesma condição | — |
 | S14 | `_ler_quartos` (34) | `len(set(n)) != len(n)` → `is not` | **Equivalente no domínio.** Os comprimentos só passam de 256 se o usuário informar mais de 256 quartos numa reserva, o que é irrealista; abaixo disso, o cache de inteiros do CPython torna `is not` idêntico a `!=` | — |
 
-### 7.3 Casos acrescentados e rodada final
+### 7.3 Casos ampliados e rodada final
 
-| Caso | Classes | Cenário | Esperado | Mata |
+Em vez de criar casos novos, os sobreviventes não equivalentes foram mortos **ampliando os casos que deveriam tê-los detectado** (funções com a marca `mutacao` e o mesmo identificador):
+
+| Caso ampliado | Classes | Cenário acrescentado | Esperado | Mata |
 |---|---|---|---|---|
-| CT-020 | CE-15, CE-21 | 101 reservado D+10–12; nova D+8–10 (sai no dia em que a outra entra) | aceita | S1, S2 |
-| CT-021 | CE-15 | 101 reservado D+10–12; nova D+7–9 | aceita | S3 |
-| CT-022 | CE-15 | Ana tem o 102 em D+10 (reserva 1); Bruno tem o 101 em D+20 (reserva 2); Ana reserva o 101 em D+10 | aceita | S4 |
-| CT-023 | CE-05, CE-10 | Reservar 101, 102 e 103 para 9 hóspedes por 2 noites | aceita; custo 900; 3 vínculos | S5 |
-| CT-024 | CE-22 | saída um dia antes da entrada | recusa | S6 |
-| CT-025 | CE-09, CE-21 | Quarto 301 (R$ 120) por 2 noites | custo 240 | S7 |
+| CT-002 | CE-05, CE-10, CE-11 | Reservar os três quartos (101, 102 e 301) para 9 hóspedes, de 10/03/2030 a 12/03/2030 | aceita; custo R$ 900; 3 vínculos | S5, S7 |
+| CT-003 | CE-15, CE-21 | 101 ocupado de 10/03/2030 a 12/03/2030; reservar de 08/03/2030 a 10/03/2030 (sai no dia em que a outra entra) e de 05/03/2030 a 07/03/2030 | as duas aceitas | S1, S2, S3 |
+| CT-012 | CE-15 | Ana tem o 102 de 10/03/2030 a 12/03/2030 (reserva 1); Bruno tem o 101 de 20/03/2030 a 22/03/2030 (reserva 2); Ana reserva o 101 de 10/03/2030 a 12/03/2030 | aceita | S4 |
+| CT-015 | CE-22 | saída (09/03/2030) um dia antes da entrada (10/03/2030) | recusa | S6 |
 
-**Rodada final (suíte completa, 25 casos, `evidencias/mutacao-final/`): «MUT_FINAL_TEXTO»
+**Rodada final (os mesmos 15 casos, 22 funções pytest, `evidencias/mutacao-final/`): «MUT_FINAL_TEXTO»
 
 ### 7.4 Fragilidades reveladas
 
@@ -218,7 +221,7 @@ A suíte tinha 100% de cobertura de desvios e, mesmo assim, deixou vivos 7 mutan
 
 1. **Limite testado de um lado só.** A etapa funcional testou "entrar no dia em que a outra estadia sai", mas não o simétrico "sair no dia em que a outra entra", nem um período inteiramente anterior. Três mutantes do predicado de conflito sobreviveram por isso.
 2. **Um único representante de uma classe inválida.** CE-22 (saída igual ou anterior à entrada) foi exercitada só com 0 noites. Trocar `<=` por `==` mantinha esse caso correto e deixava passar períodos negativos.
-3. **Dados de teste homogêneos.** Todos os números de quarto cabiam no cache de inteiros pequenos do Python, o que esconde a troca de `==` por `is` no cálculo das diárias. Em produção, com quartos numerados como 301, esse erro passaria despercebido.
+3. **Dados de teste pouco variados.** Nenhum caso reservava o quarto 301; os quartos usados (101 e 102) cabem no cache de inteiros pequenos do Python, o que esconde a troca de `==` por `is` no cálculo das diárias. Em produção, com quartos numerados acima de 256, esse erro passaria despercebido.
 4. **Ordem de criação fixa e nenhum caso no extremo da enumeração de quartos.** Faltavam a reserva mais nova pertencendo ao quarto pedido (o que distingue `brid == rid` de uma junção errada) e uma reserva de todos os quartos.
 
 Os 7 equivalentes vêm de código defensivo ou redundante que veio do original: o custo provisório 0, `time(0, 0)` explícito e a comparação de tamanhos em `_ler_quartos`. Eles mostram também que o escore bruto subestima a qualidade da suíte. Excluindo os equivalentes, o escore final é «MUT_AJUSTADO».
@@ -227,7 +230,7 @@ Os 7 equivalentes vêm de código defensivo ou redundante que veio do original: 
 
 «EVOLUCAO»
 
-A ordem **Funcional → Estrutural → (correção) → Mutação** está no histórico do fork: `afeb312` (etapa 1), `ac975b7` (etapa 2), seis commits de correção, e `324e29a` (etapa 3). Os commits posteriores reorganizaram o recorte. Na última revisão, a consulta de disponibilidade passou a requisito secundário, a suíte funcional foi enxugada para 15 casos (um por classe inválida, com os limites embutidos) e os casos foram renumerados. Todas as etapas foram então reexecutadas do zero, e as evidências deste relatório são dessa execução. Dentro dela, cada etapa só acrescenta casos: nenhum caso das etapas anteriores foi removido ou marcado com `skip`.
+A ordem **Funcional → Estrutural → (correção) → Mutação** está no histórico do fork: `afeb312` (etapa 1), `ac975b7` (etapa 2), seis commits de correção, e `324e29a` (etapa 3). Os commits posteriores reorganizaram o recorte. Na última revisão, a consulta de disponibilidade passou a requisito secundário, a suíte funcional foi enxugada para 15 casos (um por classe inválida, com os limites embutidos) e os casos foram renumerados. Todas as etapas foram então reexecutadas do zero, e as evidências deste relatório são dessa execução. Nessa versão, **os mesmos 15 casos atravessam as três etapas**: a estrutural e a de mutação não criaram casos, apenas ampliaram alguns deles (3 e 4 casos, respectivamente) com novas funções pytest de mesmo identificador. Nenhum caso foi removido ou marcado com `skip`. As datas fixas dos casos ficaram em março de 2030.
 
 ## 9. Registro de defeitos
 
@@ -260,8 +263,8 @@ O cancelamento e a consulta de disponibilidade já fizeram parte do recorte em v
 ## 11. Conclusões e lições aprendidas
 
 1. **A técnica funcional encontrou a maior parte dos defeitos** (9 dos 10 dos três requisitos) com 15 casos, sem olhar o código, porque cada classe inválida teve um caso próprio e os limites foram embutidos nesses casos. O limite "entrada hoje" e as estadias adjacentes expuseram defeitos que valores típicos não mostrariam.
-2. **A técnica estrutural encontrou o que a especificação não sugere:** o produto cartesiano entre reservas e vínculos (DEF-15). Ela também mostrou que um defeito pode ficar **mascarado** por outro (DEF-01), só aparecendo depois da primeira correção.
-3. **A mutação avaliou os próprios testes.** Com 100% de desvios, a suíte ainda tinha fragilidades concretas (limite testado de um lado só, um único representante de classe inválida, dados homogêneos), corrigidas com 6 casos pequenos.
+2. **A técnica estrutural, reaproveitando 5 casos funcionais, encontrou o que a especificação não sugere:** o produto cartesiano entre reservas e vínculos (DEF-15). Ela também mostrou que um defeito pode ficar **mascarado** por outro (DEF-01), só aparecendo depois da primeira correção.
+3. **A mutação avaliou os próprios testes.** Com 100% de desvios, a suíte ainda tinha fragilidades concretas (limite testado de um lado só, um único representante de classe inválida, dados homogêneos), corrigidas ampliando 4 dos 15 casos, sem criar casos novos.
 4. **Corrigir antes de mutar é indispensável.** Mutar o original, com 10 testes falhando, invalidaria o escore, porque um mutante que "corrige" um defeito seria contado como vivo ou morto por acaso.
 5. **Dificuldades:**
     * dependências de 2019 incompatíveis com o Python atual, resolvidas com ambientes separados e `compat.py`;
@@ -280,6 +283,7 @@ git clone «FORK_URL» ; cd Hotel_Management_System
 Comandos isolados:
 
 * `SUT_VERSAO=original pytest -m funcional -rxX` (15 casos; 9 falhas esperadas)
+* `pytest -m 'funcional or estrutural or mutacao'` (os 15 casos com todas as ampliações: 22 funções)
 * `pytest --cov=hotel.views --cov-branch --cov-report=term-missing`
 * `.venv-mutation/Scripts/python.exe scripts/mutacao.py final`
 * `git diff sut-original sut-corrigido -- hotel`

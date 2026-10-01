@@ -2,7 +2,7 @@
   "rodada": "final",
   "configuracao": "evidencias\\mutacao-final\\cosmic-ray.toml",
   "comando": "exec evidencias\\mutacao-final\\cosmic-ray.toml evidencias\\mutacao-final\\sessao.sqlite",
-  "duracao_s": 205.9,
+  "duracao_s": 223.4,
   "funcoes": {
     "_sessao_autenticada": [
       10,
@@ -262,49 +262,49 @@
   },
   "sobreviventes_lista": [
     {
-      "job_id": "7ca9e47ee48e4745ab5e753071e05f81",
+      "job_id": "27526c3e62bd4ad3bb247846de9f8c2b",
       "funcao": "reserve",
       "linha": 217,
       "operador": "core/ReplaceComparisonOperator_Eq_GtE",
       "ocorrencia": 8
     },
     {
-      "job_id": "cdbb089da3ac4775a47f69761140774b",
+      "job_id": "e28a7c0f47564b3089747d5244a39d6b",
       "funcao": "_ler_quartos",
       "linha": 34,
       "operador": "core/ReplaceComparisonOperator_NotEq_Lt",
       "ocorrencia": 0
     },
     {
-      "job_id": "6d7f5ba913e04c77aa4a4c313b9723e2",
+      "job_id": "c0ab1d36ad16448ca79d41a174bc446c",
       "funcao": "_ler_quartos",
       "linha": 34,
       "operador": "core/ReplaceComparisonOperator_NotEq_IsNot",
       "ocorrencia": 0
     },
     {
-      "job_id": "86af8e5ead214cb78fbb7d78a2c27612",
+      "job_id": "a4eaea0afbdf48e49f727655e1c876f8",
       "funcao": "reserve",
       "linha": 226,
       "operador": "core/NumberReplacer",
       "ocorrencia": 24
     },
     {
-      "job_id": "ea4bb8d5c83e4aa0a473def5cc03e08f",
+      "job_id": "afb839d654d84728a1d2073c569bc631",
       "funcao": "reserve",
       "linha": 226,
       "operador": "core/NumberReplacer",
       "ocorrencia": 26
     },
     {
-      "job_id": "1ce1b3b9fe0e403db544d8ab0c0be48f",
+      "job_id": "6dc634ca849848298a97364f1ea22a94",
       "funcao": "reserve",
       "linha": 247,
       "operador": "core/NumberReplacer",
       "ocorrencia": 34
     },
     {
-      "job_id": "3e1d328721d648b0ba08d4d276607f4b",
+      "job_id": "c6c8a88c75e5491ea63b4d47aedb8ae4",
       "funcao": "reserve",
       "linha": 247,
       "operador": "core/NumberReplacer",

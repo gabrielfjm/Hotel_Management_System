@@ -12,7 +12,7 @@ import pytest
 
 from hotel.models import Booked, Payment, Reservations, Rooms, User, db
 from hotel import app
-from conftest import availability, listed_rooms, login, path, seed_payment, seed_reservation
+from conftest import consultar, listed_rooms, login, path, reserva_existente, seed_payment, seed_reservation
 
 
 secundario = pytest.mark.secundario
@@ -116,10 +116,10 @@ def test_CT_108_usuario_de_id_menor_nao_cancela_reserva_de_id_maior(client, base
 @secundario
 @pytest.mark.ce("CE-41", "CE-43", "CE-45", "CE-46")
 def test_CT_111_consulta_omite_quarto_ocupado_e_lista_livres(client, baseline):
-    seed_reservation(baseline["ana"], offset=10, nights=2)
+    reserva_existente(baseline["ana"], entrada="10/03/2030", saida="12/03/2030")
     login(client)
-    assert path(availability(client, guests="2", offset=10, nights=2)) == "/rooms"
-    assert listed_rooms(client) == [102, 103]
+    assert path(consultar(client, hospedes=2, entrada="10/03/2030", saida="12/03/2030")) == "/rooms"
+    assert listed_rooms(client) == [102, 301]
 
 
 @secundario
@@ -127,7 +127,7 @@ def test_CT_111_consulta_omite_quarto_ocupado_e_lista_livres(client, baseline):
 @pytest.mark.defeito("DEF-12", "consulta aceita período vazio ou invertido")
 def test_CT_112_consulta_com_datas_invertidas_e_rejeitada(client):
     login(client)
-    assert path(availability(client, offset=12, nights=-2)) == "/available"
+    assert path(consultar(client, entrada="12/03/2030", saida="10/03/2030")) == "/available"
 
 
 @secundario
@@ -135,7 +135,7 @@ def test_CT_112_consulta_com_datas_invertidas_e_rejeitada(client):
 @pytest.mark.defeito("DEF-13", "consulta aceita zero hóspedes")
 def test_CT_113_consulta_com_zero_hospedes_e_rejeitada(client):
     login(client)
-    assert path(availability(client, guests="0")) == "/available"
+    assert path(consultar(client, hospedes=0)) == "/available"
 
 
 @secundario
@@ -143,8 +143,8 @@ def test_CT_113_consulta_com_zero_hospedes_e_rejeitada(client):
 @pytest.mark.defeito("DEF-14", "consulta ignora a quantidade de hóspedes")
 def test_CT_114_hospedes_acima_da_capacidade_ocultam_o_quarto(client):
     login(client)
-    availability(client, guests="3")
-    assert listed_rooms(client) == [102, 103]
+    consultar(client, hospedes=3)
+    assert listed_rooms(client) == [102, 301]
 
 
 @secundario
@@ -152,12 +152,12 @@ def test_CT_114_hospedes_acima_da_capacidade_ocultam_o_quarto(client):
 @pytest.mark.defeito("DEF-16", "filtro de disponibilidade é global e vaza entre sessões")
 def test_CT_115_consulta_de_um_usuario_nao_altera_listagem_de_outro(client, baseline):
     # Variável de módulo global_avail: estado compartilhado entre sessões.
-    seed_reservation(baseline["ana"])
+    reserva_existente(baseline["ana"], entrada="10/03/2030", saida="12/03/2030")
     login(client, "ana")
     other = app.test_client()
     login(other, "bruno")
-    availability(client, offset=10, nights=2)
-    assert listed_rooms(other) == [101, 102, 103]
+    consultar(client, entrada="10/03/2030", saida="12/03/2030")
+    assert listed_rooms(other) == [101, 102, 301]
 
 
 @secundario
@@ -165,7 +165,7 @@ def test_CT_115_consulta_de_um_usuario_nao_altera_listagem_de_outro(client, base
 @pytest.mark.defeito("DEF-17", "remoção durante a iteração pula o quarto seguinte")
 def test_CT_116_consulta_omite_dois_quartos_ocupados_consecutivos(client, baseline):
     # all_rooms.remove(each) dentro de "for each in all_rooms".
-    seed_reservation(baseline["ana"], room_numbers=(101, 102), offset=10)
+    reserva_existente(baseline["ana"], quartos=(101, 102), entrada="10/03/2030", saida="12/03/2030")
     login(client)
-    availability(client, guests="1", offset=10, nights=2)
-    assert listed_rooms(client) == [103]
+    consultar(client, hospedes=1, entrada="10/03/2030", saida="12/03/2030")
+    assert listed_rooms(client) == [301]

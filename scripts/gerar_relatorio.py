@@ -24,11 +24,11 @@ FORK_URL = "https://github.com/gabrielfjm/Hotel_Management_System"
 TELAS = [
     ("original-01-inicio", "Página inicial do sistema original em execução (Flask, porta local)."),
     ("original-03-quartos", "Lista de quartos após o login de Ana (código original)."),
-    ("original-05-consulta-resultado", "Consulta de D+20 a D+22 para 4 hóspedes no original: o 101, livre nesse "
+    ("original-05-consulta-resultado", "Consulta de 20/10/2026 a 22/10/2026 para 4 hóspedes no original (capturas de 30/09/2026): o 101, livre nesse "
                                         "período, não aparece (DEF-01), e o 102, com capacidade 3, aparece (DEF-14)."),
-    ("corrigida-05-consulta-resultado", "Mesma consulta no código corrigido: só o 103 comporta 4 hóspedes."),
-    ("original-07-reserva-resultado", "Reserva do 101 em D+20 a D+22 recusada no original, embora o quarto só "
-                                      "esteja ocupado de D+10 a D+12 (DEF-01)."),
+    ("corrigida-05-consulta-resultado", "Mesma consulta no código corrigido: só o quarto de capacidade 4 aparece."),
+    ("original-07-reserva-resultado", "Reserva do 101 de 20/10/2026 a 22/10/2026 recusada no original, embora o quarto só "
+                                      "esteja ocupado de 10/10/2026 a 12/10/2026 (DEF-01)."),
     ("corrigida-07-reserva-resultado", "Mesma reserva aceita no código corrigido."),
     ("corrigida-08-minha-conta", "“My Account” no código corrigido: reservas, custos e o botão de cancelamento via POST."),
 ]
@@ -49,14 +49,14 @@ def main():
     mut_ini = ler("mutacao-inicial/resumo.json")
     mut_fim = ler("mutacao-final/resumo.json")
     equivalentes = 7  # S8 a S14, classificados na seção 7.2 do relatório
-    casos_mutacao = 6
+    casos_ampliados = 4  # CT-002, CT-003, CT-012 e CT-015 (seção 7.3)
     vivos_nao_equiv = mut_fim["sobreviventes"] - equivalentes
 
-    linhas = ["| Etapa | Técnica | Código | Nº de casos | Passaram | Falharam (defeito confirmado) | Cobertura de comandos | "
+    linhas = ["| Etapa | Técnica | Código | Casos (testes pytest) | Casos que passaram | Casos que falharam (defeito confirmado) | Cobertura de comandos | "
               "Cobertura de desvios | Escore de mutação |", "|---|---|---|---:|---:|---:|---:|---:|---:|"]
     for e in evolucao:
         escore = f'{e["mutacao"]} ({pct(e["escore_pct"])})' if e["escore_pct"] is not None else "—"
-        linhas.append(f'| {e["etapa"]} | {e["tecnica"]} | {e["sut"]} | {e["casos"]} | {e["passaram"]} | {e["xfail"]} | '
+        linhas.append(f'| {e["etapa"]} | {e["tecnica"]} | {e["sut"]} | {e["casos"]} ({e["testes"]} testes) | {e["passaram"]} | {e["xfail"]} | '
                       f'{e["comandos"]} ({pct(e["pct_comandos"])}) | {e["desvios"]} ({pct(e["pct_desvios"])}) | {escore} |')
     linhas.append("")
     linhas.append("Na linha 3, o escore é o da rodada **inicial** do Cosmic Ray, executada com a suíte funcional + "
@@ -65,15 +65,15 @@ def main():
                   "Fonte: `evidencias/evolucao.json`, gerado por `scripts/evolucao.py`.")
 
     nomes = {"1. Funcional": ("1", "Funcional (classes de equivalência + valor limite)"),
-             "2. Estrutural": ("2", "Estrutural (meta: 100% de comandos e de desvios viáveis)"),
-             "3. Correção": ("—", "Correção dos defeitos; mesma suíte"),
-             "4. Mutação": ("3", "Baseada em defeitos (Cosmic Ray)")}
-    resumo = ["| Etapa | Técnica | Código | Nº de casos | Cobertura de comandos | Cobertura de desvios | Escore de mutação |",
+             "2. Estrutural": ("2", "Estrutural (5 casos reaproveitados; meta: 100% de comandos e desvios viáveis)"),
+             "3. Correção": ("—", "Correção dos defeitos; mesmos casos"),
+             "4. Mutação": ("3", "Baseada em defeitos (Cosmic Ray; mesmos 15 casos, 4 ampliados)")}
+    resumo = ["| Etapa | Técnica | Código | Casos (testes pytest) | Cobertura de comandos | Cobertura de desvios | Escore de mutação |",
               "|---|---|---|---:|---:|---:|---:|"]
     for e in evolucao:
         num, tec = nomes[e["etapa"]]
         escore = f'{e["mutacao"]} ({pct(e["escore_pct"])})' if e["escore_pct"] is not None else "—"
-        resumo.append(f'| {num} | {tec} | {e["sut"]} | {e["casos"]} | {e["comandos"]} ({pct(e["pct_comandos"])}) | '
+        resumo.append(f'| {num} | {tec} | {e["sut"]} | {e["casos"]} ({e["testes"]} testes) | {e["comandos"]} ({pct(e["pct_comandos"])}) | '
                       f'{e["desvios"]} ({pct(e["pct_desvios"])}) | {escore} |')
 
     nomes_req = {"REQ-01": "REQ-01 Reservar quartos", "REQ-02": "REQ-02 Data de entrada",
@@ -114,7 +114,7 @@ def main():
         "«MUT_FINAL_TEXTO»": (
             f'{mut_fim["total"]} mutantes: {mut_fim["mortos"]} mortos, {mut_fim["sobreviventes"]} sobreviventes, '
             f'{mut_fim["incompetentes"]} incompetentes. Escore de {pct(mut_fim["escore_pct"])} '
-            f'(inicial: {pct(mut_ini["escore_pct"])}), em {mut_fim["duracao_s"]:.0f} s.** Os {casos_mutacao} casos novos '
+            f'(inicial: {pct(mut_ini["escore_pct"])}), em {mut_fim["duracao_s"]:.0f} s.** As ampliações de {casos_ampliados} casos '
             f'mataram os {mut_ini["sobreviventes"] - equivalentes} sobreviventes não equivalentes. Restam {mut_fim["sobreviventes"]} sobreviventes, '
             f'todos classificados como equivalentes (S8 a S14); não equivalentes restantes: {vivos_nao_equiv}. '
             f'O arquivo `evidencias/mutacao-final/sobreviventes.txt` traz o diff de cada um.'),

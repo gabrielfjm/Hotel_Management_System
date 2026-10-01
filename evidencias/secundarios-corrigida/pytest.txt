@@ -3,13 +3,13 @@
 # Comando: SUT_VERSAO=corrigida -m pytest -v -rxX -m secundario --cov=hotel.views --cov-branch --cov-report=term-missing --cov-report=json:C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-corrigida\coverage.json --cov-report=html:C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-corrigida\htmlcov --junitxml=C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-corrigida\junit.xml --rastreabilidade=C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-corrigida\rastreabilidade.json
 
 ============================= test session starts =============================
-platform win32 -- Python 3.9.25, pytest-8.4.2, pluggy-1.6.0 -- C:\Users\Gabriel Felipe\AppData\Roaming\uv\python\cpython-3.9-windows-x86_64-none\python.exe
+platform win32 -- Python 3.9.25, pytest-8.4.2, pluggy-1.6.0 -- C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\.venv\Scripts\python.exe
 SUT_VERSAO=corrigida; hotel.views=C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\hotel\views.py
 rootdir: C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado
 configfile: pytest.ini
 testpaths: tests
 plugins: cov-6.3.0
-collecting ... collected 33 items / 19 deselected / 14 selected
+collecting ... collected 36 items / 22 deselected / 14 selected
 
 tests/test_04_secundarios.py::test_CT_101_titular_cancela_propria_reserva PASSED [  7%]
 tests/test_04_secundarios.py::test_CT_102_cancelamento_sem_sessao_redireciona_e_preserva PASSED [ 14%]
@@ -27,8 +27,8 @@ tests/test_04_secundarios.py::test_CT_115_consulta_de_um_usuario_nao_altera_list
 tests/test_04_secundarios.py::test_CT_116_consulta_omite_dois_quartos_ocupados_consecutivos PASSED [100%]
 
 ============================== warnings summary ===============================
-.venv\Lib\site-packages\flask_sqlalchemy\__init__.py:800
-  C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\.venv\Lib\site-packages\flask_sqlalchemy\__init__.py:800: UserWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True to suppress this warning.
+.venv\lib\site-packages\flask_sqlalchemy\__init__.py:800
+  C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\.venv\lib\site-packages\flask_sqlalchemy\__init__.py:800: UserWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True to suppress this warning.
     warnings.warn('SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True to suppress this warning.')
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
@@ -43,4 +43,4 @@ hotel\views.py     228    153     84      3    29%   29-36, 41, 46-102, 127-135,
 TOTAL              228    153     84      3    29%
 Coverage HTML written to dir C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-corrigida\htmlcov
 Coverage JSON written to file C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-corrigida\coverage.json
-================ 14 passed, 19 deselected, 1 warning in 0.61s =================
+================ 14 passed, 22 deselected, 1 warning in 1.38s =================

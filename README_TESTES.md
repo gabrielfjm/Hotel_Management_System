@@ -31,7 +31,7 @@ Linux/macOS: `./setup.sh`, `./etapas.sh` (ou `./etapas.sh --sem-mutacao`) e `./e
 
 ```powershell
 $py = '.venv/Scripts/python.exe'
-& $py -m pytest -v                                        # código corrigido: 25 casos principais + 14 complementares passam
+& $py -m pytest -v                                        # código corrigido: 15 casos (22 testes com as ampliações) + 14 complementares passam
 $env:SUT_VERSAO='original'; & $py -m pytest -rxX          # no original: defeitos aparecem como xfail estrito
 & $py -m pytest -m funcional --cov=hotel.views --cov-branch --cov-report=term-missing
 & $py scripts/etapas.py funcional-original                # uma etapa, com evidências em evidencias/
@@ -46,9 +46,9 @@ uv run --no-project --python 3.12 --with python-pptx==1.0.2 python scripts/gerar
 
 | Caminho | Conteúdo |
 |---|---|
-| `tests/test_01_funcional.py` | CT-001 a CT-015: classes de equivalência e valor limite (um caso por classe inválida) |
-| `tests/test_02_estrutural.py` | CT-016 a CT-019: casos guiados pela cobertura |
-| `tests/test_03_mutacao.py` | CT-020 a CT-025: casos que matam mutantes sobreviventes |
+| `tests/test_01_funcional.py` | os 15 casos (CT-001 a CT-015): classes de equivalência e valor limite, com datas reais |
+| `tests/test_02_estrutural.py` | ampliações de CT-001, CT-005 e CT-012 guiadas pela cobertura (nenhum caso novo) |
+| `tests/test_03_mutacao.py` | ampliações de CT-002, CT-003, CT-012 e CT-015 que matam os sobreviventes (nenhum caso novo) |
 | `tests/test_04_secundarios.py` | CT-101 a CT-108 (cancelamento) e CT-111 a CT-116 (consulta): complementares (marca `secundario`, fora das métricas) |
 | `tests/classes_equivalencia.json` | catálogo das 22 classes dos três requisitos e das 17 dos requisitos secundários |
 | `tests/conftest.py` | fixtures, escolha do SUT (`SUT_VERSAO`), marcas `ce`/`defeito`, exportação da rastreabilidade |

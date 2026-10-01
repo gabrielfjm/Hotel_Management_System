@@ -9,6 +9,7 @@ Grava evidencias/evolucao.json e evidencias/rastreabilidade.md.
 from collections import defaultdict
 import json
 from pathlib import Path
+import re
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,20 +21,34 @@ def ler(caminho):
 
 
 def contagem_junit(caminho):
+    """Conta por CASO (CT-xxx): um caso pode ter várias funções pytest (o caso e suas ampliações).
+    Um caso falha se qualquer uma das suas funções falhar; xfail aparece como skipped no JUnit."""
     raiz = ET.parse(caminho).getroot()
-    suite = raiz if raiz.tag == "testsuite" else raiz.find("testsuite")
-    total = int(suite.get("tests"))
-    pulados = int(suite.get("skipped"))  # xfail aparece como skipped no JUnit
-    falhas = int(suite.get("failures")) + int(suite.get("errors"))
-    return {"casos": total, "passaram": total - pulados - falhas, "xfail": pulados, "falharam": falhas}
+    casos = defaultdict(lambda: "passou")
+    testes = 0
+    for teste in raiz.iter("testcase"):
+        caso = re.search(r"CT_(\d{3})", teste.get("name", ""))
+        if not caso:
+            continue
+        testes += 1
+        chave = f"CT-{caso.group(1)}"
+        if teste.find("failure") is not None or teste.find("error") is not None:
+            casos[chave] = "falhou"
+        elif teste.find("skipped") is not None and casos[chave] != "falhou":
+            casos[chave] = "xfail"
+        else:
+            casos[chave] = casos[chave]
+    valores = list(casos.values())
+    return {"casos": len(casos), "testes": testes, "passaram": valores.count("passou"),
+            "xfail": valores.count("xfail"), "falharam": valores.count("falhou")}
 
 
 def main():
     etapas = [
         ("1. Funcional", "Classes de equivalência + valor limite", "funcional-original", None),
-        ("2. Estrutural", "Cobertura de comandos e desvios", "estrutural-original", None),
-        ("3. Correção", "Suíte funcional + estrutural no código corrigido", "suite-corrigida", "inicial"),
-        ("4. Mutação", "Casos para matar mutantes sobreviventes", "final-corrigida", "final"),
+        ("2. Estrutural", "5 casos reaproveitados; 3 ampliados para a cobertura", "estrutural-original", None),
+        ("3. Correção", "Mesmos casos no código corrigido", "suite-corrigida", "inicial"),
+        ("4. Mutação", "Mesmos 15 casos; 4 ampliados para matar sobreviventes", "final-corrigida", "final"),
     ]
     linhas = []
     for nome, tecnica, pasta, rodada in etapas:
@@ -80,7 +95,7 @@ def main():
     (EVID / "rastreabilidade.md").write_text("\n".join(md) + "\n", encoding="utf-8")
 
     for linha in linhas:
-        print(f'{linha["etapa"]:<14} {linha["casos"]:>3} casos  cmd {linha["pct_comandos"]:>5}%  '
+        print(f'{linha["etapa"]:<14} {linha["casos"]:>3} casos ({linha["testes"]} testes)  cmd {linha["pct_comandos"]:>5}%  '
               f'desv {linha["pct_desvios"]:>5}%  mutação {linha["mutacao"]} ({linha["escore_pct"]})')
     print(f"Classes sem caso funcional: {faltando or 'nenhuma'}; IDs desconhecidos: {desconhecidas or 'nenhum'}")
     if faltando or desconhecidas:

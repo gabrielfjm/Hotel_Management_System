@@ -3,13 +3,13 @@
 # Comando: SUT_VERSAO=original -m pytest -v -rxX -m secundario --cov=hotel.views --cov-branch --cov-report=term-missing --cov-report=json:C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-original\coverage.json --cov-report=html:C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-original\htmlcov --junitxml=C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-original\junit.xml --rastreabilidade=C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-original\rastreabilidade.json
 
 ============================= test session starts =============================
-platform win32 -- Python 3.9.25, pytest-8.4.2, pluggy-1.6.0 -- C:\Users\Gabriel Felipe\AppData\Roaming\uv\python\cpython-3.9-windows-x86_64-none\python.exe
+platform win32 -- Python 3.9.25, pytest-8.4.2, pluggy-1.6.0 -- C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\.venv\Scripts\python.exe
 SUT_VERSAO=original; hotel.views=C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\.sut-original\hotel\views.py
 rootdir: C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado
 configfile: pytest.ini
 testpaths: tests
 plugins: cov-6.3.0
-collecting ... collected 33 items / 19 deselected / 14 selected
+collecting ... collected 36 items / 22 deselected / 14 selected
 
 tests/test_04_secundarios.py::test_CT_101_titular_cancela_propria_reserva PASSED [  7%]
 tests/test_04_secundarios.py::test_CT_102_cancelamento_sem_sessao_redireciona_e_preserva XFAIL [ 14%]
@@ -27,8 +27,8 @@ tests/test_04_secundarios.py::test_CT_115_consulta_de_um_usuario_nao_altera_list
 tests/test_04_secundarios.py::test_CT_116_consulta_omite_dois_quartos_ocupados_consecutivos XFAIL [100%]
 
 ============================== warnings summary ===============================
-.venv\Lib\site-packages\flask_sqlalchemy\__init__.py:800
-  C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\.venv\Lib\site-packages\flask_sqlalchemy\__init__.py:800: UserWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True to suppress this warning.
+.venv\lib\site-packages\flask_sqlalchemy\__init__.py:800
+  C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\.venv\lib\site-packages\flask_sqlalchemy\__init__.py:800: UserWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True to suppress this warning.
     warnings.warn('SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True to suppress this warning.')
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
@@ -55,4 +55,4 @@ XFAIL tests/test_04_secundarios.py::test_CT_113_consulta_com_zero_hospedes_e_rej
 XFAIL tests/test_04_secundarios.py::test_CT_114_hospedes_acima_da_capacidade_ocultam_o_quarto - DEF-14: consulta ignora a quantidade de hóspedes
 XFAIL tests/test_04_secundarios.py::test_CT_115_consulta_de_um_usuario_nao_altera_listagem_de_outro - DEF-16: filtro de disponibilidade é global e vaza entre sessões
 XFAIL tests/test_04_secundarios.py::test_CT_116_consulta_omite_dois_quartos_ocupados_consecutivos - DEF-17: remoção durante a iteração pula o quarto seguinte
-=========== 3 passed, 19 deselected, 11 xfailed, 1 warning in 1.20s ===========
+=========== 3 passed, 22 deselected, 11 xfailed, 1 warning in 3.59s ===========

@@ -10,9 +10,9 @@ Legenda como na seção 4.3. Casos da marca `secundario` (fora das métricas).
 | CT-106 | RF-08 | CE-31, 33, 35, 37, 40 | cancelar reserva com pagamento | reserva e pagamento removidos | F – DEF-11 |
 | CT-107 | RF-08 | CE-31, 33, 35, 37 | usuária com uid 1000 cancela a própria reserva | cancelada | P |
 | CT-108 | RF-08 | CE-36 | Ana (uid 1) tenta cancelar reserva de Bruno (uid 2) | 403; reserva mantida | F – DEF-08 |
-| CT-111 | RF-04 | CE-41, 43, 45, 46 | 101 ocupado D+10–12; consulta D+10–12, 2 hóspedes | lista 102, 103 | P |
-| CT-112 | RF-04 | CE-42 | consulta com entrada D+12 e saída D+10 | recusa (`/available`) | F – DEF-12 |
+| CT-111 | RF-04 | CE-41, 43, 45, 46 | 101 ocupado de 10/03/2030 a 12/03/2030; consulta nas mesmas datas, 2 hóspedes | lista 102, 301 | P |
+| CT-112 | RF-04 | CE-42 | consulta com entrada 12/03/2030 e saída 10/03/2030 | recusa (`/available`) | F – DEF-12 |
 | CT-113 | RF-04 | CE-44 | consulta com 0 hóspedes | recusa | F – DEF-13 |
-| CT-114 | RF-04 | CE-46 | consulta com 3 hóspedes | lista 102, 103 (o 101 comporta 2) | F – DEF-14 |
-| CT-115 | RF-04 | CE-47 | Ana consulta D+10 com o 101 ocupado; Bruno, em outra sessão, abre `/rooms` | Bruno vê 101, 102, 103 | F – DEF-16 |
-| CT-116 | RF-04 | CE-46 | 101 e 102 ocupados em D+10; consulta D+10, 1 hóspede | só o 103 | F – DEF-17 |
+| CT-114 | RF-04 | CE-46 | consulta com 3 hóspedes | lista 102, 301 (o 101 comporta 2) | F – DEF-14 |
+| CT-115 | RF-04 | CE-47 | Ana consulta de 10/03/2030 a 12/03/2030 com o 101 ocupado; Bruno, em outra sessão, abre `/rooms` | Bruno vê 101, 102, 301 | F – DEF-16 |
+| CT-116 | RF-04 | CE-46 | 101 e 102 ocupados de 10/03/2030 a 12/03/2030; consulta nas mesmas datas, 1 hóspede | só o 301 | F – DEF-17 |
