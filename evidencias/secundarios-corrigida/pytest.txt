@@ -3,26 +3,32 @@
 # Comando: SUT_VERSAO=corrigida -m pytest -v -rxX -m secundario --cov=hotel.views --cov-branch --cov-report=term-missing --cov-report=json:C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-corrigida\coverage.json --cov-report=html:C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-corrigida\htmlcov --junitxml=C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-corrigida\junit.xml --rastreabilidade=C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-corrigida\rastreabilidade.json
 
 ============================= test session starts =============================
-platform win32 -- Python 3.9.25, pytest-8.4.2, pluggy-1.6.0 -- C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\.venv\Scripts\python.exe
+platform win32 -- Python 3.9.25, pytest-8.4.2, pluggy-1.6.0 -- C:\Users\Gabriel Felipe\AppData\Roaming\uv\python\cpython-3.9-windows-x86_64-none\python.exe
 SUT_VERSAO=corrigida; hotel.views=C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\hotel\views.py
 rootdir: C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado
 configfile: pytest.ini
 testpaths: tests
 plugins: cov-6.3.0
-collecting ... collected 68 items / 60 deselected / 8 selected
+collecting ... collected 33 items / 19 deselected / 14 selected
 
-tests/test_04_secundarios.py::test_CT_024_titular_cancela_propria_reserva PASSED [ 12%]
-tests/test_04_secundarios.py::test_CT_025_cancelamento_sem_sessao_redireciona_e_preserva PASSED [ 25%]
-tests/test_04_secundarios.py::test_CT_026_cancelamento_de_reserva_inexistente_retorna_404 PASSED [ 37%]
-tests/test_04_secundarios.py::test_CT_027_cancelamento_de_reserva_alheia_e_negado PASSED [ 50%]
-tests/test_04_secundarios.py::test_CT_028_get_de_cancelamento_nao_altera_dados PASSED [ 62%]
-tests/test_04_secundarios.py::test_CT_029_cancelamento_com_pagamento_nao_deixa_registro_orfao PASSED [ 75%]
-tests/test_04_secundarios.py::test_CT_057_titular_com_identificador_alto_cancela_propria_reserva PASSED [ 87%]
-tests/test_04_secundarios.py::test_CT_058_usuario_de_id_menor_nao_cancela_reserva_de_id_maior PASSED [100%]
+tests/test_04_secundarios.py::test_CT_101_titular_cancela_propria_reserva PASSED [  7%]
+tests/test_04_secundarios.py::test_CT_102_cancelamento_sem_sessao_redireciona_e_preserva PASSED [ 14%]
+tests/test_04_secundarios.py::test_CT_103_cancelamento_de_reserva_inexistente_retorna_404 PASSED [ 21%]
+tests/test_04_secundarios.py::test_CT_104_cancelamento_de_reserva_alheia_e_negado PASSED [ 28%]
+tests/test_04_secundarios.py::test_CT_105_get_de_cancelamento_nao_altera_dados PASSED [ 35%]
+tests/test_04_secundarios.py::test_CT_106_cancelamento_com_pagamento_nao_deixa_registro_orfao PASSED [ 42%]
+tests/test_04_secundarios.py::test_CT_107_titular_com_identificador_alto_cancela_propria_reserva PASSED [ 50%]
+tests/test_04_secundarios.py::test_CT_108_usuario_de_id_menor_nao_cancela_reserva_de_id_maior PASSED [ 57%]
+tests/test_04_secundarios.py::test_CT_111_consulta_omite_quarto_ocupado_e_lista_livres PASSED [ 64%]
+tests/test_04_secundarios.py::test_CT_112_consulta_com_datas_invertidas_e_rejeitada PASSED [ 71%]
+tests/test_04_secundarios.py::test_CT_113_consulta_com_zero_hospedes_e_rejeitada PASSED [ 78%]
+tests/test_04_secundarios.py::test_CT_114_hospedes_acima_da_capacidade_ocultam_o_quarto PASSED [ 85%]
+tests/test_04_secundarios.py::test_CT_115_consulta_de_um_usuario_nao_altera_listagem_de_outro PASSED [ 92%]
+tests/test_04_secundarios.py::test_CT_116_consulta_omite_dois_quartos_ocupados_consecutivos PASSED [100%]
 
 ============================== warnings summary ===============================
-.venv\lib\site-packages\flask_sqlalchemy\__init__.py:800
-  C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\.venv\lib\site-packages\flask_sqlalchemy\__init__.py:800: UserWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True to suppress this warning.
+.venv\Lib\site-packages\flask_sqlalchemy\__init__.py:800
+  C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\.venv\Lib\site-packages\flask_sqlalchemy\__init__.py:800: UserWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True to suppress this warning.
     warnings.warn('SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True to suppress this warning.')
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
@@ -32,9 +38,9 @@ _______________ coverage: platform win32, python 3.9.25-final-0 _______________
 
 Name             Stmts   Miss Branch BrPart  Cover   Missing
 ------------------------------------------------------------
-hotel\views.py     228    177     84      2    19%   17, 22-24, 29-36, 41, 46-102, 127-135, 140-149, 154-164, 169-171, 176-188, 195-209, 214-258, 262-275, 280-288, 292
+hotel\views.py     228    153     84      3    29%   29-36, 41, 46-102, 127-135, 140-149, 154-164, 169-171, 207-209, 214-258, 262-275, 280-288, 292
 ------------------------------------------------------------
-TOTAL              228    177     84      2    19%
+TOTAL              228    153     84      3    29%
 Coverage HTML written to dir C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-corrigida\htmlcov
 Coverage JSON written to file C:\PROJETOS\MESTRADO\Verificação de Validação\GESTÃO DE TESTES\output\hotel-management-testado\evidencias\secundarios-corrigida\coverage.json
-================= 8 passed, 60 deselected, 1 warning in 0.59s =================
+================ 14 passed, 19 deselected, 1 warning in 0.61s =================

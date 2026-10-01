@@ -1,6 +1,6 @@
 # Testes do Hotel Management System
 
-Fork de [CrystalWang1225/Hotel_Management_System](https://github.com/CrystalWang1225/Hotel_Management_System) (commit `71b396b`) com testes funcionais, estruturais e de mutação e com a correção dos 19 defeitos encontrados. Recorte: REQ-01 Reservar quartos, REQ-02 Data de entrada e REQ-03 Data de saída; o cancelamento (RF-08) tem testes complementares. Relatório: [docs/relatorio-tecnico.pdf](docs/relatorio-tecnico.pdf) (fonte: [docs/RELATORIO_TECNICO.md](docs/RELATORIO_TECNICO.md)). Apresentação: [docs/apresentacao-2-slides.pptx](docs/apresentacao-2-slides.pptx) (com notas do apresentador) e slides de apoio à demonstração em [docs/apresentacao-apoio-demo.pptx](docs/apresentacao-apoio-demo.pptx).
+Fork de [CrystalWang1225/Hotel_Management_System](https://github.com/CrystalWang1225/Hotel_Management_System) (commit `71b396b`) com testes funcionais, estruturais e de mutação e com a correção dos 19 defeitos encontrados. Recorte: REQ-01 Reservar quartos, REQ-02 Data de entrada e REQ-03 Data de saída; a consulta de disponibilidade (RF-04) e o cancelamento (RF-08) têm testes complementares. Relatório: [docs/relatorio-tecnico.pdf](docs/relatorio-tecnico.pdf) (fonte: [docs/RELATORIO_TECNICO.md](docs/RELATORIO_TECNICO.md)). Apresentação: [docs/apresentacao-2-slides.pptx](docs/apresentacao-2-slides.pptx) (com notas do apresentador) e slides de apoio à demonstração em [docs/apresentacao-apoio-demo.pptx](docs/apresentacao-apoio-demo.pptx).
 
 ## Tags
 
@@ -18,7 +18,7 @@ Windows (PowerShell) ou Linux/macOS (bash), [uv](https://docs.astral.sh/uv/) e g
 
 ```powershell
 ./setup_local.ps1        # .venv (Python 3.9: app, pytest, pytest-cov) e .venv-mutation (Python 3.12: Cosmic Ray)
-./etapas.ps1             # tudo: métricas, etapas 1-2 no original, suíte corrigida, mutação inicial e final, suíte final (~10 min)
+./etapas.ps1             # tudo: métricas, etapas 1-2 no original, suíte corrigida, mutação inicial e final, suíte final (~8 min)
 ./etapas.ps1 -SemMutacao # só pytest + coverage (~30 s)
 ./executar.ps1           # sistema em http://127.0.0.1:5000 (ana@example.test / senha123)
 ```
@@ -31,7 +31,7 @@ Linux/macOS: `./setup.sh`, `./etapas.sh` (ou `./etapas.sh --sem-mutacao`) e `./e
 
 ```powershell
 $py = '.venv/Scripts/python.exe'
-& $py -m pytest -v                                        # código corrigido: 60 casos principais + 8 complementares passam
+& $py -m pytest -v                                        # código corrigido: 25 casos principais + 14 complementares passam
 $env:SUT_VERSAO='original'; & $py -m pytest -rxX          # no original: defeitos aparecem como xfail estrito
 & $py -m pytest -m funcional --cov=hotel.views --cov-branch --cov-report=term-missing
 & $py scripts/etapas.py funcional-original                # uma etapa, com evidências em evidencias/
@@ -46,11 +46,11 @@ uv run --no-project --python 3.12 --with python-pptx==1.0.2 python scripts/gerar
 
 | Caminho | Conteúdo |
 |---|---|
-| `tests/test_01_funcional.py` | 50 casos (CT-001 a CT-023, CT-030 a CT-043, CT-051 a CT-054, CT-060 a CT-068): classes de equivalência e valor limite |
-| `tests/test_02_estrutural.py` | CT-044 a CT-050: casos guiados pela cobertura |
-| `tests/test_03_mutacao.py` | CT-055, CT-056 e CT-059: casos que matam mutantes sobreviventes |
-| `tests/test_04_secundarios.py` | CT-024 a CT-029, CT-057 e CT-058: complementares do cancelamento (marca `secundario`, fora das métricas) |
-| `tests/classes_equivalencia.json` | catálogo das 42 classes dos três requisitos e das 10 do cancelamento |
+| `tests/test_01_funcional.py` | CT-001 a CT-015: classes de equivalência e valor limite (um caso por classe inválida) |
+| `tests/test_02_estrutural.py` | CT-016 a CT-019: casos guiados pela cobertura |
+| `tests/test_03_mutacao.py` | CT-020 a CT-025: casos que matam mutantes sobreviventes |
+| `tests/test_04_secundarios.py` | CT-101 a CT-108 (cancelamento) e CT-111 a CT-116 (consulta): complementares (marca `secundario`, fora das métricas) |
+| `tests/classes_equivalencia.json` | catálogo das 22 classes dos três requisitos e das 17 dos requisitos secundários |
 | `tests/conftest.py` | fixtures, escolha do SUT (`SUT_VERSAO`), marcas `ce`/`defeito`, exportação da rastreabilidade |
 | `mutacao/*.toml` | configuração do Cosmic Ray por rodada |
 | `scripts/` | `etapas.py`, `mutacao.py`, `metricas_codigo.py`, `evolucao.py`, `capturar_telas.py`, `gerar_relatorio.py`, `gerar_slides.py`, `seed_demo.py`, `inspecionar_base.py` |
@@ -67,4 +67,4 @@ uv run --no-project --python 3.12 --with python-pptx==1.0.2 python scripts/gerar
 Quando este repositório está dentro da pasta da ferramenta (`output/hotel-management-testado`), `iniciar-integracao.ps1` inicia a ponte local:
 
 * `.\iniciar-integracao.ps1 -Versao original`: executa a suíte no código original; os defeitos aparecem como falhas e viram `DEF-xxx` no painel.
-* `.\iniciar-integracao.ps1`: executa a suíte no código corrigido, com cobertura das funções do recorte e mutação pelo botão **Executar mutação** (`cosmic-ray.toml` + `scripts/selecionar_mutantes.py`, os mesmos 189 mutantes).
+* `.\iniciar-integracao.ps1`: executa a suíte no código corrigido, com cobertura das funções do recorte e mutação pelo botão **Executar mutação** (`cosmic-ray.toml` + `scripts/selecionar_mutantes.py`, os mesmos 141 mutantes).

@@ -6,10 +6,10 @@ Executar com o Python do ambiente de mutação (.venv-mutation), na raiz do repo
     .venv-mutation/Scripts/python.exe scripts/mutacao.py final
 
 Escopo: TODOS os mutantes que os operadores padrão do Cosmic Ray geram nas
-linhas das funções dos três requisitos principais (reserve, cal_cost,
-check_available, show_rooms e as auxiliares _sessao_autenticada,
-_periodos_conflitam, _quartos_ocupados e _ler_quartos). Não há amostragem.
-Funções fora do recorte (signup, signin, update_reservation, delete_reservation, payment...) não
+linhas das funções dos três requisitos principais (reserve, cal_cost e as
+auxiliares _sessao_autenticada, _periodos_conflitam, _quartos_ocupados e
+_ler_quartos). Não há amostragem. Funções fora do recorte (consulta,
+signup, signin, update_reservation, delete_reservation, payment...) não
 têm testes por decisão de escopo e são excluídas para não distorcer o escore.
 
 Saídas em evidencias/mutacao-<rodada>/:
@@ -34,7 +34,7 @@ from cosmic_ray.work_item import TestOutcome
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = Path("hotel/views.py")
-RECORTE = ("reserve", "cal_cost", "check_available", "show_rooms")
+RECORTE = ("reserve", "cal_cost")
 COSMIC_RAY = Path(sys.executable).with_name("cosmic-ray.exe" if sys.platform == "win32" else "cosmic-ray")
 
 

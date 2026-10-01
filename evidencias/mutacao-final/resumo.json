@@ -2,7 +2,7 @@
   "rodada": "final",
   "configuracao": "evidencias\\mutacao-final\\cosmic-ray.toml",
   "comando": "exec evidencias\\mutacao-final\\cosmic-ray.toml evidencias\\mutacao-final\\sessao.sqlite",
-  "duracao_s": 314.8,
+  "duracao_s": 205.9,
   "funcoes": {
     "_sessao_autenticada": [
       10,
@@ -20,14 +20,6 @@
       27,
       36
     ],
-    "show_rooms": [
-      174,
-      190
-    ],
-    "check_available": [
-      194,
-      209
-    ],
     "reserve": [
       213,
       258
@@ -37,13 +29,13 @@
       275
     ]
   },
-  "total": 189,
-  "mortos": 181,
-  "sobreviventes": 8,
+  "total": 141,
+  "mortos": 134,
+  "sobreviventes": 7,
   "incompetentes": 0,
   "outros": {},
   "pendentes": 0,
-  "escore_pct": 95.8,
+  "escore_pct": 95.0,
   "por_funcao": {
     "_ler_quartos": {
       "killed": 16,
@@ -61,31 +53,24 @@
     "cal_cost": {
       "killed": 34
     },
-    "check_available": {
-      "killed": 30,
-      "survived": 1
-    },
     "reserve": {
       "killed": 61,
       "survived": 5
-    },
-    "show_rooms": {
-      "killed": 17
     }
   },
   "por_operador": {
     "core/AddNot": {
-      "killed": 14
+      "killed": 9
     },
     "core/ExceptionReplacer": {
       "killed": 1
     },
     "core/NumberReplacer": {
-      "killed": 20,
+      "killed": 12,
       "survived": 4
     },
     "core/ReplaceAndWithOr": {
-      "killed": 2
+      "killed": 1
     },
     "core/ReplaceBinaryOperator_Mul_Add": {
       "killed": 1
@@ -154,47 +139,26 @@
       "killed": 1
     },
     "core/ReplaceComparisonOperator_Eq_Gt": {
-      "killed": 4
+      "killed": 3
     },
     "core/ReplaceComparisonOperator_Eq_GtE": {
       "killed": 2,
-      "survived": 2
+      "survived": 1
     },
     "core/ReplaceComparisonOperator_Eq_Is": {
-      "killed": 4
+      "killed": 3
     },
     "core/ReplaceComparisonOperator_Eq_IsNot": {
-      "killed": 4
+      "killed": 3
     },
     "core/ReplaceComparisonOperator_Eq_Lt": {
-      "killed": 4
+      "killed": 3
     },
     "core/ReplaceComparisonOperator_Eq_LtE": {
-      "killed": 4
+      "killed": 3
     },
     "core/ReplaceComparisonOperator_Eq_NotEq": {
-      "killed": 4
-    },
-    "core/ReplaceComparisonOperator_GtE_Eq": {
-      "killed": 1
-    },
-    "core/ReplaceComparisonOperator_GtE_Gt": {
-      "killed": 1
-    },
-    "core/ReplaceComparisonOperator_GtE_Is": {
-      "killed": 1
-    },
-    "core/ReplaceComparisonOperator_GtE_IsNot": {
-      "killed": 1
-    },
-    "core/ReplaceComparisonOperator_GtE_Lt": {
-      "killed": 1
-    },
-    "core/ReplaceComparisonOperator_GtE_LtE": {
-      "killed": 1
-    },
-    "core/ReplaceComparisonOperator_GtE_NotEq": {
-      "killed": 1
+      "killed": 3
     },
     "core/ReplaceComparisonOperator_Gt_Eq": {
       "killed": 1
@@ -218,37 +182,37 @@
       "killed": 1
     },
     "core/ReplaceComparisonOperator_Is_IsNot": {
-      "killed": 8
+      "killed": 4
     },
     "core/ReplaceComparisonOperator_LtE_Eq": {
-      "killed": 3
+      "killed": 2
     },
     "core/ReplaceComparisonOperator_LtE_Gt": {
-      "killed": 3
+      "killed": 2
     },
     "core/ReplaceComparisonOperator_LtE_GtE": {
-      "killed": 3
+      "killed": 2
     },
     "core/ReplaceComparisonOperator_LtE_Is": {
-      "killed": 3
+      "killed": 2
     },
     "core/ReplaceComparisonOperator_LtE_IsNot": {
-      "killed": 3
+      "killed": 2
     },
     "core/ReplaceComparisonOperator_LtE_Lt": {
-      "killed": 3
+      "killed": 2
     },
     "core/ReplaceComparisonOperator_LtE_NotEq": {
-      "killed": 3
+      "killed": 2
     },
     "core/ReplaceComparisonOperator_Lt_Eq": {
-      "killed": 5
+      "killed": 4
     },
     "core/ReplaceComparisonOperator_Lt_Gt": {
-      "killed": 5
+      "killed": 4
     },
     "core/ReplaceComparisonOperator_Lt_GtE": {
-      "killed": 5
+      "killed": 4
     },
     "core/ReplaceComparisonOperator_Lt_Is": {
       "killed": 3
@@ -257,10 +221,10 @@
       "killed": 3
     },
     "core/ReplaceComparisonOperator_Lt_LtE": {
-      "killed": 5
+      "killed": 4
     },
     "core/ReplaceComparisonOperator_Lt_NotEq": {
-      "killed": 5
+      "killed": 4
     },
     "core/ReplaceComparisonOperator_NotEq_Eq": {
       "killed": 1
@@ -287,7 +251,7 @@
       "killed": 1
     },
     "core/ReplaceOrWithAnd": {
-      "killed": 10
+      "killed": 6
     },
     "core/ReplaceUnaryOperator_Delete_Not": {
       "killed": 1
@@ -298,56 +262,49 @@
   },
   "sobreviventes_lista": [
     {
-      "job_id": "ff81d01c88554f91a602cea65c59bcdd",
-      "funcao": "check_available",
-      "linha": 197,
-      "operador": "core/ReplaceComparisonOperator_Eq_GtE",
-      "ocorrencia": 7
-    },
-    {
-      "job_id": "c872875eb66e4199a4e31787ea6408f2",
+      "job_id": "7ca9e47ee48e4745ab5e753071e05f81",
       "funcao": "reserve",
       "linha": 217,
       "operador": "core/ReplaceComparisonOperator_Eq_GtE",
       "ocorrencia": 8
     },
     {
-      "job_id": "f943509ee3c9498391a769541d7c3392",
+      "job_id": "cdbb089da3ac4775a47f69761140774b",
       "funcao": "_ler_quartos",
       "linha": 34,
       "operador": "core/ReplaceComparisonOperator_NotEq_Lt",
       "ocorrencia": 0
     },
     {
-      "job_id": "06c71d9010fe458a912617a2f06c9ba8",
+      "job_id": "6d7f5ba913e04c77aa4a4c313b9723e2",
       "funcao": "_ler_quartos",
       "linha": 34,
       "operador": "core/ReplaceComparisonOperator_NotEq_IsNot",
       "ocorrencia": 0
     },
     {
-      "job_id": "fda52a4eb07b49cba50d018da0250252",
+      "job_id": "86af8e5ead214cb78fbb7d78a2c27612",
       "funcao": "reserve",
       "linha": 226,
       "operador": "core/NumberReplacer",
       "ocorrencia": 24
     },
     {
-      "job_id": "eaaf56e8e4ff432f94c2e35d46fc4748",
+      "job_id": "ea4bb8d5c83e4aa0a473def5cc03e08f",
       "funcao": "reserve",
       "linha": 226,
       "operador": "core/NumberReplacer",
       "ocorrencia": 26
     },
     {
-      "job_id": "c67f86c1099548ada7af27dd7413f1a5",
+      "job_id": "1ce1b3b9fe0e403db544d8ab0c0be48f",
       "funcao": "reserve",
       "linha": 247,
       "operador": "core/NumberReplacer",
       "ocorrencia": 34
     },
     {
-      "job_id": "8d22a8465a2349eda4cd0e80cda4f368",
+      "job_id": "3e1d328721d648b0ba08d4d276607f4b",
       "funcao": "reserve",
       "linha": 247,
       "operador": "core/NumberReplacer",

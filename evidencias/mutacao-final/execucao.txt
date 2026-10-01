@@ -11,6 +11,6 @@ test-command = "\"C:/PROJETOS/MESTRADO/Verificação de Validação/GESTÃO DE T
 name = "local"
 
 # Comando: exec evidencias\mutacao-final\cosmic-ray.toml evidencias\mutacao-final\sessao.sqlite
-# Duração: 314.8 s; código de saída: 0
+# Duração: 205.9 s; código de saída: 0
 
 

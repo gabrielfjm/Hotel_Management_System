@@ -48,7 +48,8 @@ def main():
     final = ler("final-corrigida/cobertura-recorte.json")
     mut_ini = ler("mutacao-inicial/resumo.json")
     mut_fim = ler("mutacao-final/resumo.json")
-    equivalentes = 8
+    equivalentes = 7  # S8 a S14, classificados na seção 7.2 do relatório
+    casos_mutacao = 6
     vivos_nao_equiv = mut_fim["sobreviventes"] - equivalentes
 
     linhas = ["| Etapa | Técnica | Código | Nº de casos | Passaram | Falharam (defeito confirmado) | Cobertura de comandos | "
@@ -113,9 +114,9 @@ def main():
         "«MUT_FINAL_TEXTO»": (
             f'{mut_fim["total"]} mutantes: {mut_fim["mortos"]} mortos, {mut_fim["sobreviventes"]} sobreviventes, '
             f'{mut_fim["incompetentes"]} incompetentes. Escore de {pct(mut_fim["escore_pct"])} '
-            f'(inicial: {pct(mut_ini["escore_pct"])}), em {mut_fim["duracao_s"]:.0f} s.** Os três casos novos '
-            f'mataram os três sobreviventes não equivalentes. Restam {mut_fim["sobreviventes"]} sobreviventes, '
-            f'todos classificados como equivalentes (S4 a S11); não equivalentes restantes: {vivos_nao_equiv}. '
+            f'(inicial: {pct(mut_ini["escore_pct"])}), em {mut_fim["duracao_s"]:.0f} s.** Os {casos_mutacao} casos novos '
+            f'mataram os {mut_ini["sobreviventes"] - equivalentes} sobreviventes não equivalentes. Restam {mut_fim["sobreviventes"]} sobreviventes, '
+            f'todos classificados como equivalentes (S8 a S14); não equivalentes restantes: {vivos_nao_equiv}. '
             f'O arquivo `evidencias/mutacao-final/sobreviventes.txt` traz o diff de cada um.'),
         "«MUT_AJUSTADO»": pct(100 * mut_fim["mortos"] / (mut_fim["total"] - equivalentes)) +
                           f' ({mut_fim["mortos"]}/{mut_fim["total"] - equivalentes})',

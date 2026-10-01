@@ -1,5 +1,5 @@
 ﻿# Inicia a ponte do V&V TestLab (integration/vv_bridge.py, na raiz da ferramenta) para este repositório.
-# Uso:  .\iniciar-integracao.ps1                    -> código corrigido: 64 casos devem passar; mutação disponível
+# Uso:  .\iniciar-integracao.ps1                    -> código corrigido: 25 casos devem passar; mutação disponível
 #       .\iniciar-integracao.ps1 -Versao original   -> código original (tag sut-original): os defeitos aparecem
 #                                                      como falhas e viram DEF-xxx no painel
 param([ValidateSet('corrigida', 'original')][string]$Versao = 'corrigida')
@@ -12,7 +12,7 @@ $bridge = Join-Path $PSScriptRoot '../../integration/vv_bridge.py'
 if (!(Test-Path $python)) { throw 'Execute .\setup_local.ps1 primeiro.' }
 if (!(Test-Path $bridge)) { throw 'A ponte integration/vv_bridge.py precisa estar na pasta raiz do V&V TestLab.' }
 
-$funcoes = 'reserve,cal_cost,check_available,show_rooms'
+$funcoes = 'reserve,cal_cost'
 # O Windows procura "python" primeiro na pasta do cosmic-ray.exe (.venv-mutation, sem Flask); por isso a
 # configuração usada pela ponte recebe o caminho absoluto do Python de .venv.
 New-Item -ItemType Directory -Force (Join-Path $PSScriptRoot '.vvtestlab') | Out-Null
@@ -29,7 +29,7 @@ if ($Versao -eq 'original') {
     $env:SUT_VERSAO = 'corrigida'
     $funcoes += ',_sessao_autenticada,_periodos_conflitam,_quartos_ocupados,_ler_quartos'
     $pytestArgs = @('tests', '-m', 'funcional or estrutural or mutacao')
-    Write-Host 'Ponte no CÓDIGO CORRIGIDO. "Executar e sincronizar" e "Executar mutação" (~5 min) disponíveis.'
+    Write-Host 'Ponte no CÓDIGO CORRIGIDO. "Executar e sincronizar" e "Executar mutação" (~4 min) disponíveis.'
 }
 
 & $python $bridge `

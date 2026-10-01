@@ -1,126 +1,13 @@
 {
   "recorte": {
-    "comandos": 92,
+    "comandos": 63,
     "comandos_cobertos": 0,
-    "desvios": 50,
+    "desvios": 34,
     "desvios_cobertos": 0,
     "pct_comandos": 0.0,
     "pct_desvios": 0.0
   },
   "por_funcao": {
-    "show_rooms": {
-      "comandos": 20,
-      "comandos_cobertos": 0,
-      "desvios": 12,
-      "desvios_cobertos": 0,
-      "linhas_nao_cobertas": [
-        144,
-        145,
-        146,
-        147,
-        148,
-        150,
-        151,
-        153,
-        154,
-        155,
-        156,
-        157,
-        158,
-        159,
-        160,
-        163,
-        164,
-        165,
-        166,
-        167
-      ],
-      "desvios_nao_cobertos": [
-        [
-          144,
-          145
-        ],
-        [
-          144,
-          166
-        ],
-        [
-          150,
-          151
-        ],
-        [
-          150,
-          153
-        ],
-        [
-          155,
-          156
-        ],
-        [
-          155,
-          164
-        ],
-        [
-          156,
-          155
-        ],
-        [
-          156,
-          157
-        ],
-        [
-          157,
-          156
-        ],
-        [
-          157,
-          158
-        ],
-        [
-          160,
-          157
-        ],
-        [
-          160,
-          163
-        ]
-      ]
-    },
-    "check_available": {
-      "comandos": 9,
-      "comandos_cobertos": 0,
-      "desvios": 4,
-      "desvios_cobertos": 0,
-      "linhas_nao_cobertas": [
-        172,
-        173,
-        174,
-        175,
-        177,
-        178,
-        179,
-        180,
-        181
-      ],
-      "desvios_nao_cobertos": [
-        [
-          172,
-          173
-        ],
-        [
-          172,
-          180
-        ],
-        [
-          175,
-          177
-        ],
-        [
-          175,
-          179
-        ]
-      ]
-    },
     "reserve": {
       "comandos": 49,
       "comandos_cobertos": 0,
@@ -343,13 +230,13 @@
   },
   "views_py_inteiro": {
     "comandos": 222,
-    "comandos_cobertos": 39,
+    "comandos_cobertos": 62,
     "desvios": 94,
-    "desvios_cobertos": 4,
-    "pct_total": 13.6
+    "desvios_cobertos": 16,
+    "pct_total": 24.7
   },
   "etapa": "secundarios-original",
   "sut": "original",
   "marcas": "secundario",
-  "casos": 68
+  "casos": 33
 }

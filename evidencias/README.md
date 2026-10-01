@@ -7,15 +7,15 @@ Geradas por `etapas.ps1` (e pelos scripts citados). Os números batem com o rela
 | `metricas/` | Caracterização | upstream `71b396b` | — | radon raw/cc e pygount: 5 módulos, 428 LOC, 354 SLOC, 12 classes, 13 funções + 6 métodos | — |
 | `telas/` | Execução do sistema | original e corrigido | — | capturas do navegador (Edge) | — |
 | `telas-vvtestlab/` | Gestão dos testes | — | — | capturas do V&V TestLab com o estudo carregado | — |
-| `funcional-original/` | 1. Funcional | original | 50 | 22 passaram, 28 xfail (defeitos) | 84/92 (91,3%) / 42/50 (84,0%) |
-| `estrutural-original/` | 2. Estrutural | original | 57 | 26 passaram, 31 xfail | 92/92 (100%) / 49/50 (98,0%) |
+| `funcional-original/` | 1. Funcional | original | 15 | 6 passaram, 9 xfail (defeitos) | 60/63 (95,2%) / 29/34 (85,3%) |
+| `estrutural-original/` | 2. Estrutural | original | 19 | 9 passaram, 10 xfail | 63/63 (100%) / 33/34 (97,1%) |
 | `correcoes.diff` | Correção | original → corrigido | — | `git diff sut-original sut-corrigido -- hotel` | — |
-| `suite-corrigida/` | Correção (base da mutação) | corrigido | 57 | 57 passaram | 92/92 (100%) / 38/38 (100%) |
-| `mutacao-inicial/` | 3. Mutação, rodada inicial | corrigido | 57 | 189 mutantes: 178 mortos, 11 sobreviventes (94,2%) | — |
-| `mutacao-final/` | 3. Mutação, rodada final | corrigido | 60 | 189 mutantes: 181 mortos, 8 sobreviventes equivalentes (95,8%) | — |
-| `final-corrigida/` | Suíte final | corrigido | 60 | 60 passaram | 92/92 (100%) / 38/38 (100%) |
-| `secundarios-original/` | Complementares (RF-08, fora das métricas) | original | 8 | 2 passaram, 6 xfail (DEF-07 a DEF-11) | — |
-| `secundarios-corrigida/` | Complementares (RF-08, fora das métricas) | corrigido | 8 | 8 passaram | — |
+| `suite-corrigida/` | Correção (base da mutação) | corrigido | 19 | 19 passaram | 65/65 (100%) / 28/28 (100%) |
+| `mutacao-inicial/` | 3. Mutação, rodada inicial | corrigido | 19 | 141 mutantes: 127 mortos, 14 sobreviventes (90,1%) | — |
+| `mutacao-final/` | 3. Mutação, rodada final | corrigido | 25 | 141 mutantes: 134 mortos, 7 sobreviventes equivalentes (95,0%) | — |
+| `final-corrigida/` | Suíte final | corrigido | 25 | 25 passaram | 65/65 (100%) / 28/28 (100%) |
+| `secundarios-original/` | Complementares (RF-04 e RF-08, fora das métricas) | original | 14 | 3 passaram, 11 xfail (DEF-07 a DEF-17) | — |
+| `secundarios-corrigida/` | Complementares (RF-04 e RF-08, fora das métricas) | corrigido | 14 | 14 passaram | — |
 | `evolucao.json` | Consolidação | — | — | tabela de evolução por etapa | — |
 | `rastreabilidade.md` | Consolidação | — | — | classe → casos e caso → defeito | — |
 

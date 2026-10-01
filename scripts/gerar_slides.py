@@ -114,6 +114,9 @@ def notas(slide, conteudo):
 
 # ---------------------------------------------------------------- slides principais
 
+EQUIV = 7  # sobreviventes equivalentes (S8 a S14, relatório 7.2)
+
+
 def slide_processo(prs, evol, mut_ini, mut_fim):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     cabecalho(s, 1, "Processo de desenvolvimento do teste",
@@ -121,17 +124,17 @@ def slide_processo(prs, evol, mut_ini, mut_fim):
     e = {linha["etapa"][0]: linha for linha in evol}
     etapas = [
         ("Funcional", "pytest · só a especificação", AZUL,
-         ["**42 classes** (23 válidas, 19 inválidas)", "Valor limite: abaixo / no limite / acima",
-          f'**{e["1"]["casos"]} casos** no código original', f'**{e["1"]["xfail"]} falham** → 12 defeitos']),
+         ["**22 classes** (11 válidas, 11 inválidas)", "1 caso por classe inválida, limites embutidos",
+          f'**{e["1"]["casos"]} casos** no código original', f'**{e["1"]["xfail"]} falham** → 9 defeitos']),
         ("Estrutural", "coverage.py", AZUL,
          ["Meta: **100%** de comandos e desvios viáveis", f'**+{e["2"]["casos"] - e["1"]["casos"]} casos** guiados pelas lacunas',
-          "**+3 defeitos** só visíveis no código", f'**{pct(e["2"]["pct_desvios"])}** dos desvios (1 inviável)']),
+          "**+1 defeito** só visível no código", f'**{pct(e["2"]["pct_desvios"])}** dos desvios (1 inviável)']),
         ("Correção", "fork no GitHub · 6 commits", VINHO,
-         ["**15 defeitos** corrigidos (+4 do cancelamento)", "Cada commit confirmado pelo teste que revelou o defeito",
+         ["**10 defeitos** corrigidos (+9 dos secundários)", "Cada commit confirmado pelo teste que revelou o defeito",
           f'**{e["3"]["casos"]}/{e["3"]["casos"]}** passam, sem skip', "**100%** de comandos e desvios"]),
         ("Mutação", f'Cosmic Ray · {mut_fim["total"]} mutantes', VERDE,
          [f'Inicial: **{pct(mut_ini["escore_pct"])}** ({mut_ini["mortos"]}/{mut_ini["total"]})',
-          f'{mut_ini["sobreviventes"]} vivos: **{mut_ini["sobreviventes"] - 8} matáveis**, 8 equivalentes', f'**+{mut_ini["sobreviventes"] - 8} casos** para os matáveis',
+          f'{mut_ini["sobreviventes"]} vivos: **{mut_ini["sobreviventes"] - EQUIV} matáveis**, {EQUIV} equivalentes', f'**+{e["4"]["casos"] - e["3"]["casos"]} casos** para os matáveis',
           f'Final: **{pct(mut_fim["escore_pct"])}** · 100% dos não equivalentes']),
     ]
     x = 0.45
@@ -161,16 +164,16 @@ def slide_processo(prs, evol, mut_ini, mut_fim):
     notas(s, (
         "Objetivo (30 s): testar um sistema web de terceiros, o Hotel Management System em Flask, em três requisitos "
         "da reserva de quartos: reservar (quartos, hóspedes, disponibilidade, custo), data de entrada e data de saída; os demais RFs foram documentados.\n\n"
-        f"Funcional (40 s): só com o README e a interface, particionei 19 condições em 42 classes e apliquei valor "
-        f"limite (entrada hoje, uma noite, capacidade, estadias adjacentes). Foram {e['1']['casos']} casos; no código "
-        f"original {e['1']['xfail']} falharam e revelaram 12 defeitos.\n\n"
+        f"Funcional (40 s): só com o README e o formulário de reserva, particionei 10 condições em 22 classes: "
+        f"um caso para cada classe inválida, com os limites embutidos (entrada hoje, uma noite, capacidade, estadias adjacentes). "
+        f"Foram {e['1']['casos']} casos; no código original {e['1']['xfail']} falharam e revelaram 9 defeitos.\n\n"
         "Estrutural (40 s): medi com coverage.py --branch e defini a meta de 100% dos desvios viáveis. Os ramos que "
-        "faltavam levaram a 7 casos novos e, lendo o código, a 3 defeitos que a especificação não sugeria: estado "
-        "global, remoção dentro do laço e um produto cartesiano.\n\n"
+        f"faltavam levaram a {e['2']['casos'] - e['1']['casos']} casos novos e, lendo o laço triplo, a um defeito que a especificação não sugeria: "
+        "um produto cartesiano entre reservas e vínculos, mascarado pela tautologia.\n\n"
         "Correção (30 s): antes de mutar, corrigi os defeitos no fork, um commit por grupo. O mesmo teste é xfail "
         "estrito no original e passa no corrigido: isso comprova cada correção.\n\n"
-        f"Mutação (40 s): Cosmic Ray sobre todos os {mut_fim['total']} mutantes das funções dos três requisitos. Dos {mut_ini['sobreviventes']} vivos, {mut_ini['sobreviventes'] - 8} eram matáveis "
-        "e ganharam casos; os 8 restantes são equivalentes e estão justificados no relatório.\n\n"
+        f"Mutação (40 s): Cosmic Ray sobre todos os {mut_fim['total']} mutantes das funções dos três requisitos. Dos {mut_ini['sobreviventes']} vivos, {mut_ini['sobreviventes'] - EQUIV} eram matáveis "
+        f"e ganharam casos; os {EQUIV} restantes são equivalentes e estão justificados no relatório.\n\n"
         "Ferramenta (20 s): organizei tudo no V&V TestLab, que importa JUnit, cobertura e mutação pela ponte local e "
         "mantém a rastreabilidade até o defeito."))
 
@@ -179,10 +182,10 @@ def slide_resultados(prs, evol, mut_fim):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     final = evol[-1]
     cabecalho(s, 2, "Resultados, dificuldades e lições aprendidas",
-              f'{final["casos"]} casos · 15 defeitos nos 3 requisitos, todos corrigidos · 100% dos desvios · '
+              f'{final["casos"]} casos · 10 defeitos nos 3 requisitos, todos corrigidos · 100% dos desvios · '
               f'{pct(mut_fim["escore_pct"])} de escore de mutação')
     x = 0.45
-    for valor, rotulo, cor in [(str(final["casos"]), "casos de teste", AZUL), ("15", "defeitos corrigidos", VINHO),
+    for valor, rotulo, cor in [(str(final["casos"]), "casos de teste", AZUL), ("10", "defeitos corrigidos", VINHO),
                                ("100%", "dos desvios cobertos", VERDE),
                                (pct(mut_fim["escore_pct"]), "escore de mutação", LARANJA)]:
         k = retangulo(s, x, 1.3, 1.9, 0.95, CLARO, BORDA)
@@ -236,7 +239,7 @@ def slide_resultados(prs, evol, mut_fim):
     texto(defeitos, "Defeitos mais graves", 11, VINHO, True, novo=False, espaco=2)
     for item in ["**Tautologia** no conflito de datas bloqueia o quarto",
                  "**Entrada hoje** recusada (data comparada com a hora)",
-                 "Filtro em **variável global** vaza entre sessões",
+                 "**Quarto inexistente ou repetido** aceito na reserva",
                  "Defeito **mascarado** (produto cartesiano)"]:
         texto(defeitos, "• " + item, 9.5, NAVY, espaco=1)
     dif = retangulo(s, 0.45, 5.15, 4.0, 1.9, BRANCO, BORDA)
@@ -248,14 +251,14 @@ def slide_resultados(prs, evol, mut_fim):
     lic = retangulo(s, 4.6, 5.15, 8.3, 1.9, BRANCO, BORDA)
     texto(lic, "Lições aprendidas", 12, VINHO, True, novo=False, espaco=3)
     falhas = evol[1]["xfail"]
-    for item in ["**Limites valem mais que valores típicos**: a técnica funcional achou 12 dos 15 defeitos",
+    for item in ["**Limites valem mais que valores típicos**: 15 casos funcionais acharam 9 dos 10 defeitos",
                  f"**Cobertura ≠ correção**: 100% dos comandos no original com {falhas} testes falhando",
-                 "**Mutação testa os testes**: com 100% dos desvios ainda havia 3 mutantes vivos",
+                 f"**Mutação testa os testes**: com 100% dos desvios ainda havia 7 mutantes não equivalentes vivos",
                  "**Corrigir antes de mutar**: mutar código com defeitos invalida o escore"]:
         texto(lic, "• " + item, 10, NAVY, espaco=2)
     notas(s, (
         f"Números (30 s): a suíte final tem {final['casos']} casos, 100% de comandos e desvios nas funções do recorte "
-        f"e {pct(mut_fim['escore_pct'])} de escore de mutação. Os 8 mutantes vivos são equivalentes, então 100% dos "
+        f"e {pct(mut_fim['escore_pct'])} de escore de mutação. Os {EQUIV} mutantes vivos são equivalentes, então 100% dos "
         "não equivalentes morreram. No gráfico, a cobertura sobe na etapa estrutural e o escore sobe na mutação.\n\n"
         "Defeito principal (40 s): a condição de conflito de datas é uma tautologia, sempre verdadeira. Depois da "
         "primeira reserva, o quarto nunca mais pode ser reservado. As imagens mostram a mesma reserva recusada no "
@@ -318,11 +321,10 @@ def slide_codigo(prs):
           10.5, CINZA)
     casos = retangulo(s, 0.45, 4.8, 12.45, 2.2, CLARO, BORDA)
     texto(casos, "Como os testes revelaram", 12, VINHO, True, novo=False)
-    for item in ["Funcional (valor limite): CT-021/022 (estadias adjacentes), CT-061/062 (1 dia de folga) e CT-023 "
-                 "(período distante): todos recusados no original",
-                 "Consulta: CT-033 a CT-035, CT-063 e CT-064: o quarto livre some da lista",
-                 "Estrutural: CT-045 revelou DEF-15 (produto cartesiano), escondido pela tautologia até ela ser corrigida",
-                 "Mutação: CT-055 matou o mutante Booked.brid >= Reservations.rid na junção corrigida"]:
+    for item in ["Funcional (valor limite): CT-003 (entrar no dia em que a outra estadia sai) foi recusado no original",
+                 "Estrutural: CT-019 revelou DEF-15 (produto cartesiano), escondido pela tautologia até ela ser corrigida",
+                 "Mutação: CT-020 e CT-021 mataram mutantes do predicado corrigido (sair no dia em que a outra entra; período anterior)",
+                 "Mutação: CT-022 matou o mutante Booked.brid >= Reservations.rid na junção corrigida"]:
         texto(casos, "• " + item, 10.5, NAVY, espaco=3)
     notas(s, "Use se perguntarem como um defeito tão grave passou despercebido: com uma única reserva no banco o "
              "sistema parece funcionar; os valores limite de estadias adjacentes e períodos distantes expõem o problema.")
@@ -337,7 +339,7 @@ def slide_roteiro(prs):
         ("V&V TestLab", "raiz → npm run dev → Dados e exportação → importar output/hotel-vvtestlab-projeto-inicial.json"),
         ("Ponte no original", ".\\iniciar-integracao.ps1 -Versao original → Integração Python → Executar e sincronizar: falhas viram defeitos"),
         ("Ponte no corrigido", "Ctrl+C e .\\iniciar-integracao.ps1 → Executar e sincronizar: todos aprovados, 100% dos desvios"),
-        ("Mutação", "Executar mutação (~6 min) → 181/189 mortos; Execução e métricas mostra a evolução"),
+        ("Mutação", "Executar mutação (~4 min) → 134/141 mortos; página Teste de mutação mostra o cálculo"),
     ]
     y = 1.4
     for n, (titulo, detalhe) in enumerate(passos, 1):
@@ -378,10 +380,10 @@ def main():
     slide_codigo(apoio)
     slide_grade(apoio, "V", "V&V TestLab: gestão do projeto de testes",
                 "estudo do hotel importado do backup gerado a partir das evidências", [
-        (TELAS_VV / "01-visao-geral.png", "Visão geral"),
-        (TELAS_VV / "03-casos.png", "Cenários e casos (CE, AVL, estruturais, mutação)"),
-        (TELAS_VV / "05-execucao-metricas.png", "Execução e métricas: evolução por etapa"),
-        (TELAS_VV / "07-defeitos.png", "Defeitos: 15 registrados e fechados"),
+        (TELAS_VV / "01-visao-geral.png", "Visão geral das três etapas"),
+        (TELAS_VV / "09-teste-funcional-detalhe.png", "Teste funcional: entrada, esperado, obtido e assertivas"),
+        (TELAS_VV / "10-teste-estrutural-grafo.png", "Teste estrutural: grafo percorrido pelo caso"),
+        (TELAS_VV / "11-teste-mutacao.png", "Teste de mutação: cálculo do escore e mutantes"),
     ], "A ferramenta importa JUnit, cobertura e resultado do Cosmic Ray pela ponte local e vincula tudo pelo ID CT-xxx.")
     slide_roteiro(apoio)
     apoio.save(ROOT / "docs" / "apresentacao-apoio-demo.pptx")

@@ -1,9 +1,9 @@
 {
   "recorte": {
-    "comandos": 92,
-    "comandos_cobertos": 92,
-    "desvios": 38,
-    "desvios_cobertos": 38,
+    "comandos": 65,
+    "comandos_cobertos": 65,
+    "desvios": 28,
+    "desvios_cobertos": 28,
     "pct_comandos": 100.0,
     "pct_desvios": 100.0
   },
@@ -40,22 +40,6 @@
       "linhas_nao_cobertas": [],
       "desvios_nao_cobertos": []
     },
-    "show_rooms": {
-      "comandos": 13,
-      "comandos_cobertos": 13,
-      "desvios": 4,
-      "desvios_cobertos": 4,
-      "linhas_nao_cobertas": [],
-      "desvios_nao_cobertos": []
-    },
-    "check_available": {
-      "comandos": 14,
-      "comandos_cobertos": 14,
-      "desvios": 6,
-      "desvios_cobertos": 6,
-      "linhas_nao_cobertas": [],
-      "desvios_nao_cobertos": []
-    },
     "reserve": {
       "comandos": 39,
       "comandos_cobertos": 39,
@@ -75,13 +59,13 @@
   },
   "views_py_inteiro": {
     "comandos": 228,
-    "comandos_cobertos": 128,
+    "comandos_cobertos": 98,
     "desvios": 84,
-    "desvios_cobertos": 40,
-    "pct_total": 53.8
+    "desvios_cobertos": 29,
+    "pct_total": 40.7
   },
   "etapa": "suite-corrigida",
   "sut": "corrigida",
   "marcas": "funcional or estrutural",
-  "casos": 68
+  "casos": 33
 }

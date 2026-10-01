@@ -24,7 +24,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <li><strong>Ferramentas:</strong> pytest 8.4.2, coverage.py via pytest-cov 6.3.0, Cosmic Ray 8.4.3, radon 6.0.1, pygount 3.1.0</li>
 </ul>
 <h2>Sumário executivo</h2>
-<p>As três técnicas foram aplicadas na ordem exigida (<strong>funcional → estrutural → baseada em defeitos</strong>) sobre os três requisitos principais do sistema, todos ligados à reserva de quartos: <strong>REQ-01 Reservar quartos</strong> (incluindo a consulta de quartos livres que antecede a reserva), <strong>REQ-02 Data de entrada</strong> e <strong>REQ-03 Data de saída</strong>. Os demais requisitos funcionais foram catalogados (seção 1.2).</p>
+<p>As três técnicas foram aplicadas na ordem exigida (<strong>funcional → estrutural → baseada em defeitos</strong>) sobre os três requisitos principais do sistema, todos ligados à reserva de quartos: <strong>REQ-01 Reservar quartos</strong>, <strong>REQ-02 Data de entrada</strong> e <strong>REQ-03 Data de saída</strong>. Os demais requisitos funcionais foram catalogados (seção 1.2). A suíte final tem <strong>25 casos</strong>: 15 funcionais, 4 estruturais e 6 criados na etapa de mutação.</p>
 <table>
 <thead>
 <tr>
@@ -42,41 +42,41 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>1</td>
 <td>Funcional (classes de equivalência + valor limite)</td>
 <td>original</td>
-<td style="text-align: right;">50</td>
-<td style="text-align: right;">84/92 (91,3%)</td>
-<td style="text-align: right;">42/50 (84,0%)</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">60/63 (95,2%)</td>
+<td style="text-align: right;">29/34 (85,3%)</td>
 <td style="text-align: right;">—</td>
 </tr>
 <tr>
 <td>2</td>
 <td>Estrutural (meta: 100% de comandos e de desvios viáveis)</td>
 <td>original</td>
-<td style="text-align: right;">57</td>
-<td style="text-align: right;">92/92 (100,0%)</td>
-<td style="text-align: right;">49/50 (98,0%)</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">63/63 (100,0%)</td>
+<td style="text-align: right;">33/34 (97,1%)</td>
 <td style="text-align: right;">—</td>
 </tr>
 <tr>
 <td>—</td>
 <td>Correção dos defeitos; mesma suíte</td>
 <td>corrigida</td>
-<td style="text-align: right;">57</td>
-<td style="text-align: right;">92/92 (100,0%)</td>
-<td style="text-align: right;">38/38 (100,0%)</td>
-<td style="text-align: right;">178/189 (94,2%)</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">65/65 (100,0%)</td>
+<td style="text-align: right;">28/28 (100,0%)</td>
+<td style="text-align: right;">127/141 (90,1%)</td>
 </tr>
 <tr>
 <td>3</td>
 <td>Baseada em defeitos (Cosmic Ray)</td>
 <td>corrigida</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: right;">92/92 (100,0%)</td>
-<td style="text-align: right;">38/38 (100,0%)</td>
-<td style="text-align: right;">181/189 (95,8%)</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">65/65 (100,0%)</td>
+<td style="text-align: right;">28/28 (100,0%)</td>
+<td style="text-align: right;">134/141 (95,0%)</td>
 </tr>
 </tbody>
 </table>
-<p>A cobertura e a mutação consideram as funções dos três requisitos em <code>hotel/views.py</code> (seção 5). Os testes revelaram <strong>15 defeitos</strong> nos três requisitos. O principal é um predicado de conflito de datas que é uma tautologia: depois da primeira reserva, o quarto nunca mais pode ser reservado, qualquer que seja a data de entrada ou de saída. Testes complementares do requisito secundário de cancelamento, feitos numa versão anterior do recorte, revelaram outros 4 defeitos (seção 9), totalizando <strong>19</strong>. Todos os defeitos foram corrigidos em commits separados no fork e confirmados pelos testes que os revelaram. A suíte final passa integralmente no programa corrigido. A mutação foi aplicada ao programa corrigido, que é o código submetido aos mutantes.</p>
+<p>A cobertura e a mutação consideram as funções dos três requisitos em <code>hotel/views.py</code> (seção 5). Os testes revelaram <strong>10 defeitos</strong> nos três requisitos. O principal é um predicado de conflito de datas que é uma tautologia: depois da primeira reserva, o quarto nunca mais pode ser reservado, qualquer que seja a data de entrada ou de saída. Testes complementares de dois requisitos secundários, cancelamento (RF-08) e consulta de disponibilidade (RF-04), revelaram outros 9 defeitos (seção 9), totalizando <strong>19</strong>. Todos os defeitos foram corrigidos em commits separados no fork e confirmados pelos testes que os revelaram. A suíte final passa integralmente no programa corrigido. A mutação foi aplicada ao programa corrigido, que é o código submetido aos mutantes.</p>
 <h2>1. Seleção e caracterização do SUT</h2>
 <h3>1.1 Origem, autoria e propósito</h3>
 <p>O <em>Hotel Management System</em> é uma aplicação web em Python de autoria de <strong>Crystal Yuecen Wang</strong>. Foi desenvolvida como projeto final da disciplina <strong>ECE 464 – Databases</strong>, sob orientação do professor Eugene Sokolov, e publicada no GitHub (8 commits, último em <code>71b396b</code>). Segundo o README, o objetivo é <em>"construir um sistema de gestão hoteleira eficiente e seguro, que ajude o negócio a se manter organizado e com as informações acessíveis"</em>. O público são hóspedes, que se cadastram, reservam, alteram, cancelam e pagam, e a administração do hotel, que mantém quartos e tipos de quarto no banco.</p>
@@ -109,13 +109,13 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>RF-03</td>
 <td>Listar quartos e tipos</td>
 <td><code>/rooms</code></td>
-<td>parte de REQ-01 (lista geral e resultado da consulta)</td>
+<td>documentado (destino da reserva e da consulta)</td>
 </tr>
 <tr>
 <td>RF-04</td>
 <td>Consultar disponibilidade por período e hóspedes</td>
 <td><code>/available</code> → <code>/rooms</code></td>
-<td>parte de REQ-01; datas em REQ-02/REQ-03</td>
+<td>documentado, com testes complementares</td>
 </tr>
 <tr>
 <td>RF-05</td>
@@ -151,11 +151,11 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 </table>
 <p><strong>Recorte (3 requisitos principais), todos sobre a reserva de quartos:</strong></p>
 <ul>
-<li><strong>REQ-01 Reservar quartos:</strong> um ou mais quartos (números inteiros, existentes, sem repetição) para 1 até a capacidade somada de hóspedes, somente se nenhum quarto tiver estadia com interseção no período. A reserva grava os vínculos e o custo e inclui a consulta de quartos livres que a antecede. Funções: <code>reserve</code>, <code>check_available</code>, <code>show_rooms</code>, <code>_ler_quartos</code>, <code>_quartos_ocupados</code>, <code>_periodos_conflitam</code>.</li>
-<li><strong>REQ-02 Data de entrada (check-in):</strong> formato <code>MM/DD/AAAA</code>; não pode ser passada (hoje é permitido); pode coincidir com a <strong>saída</strong> de outra estadia do mesmo quarto. Vale na reserva e na consulta.</li>
-<li><strong>REQ-03 Data de saída (check-out):</strong> formato <code>MM/DD/AAAA</code>; posterior à entrada (mínimo 1 noite); define o número de <strong>diárias cobradas</strong> (<code>cal_cost</code>); pode coincidir com a <strong>entrada</strong> de outra estadia do mesmo quarto. Vale na reserva e na consulta.</li>
+<li><strong>REQ-01 Reservar quartos:</strong> um ou mais quartos (números inteiros, existentes, sem repetição) para 1 até a capacidade somada de hóspedes, somente se nenhum quarto tiver estadia com interseção no período. A reserva grava os vínculos e o custo. Funções: <code>reserve</code>, <code>_ler_quartos</code>, <code>_quartos_ocupados</code>, <code>_periodos_conflitam</code>.</li>
+<li><strong>REQ-02 Data de entrada (check-in):</strong> formato <code>MM/DD/AAAA</code>; não pode ser passada (hoje é permitido); pode coincidir com a <strong>saída</strong> de outra estadia do mesmo quarto.</li>
+<li><strong>REQ-03 Data de saída (check-out):</strong> formato <code>MM/DD/AAAA</code>; posterior à entrada (mínimo 1 noite); define o número de <strong>diárias cobradas</strong> (<code>cal_cost</code>); pode coincidir com a <strong>entrada</strong> de outra estadia do mesmo quarto.</li>
 </ul>
-<p>Os demais RFs não recebem testes completos. Alteração (RF-07) reaproveita as regras da reserva, e cadastro, conta e pagamento (RF-01, RF-06, RF-09) não têm regra de negócio verificável além da gravação. O cancelamento (RF-08) fazia parte de uma versão anterior do recorte; seus 8 casos continuam no repositório como testes complementares (<code>tests/test_04_secundarios.py</code>, marca <code>secundario</code>), fora das métricas.</p>
+<p>Os demais RFs não recebem testes completos. Alteração (RF-07) reaproveita as regras da reserva, e cadastro, conta e pagamento (RF-01, RF-06, RF-09) não têm regra de negócio verificável além da gravação. A consulta de disponibilidade (RF-04) antecede a reserva, mas tem formulário e regras próprias; para manter o recorte enxuto, ela e o cancelamento (RF-08) ficaram como requisitos secundários, com 14 casos complementares (<code>tests/test_04_secundarios.py</code>, marca <code>secundario</code>) fora das métricas.</p>
 <h3>1.3 Evidência de instalação e execução</h3>
 <p>O sistema foi instalado com <code>setup_local.ps1</code>. O script cria um ambiente Python 3.9 com versões compatíveis com o código de 2019. <code>compat.py</code> repõe <code>time.clock</code>, removido no Python 3.8 e usado por Flask-SQLAlchemy 2.1. <code>hotel/__init__.py</code> passou a ler a URI do banco de <code>HOTEL_DB_URI</code>. <strong>Nenhuma regra de negócio foi alterada nessa preparação</strong>: o diff entre <code>upstream-71b396b</code> e <code>sut-original</code> não toca <code>views.py</code>, <code>models.py</code> nem <code>forms.py</code>. As telas abaixo foram capturadas pelo script <code>scripts/capturar_telas.py</code>, que sobe o servidor com a base de demonstração e navega com o Microsoft Edge.</p>
 <p><img alt="Página inicial do sistema original em execução (Flask, porta local)." src="../evidencias/telas/original-01-inicio.png" /></p>
@@ -230,7 +230,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 </tr>
 </tbody>
 </table>
-<p>A diferença entre SLOC do radon (354) e <em>Code</em> do pygount (352) vem das duas linhas de docstring/continuação que cada ferramenta classifica de forma distinta. <code>reserve</code> (CC = 25) e <code>show_rooms</code> (CC = 16), as funções mais complexas do sistema, estão no recorte.</p>
+<p>A diferença entre SLOC do radon (354) e <em>Code</em> do pygount (352) vem das duas linhas de docstring/continuação que cada ferramenta classifica de forma distinta. <code>reserve</code> (CC = 25), a função mais complexa do sistema, está no recorte.</p>
 <h2>3. Metodologia</h2>
 <p><strong>Oráculos.</strong> Os resultados esperados vêm do README ("check-in no passado", "quartos indisponíveis no período", "quartos que não comportam o número de hóspedes", "a reserva só pode ser alterada/excluída pelo usuário em <em>My Account</em>") e da interface, que traz os formulários com datas <code>MM/DD/AAAA</code>, hóspedes inteiros e quartos separados por vírgula. Para o que o README não fixa, foram adotadas convenções declaradas: estadia como intervalo semiaberto <code>[entrada, saída)</code>, em que um hóspede pode entrar no dia em que outro sai; métodos HTTP seguros, em que <code>GET</code> não altera dados; e integridade referencial ao cancelar.</p>
 <p><strong>Ambiente.</strong> Windows 11, Python 3.9.25 (aplicação e pytest) e Python 3.12 (Cosmic Ray, em ambiente separado porque exige SQLAlchemy ≥ 1.4, incompatível com Flask-SQLAlchemy 2.1). Cada caso usa SQLite em memória recriado pela fixture <code>baseline</code>, com três quartos (101: R$ 100/noite, 2 pessoas; 102: R$ 150, 3; 103: R$ 200, 4) e dois usuários (Ana e Bruno). As datas são relativas ao dia da execução, para manter a suíte reproduzível.</p>
@@ -242,7 +242,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <p><em>Matriz de rastreabilidade do V&amp;V TestLab com o estudo do hotel carregado.</em></p>
 <h2>4. Etapa 1: teste funcional</h2>
 <h3>4.1 Classes de equivalência</h3>
-<p>As condições de entrada dos três requisitos foram particionadas em <strong>42 classes</strong> (23 válidas e 19 inválidas): 27 em REQ-01, 6 em REQ-02 e 9 em REQ-03. A tabela é gerada do catálogo <code>tests/classes_equivalencia.json</code>, o mesmo que o script de rastreabilidade usa para verificar a cobertura das classes. Os identificadores CE não são sequenciais porque foram preservados entre revisões do recorte: CE-43 a CE-48 vieram da revisão dos formatos (commit <code>8bf46d8</code>) e CE-49 a CE-55 da separação entre data de entrada e data de saída.</p>
+<p>As condições de entrada dos três requisitos foram particionadas em <strong>22 classes</strong> (11 válidas e 11 inválidas): 16 em REQ-01, 4 em REQ-02 e 2 em REQ-03. A tabela é gerada do catálogo <code>tests/classes_equivalencia.json</code>, o mesmo que o script de rastreabilidade usa para verificar a cobertura das classes. As classes dos requisitos secundários (CE-31 a CE-47) estão no mesmo catálogo e são usadas só pelos casos complementares.</p>
 <table>
 <thead>
 <tr>
@@ -262,124 +262,69 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <tr>
 <td></td>
 <td>C02 Formato dos quartos</td>
-<td>CE-11 Números inteiros separados por vírgula</td>
-<td>CE-12 Texto não numérico</td>
+<td>CE-03 Números inteiros separados por vírgula</td>
+<td>CE-04 Texto não numérico</td>
 </tr>
 <tr>
 <td></td>
 <td>C03 Existência dos quartos</td>
-<td>CE-13 Todos os quartos existem</td>
-<td>CE-14 Algum quarto não existe</td>
+<td>CE-05 Todos os quartos existem</td>
+<td>CE-06 Algum quarto não existe</td>
 </tr>
 <tr>
 <td></td>
 <td>C04 Repetição de quartos</td>
-<td>CE-15 Sem repetição</td>
-<td>CE-16 Quarto repetido</td>
+<td>CE-07 Sem repetição</td>
+<td>CE-08 Quarto repetido</td>
 </tr>
 <tr>
 <td></td>
 <td>C05 Quantidade de quartos</td>
-<td>CE-19 Um quarto; CE-20 Vários quartos (custo e capacidade somados)</td>
+<td>CE-09 Um quarto; CE-10 Vários quartos (custo e capacidade somados)</td>
 <td>—</td>
 </tr>
 <tr>
 <td></td>
-<td>C06 Nº de hóspedes na reserva</td>
-<td>CE-08 Inteiro de 1 até a capacidade somada dos quartos</td>
-<td>CE-09 Menor que 1; CE-10 Maior que a capacidade somada; CE-45 Não inteiro (texto)</td>
+<td>C06 Nº de hóspedes</td>
+<td>CE-11 Inteiro de 1 até a capacidade somada dos quartos</td>
+<td>CE-12 Menor que 1; CE-13 Maior que a capacidade somada; CE-14 Não inteiro (texto)</td>
 </tr>
 <tr>
 <td></td>
 <td>C07 Ocupação do quarto no período</td>
-<td>CE-17 Nenhuma reserva do quarto com interseção (inclui estadias adjacentes e outros quartos)</td>
-<td>CE-18 Reserva existente do quarto com interseção de ao menos uma noite</td>
-</tr>
-<tr>
-<td></td>
-<td>C08 Sessão na consulta prévia</td>
-<td>CE-31 Usuário autenticado</td>
-<td>CE-32 Sem sessão ou sessão encerrada</td>
-</tr>
-<tr>
-<td></td>
-<td>C09 Filtro da consulta</td>
-<td>CE-33 Sem filtro: lista geral de quartos; CE-34 Com período e hóspedes informados</td>
-<td>—</td>
-</tr>
-<tr>
-<td></td>
-<td>C10 Nº de hóspedes na consulta</td>
-<td>CE-37 Inteiro maior ou igual a 1</td>
-<td>CE-38 Menor que 1; CE-48 Não inteiro (texto)</td>
-</tr>
-<tr>
-<td></td>
-<td>C11 Ocupação de cada quarto na consulta</td>
-<td>CE-39 Livre no período: exibido; CE-40 Ocupado no período: omitido</td>
-<td>—</td>
-</tr>
-<tr>
-<td></td>
-<td>C12 Capacidade de cada quarto na consulta</td>
-<td>CE-41 Capacidade ≥ hóspedes: exibido; CE-42 Capacidade &lt; hóspedes: omitido</td>
-<td>—</td>
+<td>CE-15 Nenhuma estadia do quarto com interseção (inclui estadias adjacentes e reservas de outros quartos)</td>
+<td>CE-16 Estadia existente do quarto com interseção de ao menos uma noite</td>
 </tr>
 <tr>
 <td>REQ-02 Data de entrada</td>
-<td>C13 Entrada em relação a hoje</td>
-<td>CE-03 Hoje ou data futura</td>
-<td>CE-04 Data passada</td>
+<td>C08 Entrada em relação a hoje</td>
+<td>CE-17 Hoje ou data futura</td>
+<td>CE-18 Data passada</td>
 </tr>
 <tr>
 <td></td>
-<td>C14 Formato da data de entrada</td>
-<td>CE-43 Data válida no formato MM/DD/AAAA (reserva ou consulta)</td>
-<td>CE-44 Data malformada, inexistente ou ausente</td>
-</tr>
-<tr>
-<td></td>
-<td>C15 Entrada × saída de estadia existente do quarto</td>
-<td>CE-52 Entrada no dia da saída existente ou depois</td>
-<td>CE-53 Entrada antes da saída existente, sobrepondo a estadia</td>
+<td>C09 Formato das datas</td>
+<td>CE-19 Entrada e saída válidas no formato MM/DD/AAAA</td>
+<td>CE-20 Data malformada, inexistente ou ausente</td>
 </tr>
 <tr>
 <td>REQ-03 Data de saída</td>
-<td>C16 Duração da reserva (saída − entrada)</td>
-<td>CE-05 1 noite ou mais; cada noite é uma diária cobrada</td>
-<td>CE-06 0 noites (saída = entrada); CE-07 Negativa (saída antes da entrada)</td>
-</tr>
-<tr>
-<td></td>
-<td>C17 Período da consulta</td>
-<td>CE-35 Saída posterior à entrada (1 noite ou mais)</td>
-<td>CE-36 Saída igual ou anterior à entrada</td>
-</tr>
-<tr>
-<td></td>
-<td>C18 Formato da data de saída</td>
-<td>CE-49 Data válida no formato MM/DD/AAAA (reserva ou consulta)</td>
-<td>CE-50 Data malformada ou inexistente</td>
-</tr>
-<tr>
-<td></td>
-<td>C19 Saída × entrada de estadia existente do quarto</td>
-<td>CE-54 Saída no dia da entrada existente ou antes</td>
-<td>CE-55 Saída depois da entrada existente, sobrepondo a estadia</td>
+<td>C10 Duração da reserva (saída − entrada)</td>
+<td>CE-21 1 noite ou mais; cada noite é uma diária cobrada</td>
+<td>CE-22 0 noites ou negativa (saída igual ou anterior à entrada)</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Regra de derivação.</strong> Um caso pode cobrir várias classes válidas ao mesmo tempo (CT-001 cobre onze). Cada classe inválida tem ao menos um caso próprio, em que <strong>todas as outras entradas são válidas</strong>, para que a rejeição só possa ser atribuída àquela classe. Por isso o CT-016 usa <code>101,999</code> com 2 hóspedes, e não <code>999</code> com 0 hóspedes, o que misturaria CE-14 e CE-09.</p>
+<p><strong>Regra de derivação.</strong> Um caso pode cobrir várias classes válidas ao mesmo tempo (CT-001 cobre dez). Cada classe inválida tem exatamente um caso próprio, em que <strong>todas as outras entradas são válidas</strong>, para que a rejeição só possa ser atribuída àquela classe. Por isso o CT-007 usa <code>101,999</code> com 2 hóspedes, e não <code>999</code> com 0 hóspedes, o que misturaria CE-06 e CE-12. Assim, 11 casos cobrem as 11 classes inválidas e 4 casos cobrem as válidas e os limites.</p>
 <h3>4.2 Análise do valor limite</h3>
-<p>Datas relativas a hoje (D). Reserva existente usada nos limites de interseção: quarto 101 de D+10 a D+12.</p>
+<p>Datas relativas a hoje (D). Reserva existente usada nos limites de interseção: quarto 101 de D+10 a D+12. Para manter a suíte enxuta, os pontos de limite foram embutidos nos próprios casos de classe: o caso de cada classe inválida usa o valor imediatamente fora do limite, e os casos válidos usam o valor exatamente no limite.</p>
 <table>
 <thead>
 <tr>
 <th>Req.</th>
 <th>Variável (limite)</th>
-<th>Imediatamente abaixo</th>
+<th>Imediatamente fora</th>
 <th>No limite</th>
-<th>Imediatamente acima</th>
 <th>Justificativa</th>
 </tr>
 </thead>
@@ -387,103 +332,43 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <tr>
 <td>REQ-01</td>
 <td>Hóspedes, mínimo (1)</td>
-<td>0 → rejeitar (CT-007)</td>
-<td>1 → aceitar (CT-006)</td>
-<td>2 → aceitar (CT-003)</td>
+<td>0 → rejeitar (CT-009)</td>
+<td>1 → aceitar (CT-001)</td>
 <td>Uma reserva precisa de ao menos um hóspede.</td>
 </tr>
 <tr>
 <td>REQ-01</td>
-<td>Hóspedes, máximo de 1 quarto (101: 2)</td>
-<td>1 → aceitar (CT-006)</td>
-<td>2 → aceitar (CT-003)</td>
-<td>3 → rejeitar (CT-004)</td>
-<td>A capacidade é o limite superior de CE-08.</td>
-</tr>
-<tr>
-<td>REQ-01</td>
 <td>Hóspedes, máximo somado (101+102: 5)</td>
-<td>4 → aceitar (CT-060)</td>
+<td>6 → rejeitar (CT-010)</td>
 <td>5 → aceitar (CT-002)</td>
-<td>6 → rejeitar (CT-005)</td>
 <td>Verifica se a capacidade é somada quando há vários quartos.</td>
-</tr>
-<tr>
-<td>REQ-01</td>
-<td>Hóspedes na consulta (mín. 1)</td>
-<td>0 → recusar (CT-039)</td>
-<td>1 → aceitar (CT-042)</td>
-<td>2 → aceitar (CT-040)</td>
-<td>Mesma regra da reserva, no filtro.</td>
-</tr>
-<tr>
-<td>REQ-01</td>
-<td>Capacidade do 101 (2) na consulta</td>
-<td>1 → exibe 101 (CT-042)</td>
-<td>2 → exibe 101 (CT-040)</td>
-<td>3 → omite 101 (CT-041)</td>
-<td>Fronteira de CE-41/CE-42.</td>
 </tr>
 <tr>
 <td>REQ-02</td>
 <td>Data de entrada (mín. = hoje)</td>
 <td>D−1 → rejeitar (CT-013)</td>
-<td>D → aceitar (CT-011)</td>
-<td>D+1 → aceitar (CT-012)</td>
+<td>D → aceitar (CT-004)</td>
 <td>O README exige "pelo menos hoje"; a fronteira passado/presente é onde se costuma errar comparando data com data-hora.</td>
 </tr>
 <tr>
 <td>REQ-02</td>
-<td>Entrada × saída existente (D+12), na reserva</td>
-<td>entrada D+11 → conflito (CT-020)</td>
-<td>entrada D+12 → livre (CT-022)</td>
-<td>entrada D+13 → livre (CT-062)</td>
+<td>Entrada × saída existente (D+12)</td>
+<td>entrada D+11 → conflito (CT-012)</td>
+<td>entrada D+12 → livre (CT-003)</td>
 <td>Com intervalo <code>[entrada, saída)</code>, entrar no dia em que o outro sai não conflita.</td>
-</tr>
-<tr>
-<td>REQ-02</td>
-<td>Entrada × saída existente (D+12), na consulta</td>
-<td>entrada D+11 → omite 101 (CT-036)</td>
-<td>entrada D+12 → exibe (CT-034)</td>
-<td>entrada D+13 → exibe (CT-064)</td>
-<td>Mesmo limite, agora no filtro da consulta.</td>
 </tr>
 <tr>
 <td>REQ-03</td>
 <td>Duração da reserva (mín. = 1 noite)</td>
-<td>0 → rejeitar (CT-009)</td>
-<td>1 → aceitar, custo 100 (CT-008)</td>
-<td>2 → aceitar, custo 200 (CT-001)</td>
-<td>Saída = entrada não gera diária; −1 (CT-010) representa CE-07; 4 noites custam 4 diárias (CT-067).</td>
-</tr>
-<tr>
-<td>REQ-03</td>
-<td>Período da consulta (mín. = 1 noite)</td>
-<td>0 → recusar (CT-038)</td>
-<td>1 → aceitar (CT-043)</td>
-<td>2 → aceitar (CT-032)</td>
-<td>Mesma regra da reserva; −2 (CT-037) representa saída antes da entrada.</td>
-</tr>
-<tr>
-<td>REQ-03</td>
-<td>Saída × entrada existente (D+10), na reserva</td>
-<td>saída D+11 → conflito (CT-019)</td>
-<td>saída D+10 → livre (CT-021)</td>
-<td>saída D+9 → livre (CT-061)</td>
-<td>Sair no dia em que o outro entra não conflita.</td>
-</tr>
-<tr>
-<td>REQ-03</td>
-<td>Saída × entrada existente (D+10), na consulta</td>
-<td>—</td>
-<td>saída D+10 → exibe (CT-035)</td>
-<td>saída D+9 → exibe (CT-063)</td>
-<td>Mesmo limite no filtro; o lado "abaixo" é o mesmo cenário de CT-036.</td>
+<td>0 → rejeitar (CT-015)</td>
+<td>1 → aceitar, custo 100 (CT-004)</td>
+<td>Saída = entrada não gera diária; 2 noites custam 200 (CT-001).</td>
 </tr>
 </tbody>
 </table>
+<p>O limite simétrico "saída no dia da entrada de outra estadia" não entrou na etapa funcional; a mutação mostrou essa lacuna e ele foi acrescentado como CT-020 (seção 7.3).</p>
 <h3>4.3 Casos funcionais e resultados no código original</h3>
-<p>Legenda: <strong>P</strong> = passou no original; <strong>F</strong> = falhou no original, confirmando o defeito indicado (xfail estrito). No código corrigido, todos passam.</p>
+<p>Legenda: <strong>P</strong> = passou no original; <strong>F</strong> = falhou no original, confirmando o defeito indicado (xfail estrito). No código corrigido, todos passam. Valores não citados usam o padrão dos testes: quarto 101, 2 hóspedes, entrada em D+10 e 2 noites.</p>
 <table>
 <thead>
 <tr>
@@ -497,367 +382,122 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <tbody>
 <tr>
 <td>CT-001</td>
-<td>CE-01, CE-03, CE-05, CE-08, CE-11, CE-13, CE-15, CE-17, CE-19, CE-43, CE-49</td>
-<td>101, 2 hóspedes, D+10 a D+12</td>
+<td>CE-01, 03, 05, 07, 09, 11, 15, 17, 19, 21</td>
+<td>101, 1 hóspede, D+10 a D+12</td>
 <td>redireciona a <code>/rooms</code>; custo 200; vínculo (rid, 101)</td>
 <td>P</td>
 </tr>
 <tr>
 <td>CT-002</td>
-<td>CE-08, CE-20</td>
-<td>101,102; 5 hóspedes; 3 noites</td>
+<td>CE-10, CE-11</td>
+<td>101,102; 5 hóspedes (= capacidade somada); 3 noites</td>
 <td>aceita; custo (100+150)×3 = 750</td>
 <td>P</td>
 </tr>
 <tr>
 <td>CT-003</td>
-<td>CE-08</td>
-<td>101 com 2 hóspedes (= capacidade)</td>
+<td>CE-15, CE-17</td>
+<td>101 reservado D+10–12; nova D+12–14 (entra no dia da saída)</td>
 <td>aceita</td>
-<td>P</td>
+<td>F – DEF-01</td>
 </tr>
 <tr>
 <td>CT-004</td>
-<td>CE-10</td>
-<td>101 com 3 hóspedes</td>
-<td>recusa (<code>/reserve</code>), nada gravado</td>
-<td>P</td>
-</tr>
-<tr>
-<td>CT-005</td>
-<td>CE-10</td>
-<td>101,102 com 6 hóspedes (capacidade 5)</td>
-<td>recusa</td>
-<td>P</td>
-</tr>
-<tr>
-<td>CT-006</td>
-<td>CE-08</td>
-<td>1 hóspede</td>
-<td>aceita</td>
-<td>P</td>
-</tr>
-<tr>
-<td>CT-007</td>
-<td>CE-09</td>
-<td>0 hóspedes</td>
-<td>recusa</td>
-<td>F – DEF-03</td>
-</tr>
-<tr>
-<td>CT-008</td>
-<td>CE-05</td>
-<td>1 noite</td>
-<td>aceita; custo 100</td>
-<td>P</td>
-</tr>
-<tr>
-<td>CT-009</td>
-<td>CE-06</td>
-<td>saída = entrada</td>
-<td>recusa</td>
-<td>P</td>
-</tr>
-<tr>
-<td>CT-010</td>
-<td>CE-07</td>
-<td>saída = entrada − 1</td>
-<td>recusa</td>
-<td>P</td>
-</tr>
-<tr>
-<td>CT-011</td>
-<td>CE-03</td>
+<td>CE-17, CE-21</td>
 <td>entrada hoje, 1 noite</td>
-<td>aceita</td>
+<td>aceita; custo 100</td>
 <td>F – DEF-02</td>
 </tr>
 <tr>
-<td>CT-012</td>
-<td>CE-03</td>
-<td>entrada amanhã</td>
-<td>aceita</td>
-<td>P</td>
-</tr>
-<tr>
-<td>CT-013</td>
-<td>CE-04</td>
-<td>entrada ontem</td>
-<td>recusa</td>
-<td>P</td>
-</tr>
-<tr>
-<td>CT-014</td>
+<td>CT-005</td>
 <td>CE-02</td>
 <td>visitante sem login: <code>GET</code> e <code>POST /reserve</code></td>
 <td>redireciona a <code>/</code>; nada gravado</td>
 <td>F – DEF-07</td>
 </tr>
 <tr>
-<td>CT-015</td>
-<td>CE-12</td>
+<td>CT-006</td>
+<td>CE-04</td>
 <td>quartos <code>abc</code></td>
-<td>recusa</td>
+<td>recusa (<code>/reserve</code>), nada gravado</td>
 <td>F – DEF-04</td>
 </tr>
 <tr>
-<td>CT-016</td>
-<td>CE-14</td>
+<td>CT-007</td>
+<td>CE-06</td>
 <td>quartos <code>101,999</code>, 2 hóspedes</td>
 <td>recusa; nenhum vínculo</td>
 <td>F – DEF-05</td>
 </tr>
 <tr>
-<td>CT-017</td>
-<td>CE-16</td>
+<td>CT-008</td>
+<td>CE-08</td>
 <td>quartos <code>101,101</code></td>
 <td>recusa</td>
 <td>F – DEF-06</td>
 </tr>
 <tr>
-<td>CT-018</td>
-<td>CE-18</td>
-<td>101 já reservado em D+10–12; nova D+10–12</td>
+<td>CT-009</td>
+<td>CE-12</td>
+<td>0 hóspedes</td>
+<td>recusa</td>
+<td>F – DEF-03</td>
+</tr>
+<tr>
+<td>CT-010</td>
+<td>CE-13</td>
+<td>101,102 com 6 hóspedes (capacidade 5)</td>
 <td>recusa</td>
 <td>P</td>
 </tr>
 <tr>
-<td>CT-019</td>
-<td>CE-18, CE-55</td>
-<td>idem; nova D+9–11</td>
-<td>recusa</td>
-<td>P</td>
-</tr>
-<tr>
-<td>CT-020</td>
-<td>CE-18, CE-53</td>
-<td>idem; nova D+11–13</td>
-<td>recusa</td>
-<td>P</td>
-</tr>
-<tr>
-<td>CT-021</td>
-<td>CE-17, CE-54</td>
-<td>idem; nova D+8–10</td>
-<td>aceita</td>
-<td>F – DEF-01</td>
-</tr>
-<tr>
-<td>CT-022</td>
-<td>CE-17, CE-52</td>
-<td>idem; nova D+12–14</td>
-<td>aceita</td>
-<td>F – DEF-01</td>
-</tr>
-<tr>
-<td>CT-023</td>
-<td>CE-17</td>
-<td>idem; nova D+20–22</td>
-<td>aceita</td>
-<td>F – DEF-01</td>
-</tr>
-<tr>
-<td>CT-030</td>
-<td>CE-31, CE-33</td>
-<td><code>/rooms</code> sem filtro, com 101 reservado</td>
-<td>lista 101, 102, 103</td>
-<td>P</td>
-</tr>
-<tr>
-<td>CT-031</td>
-<td>CE-32</td>
-<td>visitante sem login: <code>/available</code> (GET/POST) e <code>/rooms</code></td>
-<td>redireciona a <code>/</code></td>
-<td>F – DEF-07</td>
-</tr>
-<tr>
-<td>CT-032</td>
-<td>CE-31, CE-34, CE-35, CE-37, CE-39, CE-40, CE-41, CE-43, CE-49</td>
-<td>101 ocupado D+10–12; consulta D+10–12, 2 hóspedes</td>
-<td>lista 102, 103</td>
-<td>P</td>
-</tr>
-<tr>
-<td>CT-033</td>
-<td>CE-39</td>
-<td>101 reservado em D+20; consulta D+10–12</td>
-<td>lista 101, 102, 103</td>
-<td>F – DEF-01</td>
-</tr>
-<tr>
-<td>CT-034</td>
-<td>CE-39, CE-52</td>
-<td>101 ocupado D+10–12; consulta D+12–14</td>
-<td>lista 101, 102, 103</td>
-<td>F – DEF-01</td>
-</tr>
-<tr>
-<td>CT-035</td>
-<td>CE-39, CE-54</td>
-<td>idem; consulta D+8–10</td>
-<td>lista 101, 102, 103</td>
-<td>F – DEF-01</td>
-</tr>
-<tr>
-<td>CT-036</td>
-<td>CE-40, CE-53</td>
-<td>idem; consulta D+11–13</td>
-<td>lista 102, 103</td>
-<td>P</td>
-</tr>
-<tr>
-<td>CT-037</td>
-<td>CE-36</td>
-<td>consulta com entrada D+12 e saída D+10</td>
-<td>recusa (<code>/available</code>)</td>
-<td>F – DEF-12</td>
-</tr>
-<tr>
-<td>CT-038</td>
-<td>CE-36</td>
-<td>consulta com entrada = saída</td>
-<td>recusa</td>
-<td>F – DEF-12</td>
-</tr>
-<tr>
-<td>CT-039</td>
-<td>CE-38</td>
-<td>consulta com 0 hóspedes</td>
-<td>recusa</td>
-<td>F – DEF-13</td>
-</tr>
-<tr>
-<td>CT-040</td>
-<td>CE-41</td>
-<td>consulta com 2 hóspedes</td>
-<td>lista 101, 102, 103</td>
-<td>P</td>
-</tr>
-<tr>
-<td>CT-041</td>
-<td>CE-42</td>
-<td>consulta com 3 hóspedes</td>
-<td>lista 102, 103</td>
-<td>F – DEF-14</td>
-</tr>
-<tr>
-<td>CT-042</td>
-<td>CE-37, CE-41</td>
-<td>consulta com 1 hóspede</td>
-<td>lista 101, 102, 103</td>
-<td>P</td>
-</tr>
-<tr>
-<td>CT-043</td>
-<td>CE-35</td>
-<td>consulta de 1 noite</td>
-<td>aceita; lista todos</td>
-<td>P</td>
-</tr>
-<tr>
-<td>CT-051</td>
-<td>CE-44</td>
-<td>reserva com entrada <code>2026-13-01</code></td>
-<td>recusa</td>
-<td>F – DEF-18</td>
-</tr>
-<tr>
-<td>CT-052</td>
-<td>CE-45</td>
-<td>reserva com hóspedes <code>dois</code></td>
+<td>CT-011</td>
+<td>CE-14</td>
+<td>hóspedes <code>dois</code></td>
 <td>recusa</td>
 <td>F – DEF-19</td>
 </tr>
 <tr>
-<td>CT-053</td>
-<td>CE-44</td>
-<td>consulta com entrada <code>amanhã</code></td>
-<td>recusa; lista sem filtro</td>
-<td>F – DEF-18</td>
-</tr>
-<tr>
-<td>CT-054</td>
-<td>CE-48</td>
-<td>consulta com hóspedes <code>dois</code></td>
+<td>CT-012</td>
+<td>CE-16</td>
+<td>101 reservado D+10–12; nova D+11–13</td>
 <td>recusa</td>
-<td>F – DEF-13</td>
-</tr>
-<tr>
-<td>CT-060</td>
-<td>CE-08, CE-20</td>
-<td>101,102; 4 hóspedes (um abaixo da capacidade 5); 1 noite</td>
-<td>aceita; custo 250</td>
 <td>P</td>
 </tr>
 <tr>
-<td>CT-061</td>
-<td>CE-17, CE-54</td>
-<td>101 reservado D+10–12; nova D+7–9</td>
-<td>aceita</td>
-<td>F – DEF-01</td>
-</tr>
-<tr>
-<td>CT-062</td>
-<td>CE-17, CE-52</td>
-<td>idem; nova D+13–15</td>
-<td>aceita</td>
-<td>F – DEF-01</td>
-</tr>
-<tr>
-<td>CT-063</td>
-<td>CE-39, CE-54</td>
-<td>101 ocupado D+10–12; consulta D+7–9</td>
-<td>lista 101, 102, 103</td>
-<td>F – DEF-01</td>
-</tr>
-<tr>
-<td>CT-064</td>
-<td>CE-39, CE-52</td>
-<td>idem; consulta D+13–15</td>
-<td>lista 101, 102, 103</td>
-<td>F – DEF-01</td>
-</tr>
-<tr>
-<td>CT-065</td>
-<td>CE-50</td>
-<td>reserva com saída <code>02/30/2099</code> (data inexistente)</td>
+<td>CT-013</td>
+<td>CE-18</td>
+<td>entrada ontem</td>
 <td>recusa</td>
-<td>F – DEF-18</td>
-</tr>
-<tr>
-<td>CT-066</td>
-<td>CE-50</td>
-<td>consulta com saída <code>depois</code></td>
-<td>recusa; lista sem filtro</td>
-<td>F – DEF-18</td>
-</tr>
-<tr>
-<td>CT-067</td>
-<td>CE-05, CE-20, CE-49</td>
-<td>101,103; 3 hóspedes; 4 noites</td>
-<td>aceita; 4 diárias; custo (100+200)×4 = 1200</td>
 <td>P</td>
 </tr>
 <tr>
-<td>CT-068</td>
-<td>CE-44</td>
-<td>reserva sem data de entrada</td>
+<td>CT-014</td>
+<td>CE-20</td>
+<td>entrada <code>2026-13-01</code></td>
 <td>recusa</td>
 <td>F – DEF-18</td>
+</tr>
+<tr>
+<td>CT-015</td>
+<td>CE-22</td>
+<td>saída = entrada (0 noites)</td>
+<td>recusa</td>
+<td>P</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Resultado (código original, <code>evidencias/funcional-original/</code>):</strong> 50 casos, <strong>22 passaram e 28 falharam</strong> confirmando 12 defeitos dos três requisitos (DEF-01 a DEF-07, DEF-12 a DEF-14, DEF-18 e DEF-19). As falhas têm causas distintas, conferidas com <code>--runxfail</code>: <code>KeyError: 'user_available'</code>, <code>ValueError</code> em <code>int('abc')</code>, <code>TypeError</code> em <code>combine(None)</code>, além de redirecionamentos e listagens diferentes do oráculo. Por requisito (pelo requisito da classe principal de cada caso): REQ-01 com 34 casos, REQ-02 com 7 e REQ-03 com 9. Cobertura do recorte: <strong>84/92 comandos (91,3%) e 42/50 desvios (84,0%)</strong>.</p>
+<p><strong>Resultado (código original, <code>evidencias/funcional-original/</code>):</strong> 15 casos, <strong>6 passaram e 9 falharam</strong> confirmando 9 defeitos dos três requisitos (DEF-01 a DEF-07, DEF-18 e DEF-19). As falhas têm causas distintas, conferidas com <code>--runxfail</code>: <code>KeyError: 'user_available'</code>, <code>ValueError</code> em <code>int('abc')</code>, <code>TypeError</code> em <code>combine(None)</code> e na comparação com <code>None</code>, além de redirecionamentos diferentes do oráculo. Por requisito (pelo requisito da classe principal de cada caso): REQ-01 com 11 casos, REQ-02 com 3 e REQ-03 com 1. Cobertura do recorte: <strong>60/63 comandos (95,2%) e 29/34 desvios (85,3%)</strong>.</p>
 <h2>5. Etapa 2: teste estrutural</h2>
 <h3>5.1 Meta de cobertura e justificativa</h3>
-<p><strong>Critério:</strong> todos-os-nós e todos-os-arcos (comandos e desvios, <code>coverage run --branch</code>) nas quatro funções que implementam os três requisitos: <code>reserve</code> (reserva e validação das datas), <code>cal_cost</code> (diárias entre entrada e saída), <code>check_available</code> (validação das datas e hóspedes da consulta) e <code>show_rooms</code> (quartos livres no período), com 92 comandos e 50 desvios no original. <strong>Meta: 100% dos comandos e 100% dos desvios viáveis.</strong></p>
+<p><strong>Critério:</strong> todos-os-nós e todos-os-arcos (comandos e desvios, <code>coverage run --branch</code>) nas duas funções que implementam os três requisitos no original: <code>reserve</code> (reserva e validação das datas) e <code>cal_cost</code> (diárias entre entrada e saída), com 63 comandos e 34 desvios. <strong>Meta: 100% dos comandos e 100% dos desvios viáveis.</strong></p>
 <p>Justificativa:</p>
 <ol>
 <li>O recorte é pequeno e concentra toda a regra de negócio testada, então a meta máxima tem custo baixo.</li>
 <li>Cobertura de desvios subsume a de comandos e obriga a exercitar os ramos falsos (sessão encerrada, laço sem conflito), justamente onde a etapa funcional deixou lacunas.</li>
-<li>Critérios mais fortes, como caminhos simples, explodem combinatoriamente por causa dos laços aninhados de <code>reserve</code>/<code>show_rooms</code> (três níveis) e trariam pouco ganho diante do teste de mutação da etapa seguinte.</li>
+<li>Critérios mais fortes, como caminhos simples, explodem combinatoriamente por causa dos laços aninhados de <code>reserve</code> (três níveis) e trariam pouco ganho diante do teste de mutação da etapa seguinte.</li>
 </ol>
-<p>A medição é restrita ao recorte porque medir <code>views.py</code> inteiro misturaria rotas deliberadamente não testadas (cadastro, login, alteração, pagamento) e tornaria qualquer meta global arbitrária.</p>
+<p>A medição é restrita ao recorte porque medir <code>views.py</code> inteiro misturaria rotas deliberadamente não testadas (cadastro, login, consulta, alteração, pagamento) e tornaria qualquer meta global arbitrária.</p>
 <h3>5.2 Lacunas após a etapa funcional e casos acrescentados</h3>
 <table>
 <thead>
@@ -869,24 +509,19 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 </thead>
 <tbody>
 <tr>
-<td><code>show_rooms</code> 166–167, <code>check_available</code> 180–181, <code>reserve</code> 242–243 (ramo falso de <code>if session['user_available']</code>)</td>
-<td>Os casos funcionais sem sessão não criam a chave, e o original lança <code>KeyError</code> antes do <code>if</code>; o ramo falso só roda com a chave valendo <code>False</code>, estado deixado pelo <code>logout</code></td>
-<td>CT-048</td>
-</tr>
-<tr>
-<td><code>check_available</code> 179 (desvio 175→179)</td>
-<td>A etapa funcional só fazia <code>POST</code></td>
-<td>CT-049</td>
-</tr>
-<tr>
 <td><code>reserve</code> 241 (desvio 189→241)</td>
-<td>Idem</td>
-<td>CT-050</td>
+<td>A etapa funcional só fazia <code>POST</code>; o formulário (<code>GET</code>) nunca era aberto por um usuário autenticado</td>
+<td>CT-016</td>
+</tr>
+<tr>
+<td><code>reserve</code> 242–243 (desvio 186→242, ramo falso de <code>if session['user_available']</code>)</td>
+<td>O caso funcional sem sessão não cria a chave, e o original lança <code>KeyError</code> antes do <code>if</code>; o ramo falso só roda com a chave valendo <code>False</code>, estado deixado pelo <code>logout</code></td>
+<td>CT-017</td>
 </tr>
 <tr>
 <td><code>reserve</code> desvios 208→205 e 205→204 (vínculo de outro quarto; fim do laço interno sem conflito)</td>
 <td>Nos casos funcionais, todas as reservas prévias eram do mesmo quarto</td>
-<td>CT-044</td>
+<td>CT-018</td>
 </tr>
 <tr>
 <td><code>reserve</code> desvio 230→229 (<code>if each.rid &gt; current_id</code> falso)</td>
@@ -895,7 +530,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 </tr>
 </tbody>
 </table>
-<p>A leitura do código para essas lacunas expôs mais três defeitos, que ganharam casos próprios: CT-045 (DEF-15, laço triplo sem <code>brid == rid</code>), CT-046 (DEF-16, variável global <code>global_avail</code>) e CT-047 (DEF-17, <code>remove</code> durante a iteração).</p>
+<p>A leitura do laço triplo para cobrir os desvios 208→205 e 205→204 expôs mais um defeito, que ganhou caso próprio: CT-019 (DEF-15, vínculo comparado com reservas de outros quartos, porque falta <code>brid == rid</code>).</p>
 <table>
 <thead>
 <tr>
@@ -908,57 +543,36 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 </thead>
 <tbody>
 <tr>
-<td>CT-044</td>
-<td>CE-17, CE-19</td>
-<td>Bruno tem o 102 em D+10; Ana reserva o 101 em D+10</td>
-<td>aceita</td>
-<td>passou</td>
-</tr>
-<tr>
-<td>CT-045</td>
-<td>CE-17</td>
-<td>Ana tem o 101 em D+10, Bruno tem o 102 em D+20; reservar o 101 em D+20</td>
-<td>aceita</td>
-<td><strong>falhou – DEF-15</strong> (mascarado por DEF-01)</td>
-</tr>
-<tr>
-<td>CT-046</td>
-<td>CE-33</td>
-<td>Ana consulta D+10 com o 101 ocupado; Bruno, em outra sessão, abre <code>/rooms</code> sem filtro</td>
-<td>Bruno vê 101, 102, 103</td>
-<td><strong>falhou – DEF-16</strong> (vê 102, 103)</td>
-</tr>
-<tr>
-<td>CT-047</td>
-<td>CE-40</td>
-<td>101 e 102 ocupados em D+10; consulta D+10, 1 hóspede</td>
-<td>só o 103</td>
-<td><strong>falhou – DEF-17</strong> (102 aparece)</td>
-</tr>
-<tr>
-<td>CT-048</td>
-<td>CE-02, CE-32</td>
-<td><code>user_available = False</code> em <code>/reserve</code>, <code>/available</code> e <code>/rooms</code> (e <code>POST /delete</code>)</td>
-<td>redireciona e preserva</td>
-<td>passou</td>
-</tr>
-<tr>
-<td>CT-049</td>
-<td>CE-31</td>
-<td><code>GET /available</code> autenticado</td>
-<td>formulário com <code>checkin_date</code></td>
-<td>passou</td>
-</tr>
-<tr>
-<td>CT-050</td>
+<td>CT-016</td>
 <td>CE-01</td>
 <td><code>GET /reserve</code> autenticado</td>
 <td>formulário com <code>room_numbers</code></td>
 <td>passou</td>
 </tr>
+<tr>
+<td>CT-017</td>
+<td>CE-02</td>
+<td><code>user_available = False</code> em <code>GET</code> e <code>POST /reserve</code></td>
+<td>redireciona a <code>/</code>; nada gravado</td>
+<td>passou</td>
+</tr>
+<tr>
+<td>CT-018</td>
+<td>CE-09, CE-15</td>
+<td>Bruno tem o 102 em D+10; Ana reserva o 101 em D+10</td>
+<td>aceita</td>
+<td>passou</td>
+</tr>
+<tr>
+<td>CT-019</td>
+<td>CE-15</td>
+<td>Ana tem o 101 em D+10, Bruno tem o 102 em D+20; reservar o 101 em D+20</td>
+<td>aceita</td>
+<td><strong>falhou – DEF-15</strong> (mascarado por DEF-01)</td>
+</tr>
 </tbody>
 </table>
-<p><strong>Resultado (código original, <code>evidencias/estrutural-original/</code>):</strong> 57 casos, 26 passaram e 31 falharam (xfail estrito). Cobertura do recorte: <strong>92/92 comandos (100%) e 49/50 desvios (98,0%)</strong>. A meta foi atingida, porque o desvio restante é inviável.</p>
+<p><strong>Resultado (código original, <code>evidencias/estrutural-original/</code>):</strong> 19 casos, 9 passaram e 10 falharam (xfail estrito). Cobertura do recorte: <strong>63/63 comandos (100%) e 33/34 desvios (97,1%)</strong>. A meta foi atingida, porque o desvio restante é inviável.</p>
 <h2>6. Correção dos defeitos antes da mutação</h2>
 <p>A mutação precisa de uma suíte que passe no programa mutado. Por isso os defeitos foram corrigidos <strong>antes</strong> de gerar os mutantes, em commits separados no fork, cada um citando a causa e os casos que o confirmam. O diff completo está em <code>evidencias/correcoes.diff</code> (<code>git diff sut-original sut-corrigido -- hotel</code>).</p>
 <table>
@@ -973,47 +587,47 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <tr>
 <td><code>8a6c4bd</code></td>
 <td>DEF-07 (sessão sem chave → <code>KeyError</code>)</td>
-<td>CT-014, CT-031 (e CT-025, complementar)</td>
+<td>CT-005 (e CT-102, complementar)</td>
 </tr>
 <tr>
 <td><code>2d1b2cd</code></td>
 <td>DEF-01 (tautologia), DEF-15 (produto cartesiano)</td>
-<td>CT-021, 022, 023, 033, 034, 035, 061–064, 045</td>
+<td>CT-003, CT-019</td>
 </tr>
 <tr>
 <td><code>704bc86</code></td>
 <td>DEF-02 (entrada hoje)</td>
-<td>CT-011</td>
+<td>CT-004</td>
 </tr>
 <tr>
 <td><code>644fd0d</code></td>
 <td>DEF-03, 04, 05, 06, 18, 19 (validação da reserva; transação única)</td>
-<td>CT-007, 015, 016, 017, 051, 052, 065, 068</td>
+<td>CT-006, 007, 008, 009, 011, 014</td>
 </tr>
 <tr>
 <td><code>1313f12</code></td>
 <td>DEF-08, 09, 10, 11 (RF-08 cancelamento, secundário; template com <code>POST</code>)</td>
-<td>CT-026, 027, 028, 029 (complementares)</td>
+<td>CT-103 a CT-106 (complementares)</td>
 </tr>
 <tr>
 <td><code>9e66e2d</code></td>
-<td>DEF-12, 13, 14, 16, 17, 18 (consulta; filtro na sessão)</td>
-<td>CT-037, 038, 039, 041, 053, 054, 066, 046, 047</td>
+<td>DEF-12, 13, 14, 16, 17, 18 (RF-04 consulta, secundário; filtro na sessão)</td>
+<td>CT-112 a CT-116 (complementares)</td>
 </tr>
 </tbody>
 </table>
-<p>Em cada passo, a suíte inteira foi executada para confirmar que nenhum caso que já passava regrediu. <strong>Resultado final no programa corrigido (tag <code>sut-corrigido</code>, <code>evidencias/suite-corrigida/</code>): 57/57 casos passaram</strong>, sem <code>skip</code> nem <code>xfail</code>, com cobertura do recorte de <strong>92/92 comandos e 38/38 desvios (100%)</strong>. Os 8 complementares também passam. O código corrigido tem menos desvios que o original (38 contra 50) porque os laços triplos foram trocados por uma junção SQL e por compreensões de conjunto. As funções auxiliares (<code>_sessao_autenticada</code>, <code>_periodos_conflitam</code>, <code>_quartos_ocupados</code>, <code>_ler_quartos</code>) entram no recorte medido.</p>
-<p>Um ajuste de oráculo foi necessário e está registrado no commit <code>8a6c4bd</code>. O CT-025 esperava que o cancelamento sem sessão redirecionasse para <code>/</code>, mas o sistema redireciona para <code>/rooms</code>, que exige login e então leva a <code>/</code>. Isso não é defeito do software: o requisito verificado, preservar a reserva, não mudou.</p>
+<p>As mensagens desses commits citam a numeração de casos da primeira versão da suíte (seção 8). Em cada passo, a suíte inteira foi executada para confirmar que nenhum caso que já passava regrediu. <strong>Resultado final no programa corrigido (tag <code>sut-corrigido</code>, <code>evidencias/suite-corrigida/</code>): 19/19 casos passaram</strong>, sem <code>skip</code> nem <code>xfail</code>, com cobertura do recorte de <strong>65/65 comandos e 28/28 desvios (100%)</strong>. Os 14 complementares também passam. O código corrigido tem menos desvios que o original (28 contra 34) porque o laço triplo foi trocado por uma junção SQL e por compreensões de conjunto. As funções auxiliares (<code>_sessao_autenticada</code>, <code>_periodos_conflitam</code>, <code>_quartos_ocupados</code>, <code>_ler_quartos</code>) entram no recorte medido.</p>
+<p>Um ajuste de oráculo foi necessário e está registrado no commit <code>8a6c4bd</code>. O CT-102 (complementar) esperava que o cancelamento sem sessão redirecionasse para <code>/</code>, mas o sistema redireciona para <code>/rooms</code>, que exige login e então leva a <code>/</code>. Isso não é defeito do software: o requisito verificado, preservar a reserva, não mudou.</p>
 <h2>7. Etapa 3: teste baseado em defeitos (mutação)</h2>
 <h3>7.1 Configuração e escopo</h3>
 <ul>
 <li><strong>Ferramenta:</strong> Cosmic Ray 8.4.3, distribuidor local, timeout de 30 s por mutante e todos os operadores padrão: substituição de operadores relacionais, aritméticos, lógicos e unários, troca de números, de <code>break</code>/<code>continue</code> e de palavras-chave, laço de zero iterações, remoção de decorador etc.</li>
-<li><strong>Escopo:</strong> <strong>todos os mutantes</strong> gerados nas linhas das funções dos três requisitos no <code>hotel/views.py</code> corrigido, sem amostragem: <code>reserve</code>, <code>cal_cost</code>, <code>check_available</code>, <code>show_rooms</code> e as quatro auxiliares. Total: <strong>189 mutantes</strong>. As demais rotas, inclusive <code>delete_reservation</code> (RF-08, secundário), foram excluídas porque não fazem parte do recorte; incluí-las só acrescentaria sobreviventes triviais.</li>
+<li><strong>Escopo:</strong> <strong>todos os mutantes</strong> gerados nas linhas das funções dos três requisitos no <code>hotel/views.py</code> corrigido, sem amostragem: <code>reserve</code>, <code>cal_cost</code> e as quatro auxiliares. Total: <strong>141 mutantes</strong>. As demais rotas, inclusive as dos requisitos secundários (<code>check_available</code>, <code>show_rooms</code> e <code>delete_reservation</code>), foram excluídas porque não fazem parte do recorte; incluí-las só acrescentaria sobreviventes triviais.</li>
 <li><strong>Configuração:</strong> <code>mutacao/cosmic-ray-inicial.toml</code> e <code>mutacao/cosmic-ray-final.toml</code>. O comando de teste é <code>pytest -x -q</code>, restrito a <code>-m 'funcional or estrutural'</code> na rodada inicial e a <code>-m 'funcional or estrutural or mutacao'</code> na final (os complementares ficam de fora). O script <code>scripts/mutacao.py</code> monta a sessão, executa <code>cosmic-ray exec</code> e grava <code>sessao.sqlite</code>, <code>resumo.json</code>, <code>sobreviventes.txt</code> (diff de cada sobrevivente) e <code>execucao.txt</code>.</li>
 <li><strong>Escore:</strong> mortos / (mortos + sobreviventes). Não houve mutantes incompetentes nem <em>timeouts</em>.</li>
 </ul>
 <h3>7.2 Rodada inicial (suíte ao fim da etapa estrutural)</h3>
-<p><strong>189 mutantes: 178 mortos e 11 sobreviventes. Escore de 94,2%.</strong> Execução em cerca de 6 minutos.</p>
+<p><strong>141 mutantes: 127 mortos e 14 sobreviventes. Escore de 90,1%.</strong> Execução em cerca de 3 minutos.</p>
 <table>
 <thead>
 <tr>
@@ -1027,76 +641,97 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <tbody>
 <tr>
 <td>S1</td>
-<td><code>_quartos_ocupados</code> (23)</td>
-<td><code>Booked.brid == Reservations.rid</code> → <code>&gt;=</code></td>
-<td><strong>Não equivalente.</strong> Nenhum caso tinha um vínculo de reserva <em>posterior</em> capaz de herdar as datas de uma reserva <em>anterior</em> de outro quarto</td>
-<td><strong>CT-055</strong></td>
+<td><code>_periodos_conflitam</code> (17)</td>
+<td><code>entrada_b &lt; saida_a</code> → <code>&lt;=</code></td>
+<td><strong>Não equivalente.</strong> Nenhum caso tinha a nova estadia terminando no dia em que outra começa; a etapa funcional só testou o limite do outro lado (CT-003)</td>
+<td><strong>CT-020</strong></td>
 </tr>
 <tr>
 <td>S2</td>
-<td><code>_ler_quartos</code> (34)</td>
-<td><code>set(numeros) &lt;= existentes</code> → <code>&lt;</code></td>
-<td><strong>Não equivalente.</strong> Nenhum caso reservava <em>todos</em> os quartos do hotel</td>
-<td><strong>CT-056</strong></td>
+<td><code>_periodos_conflitam</code> (17)</td>
+<td><code>entrada_b &lt; saida_a</code> → <code>is not</code></td>
+<td><strong>Não equivalente.</strong> Mesmo cenário: entre objetos de data distintos, <code>is not</code> é sempre verdadeiro</td>
+<td><strong>CT-020</strong></td>
 </tr>
 <tr>
 <td>S3</td>
-<td><code>cal_cost</code> (268)</td>
-<td><code>each_room_id == e.room_number</code> → <code>is</code></td>
-<td><strong>Não equivalente.</strong> <code>is</code> só coincide com <code>==</code> para inteiros de −5 a 256, que o CPython mantém em cache; os quartos da base eram 101–103</td>
-<td><strong>CT-059</strong> (quarto 301)</td>
+<td><code>_periodos_conflitam</code> (17)</td>
+<td><code>entrada_b &lt; saida_a</code> → <code>!=</code></td>
+<td><strong>Não equivalente.</strong> Acusa conflito com qualquer estadia posterior não adjacente; nenhum caso reservava um período inteiramente anterior a uma reserva existente</td>
+<td><strong>CT-021</strong></td>
 </tr>
 <tr>
 <td>S4</td>
-<td><code>check_available</code> (197)</td>
+<td><code>_quartos_ocupados</code> (23)</td>
+<td><code>Booked.brid == Reservations.rid</code> → <code>&gt;=</code></td>
+<td><strong>Não equivalente.</strong> Nenhum caso tinha um vínculo de reserva <em>posterior</em> capaz de herdar as datas de uma reserva <em>anterior</em> de outro quarto</td>
+<td><strong>CT-022</strong></td>
+</tr>
+<tr>
+<td>S5</td>
+<td><code>_ler_quartos</code> (34)</td>
+<td><code>set(numeros) &lt;= existentes</code> → <code>&lt;</code></td>
+<td><strong>Não equivalente.</strong> Nenhum caso reservava <em>todos</em> os quartos do hotel</td>
+<td><strong>CT-023</strong></td>
+</tr>
+<tr>
+<td>S6</td>
+<td><code>reserve</code> (230)</td>
+<td><code>d2 &lt;= d1</code> → <code>d2 == d1</code></td>
+<td><strong>Não equivalente.</strong> A classe CE-22 (saída igual ou anterior à entrada) foi testada só com 0 noites; uma saída anterior à entrada passaria</td>
+<td><strong>CT-024</strong></td>
+</tr>
+<tr>
+<td>S7</td>
+<td><code>cal_cost</code> (268)</td>
+<td><code>each_room_id == e.room_number</code> → <code>is</code></td>
+<td><strong>Não equivalente.</strong> <code>is</code> só coincide com <code>==</code> para inteiros de −5 a 256, que o CPython mantém em cache; os quartos da base eram 101–103</td>
+<td><strong>CT-025</strong> (quarto 301)</td>
+</tr>
+<tr>
+<td>S8</td>
+<td><code>reserve</code> (217)</td>
 <td><code>request.method == 'POST'</code> → <code>&gt;=</code></td>
 <td><strong>Equivalente.</strong> A rota só admite <code>GET</code>, <code>POST</code>, <code>HEAD</code> e <code>OPTIONS</code>, e nenhum método diferente de <code>POST</code> é ≥ <code>'POST'</code> na ordem lexicográfica</td>
 <td>—</td>
 </tr>
 <tr>
-<td>S5</td>
-<td><code>reserve</code> (217)</td>
-<td>idem</td>
-<td><strong>Equivalente</strong> (mesmo raciocínio)</td>
-<td>—</td>
-</tr>
-<tr>
-<td>S6</td>
+<td>S9</td>
 <td><code>reserve</code> (226)</td>
 <td><code>time(0, 0)</code> → <code>time(1, 0)</code> em <code>d1</code></td>
 <td><strong>Equivalente.</strong> <code>d1</code> só é comparado com datas à meia-noite (<code>d2</code> e datas gravadas) e com <code>date.today()</code> via <code>d1.date()</code>; deslocar a hora de <code>d1</code> dentro do mesmo dia não inverte nenhuma comparação, e o valor gravado é <code>checkin</code>, não <code>d1</code></td>
 <td>—</td>
 </tr>
 <tr>
-<td>S7</td>
+<td>S10</td>
 <td><code>reserve</code> (226)</td>
 <td><code>time(0, 0)</code> → <code>time(0, 1)</code></td>
 <td><strong>Equivalente</strong> (idem)</td>
 <td>—</td>
 </tr>
 <tr>
-<td>S8</td>
+<td>S11</td>
 <td><code>reserve</code> (247)</td>
 <td>custo inicial <code>0</code> → <code>1</code></td>
 <td><strong>Equivalente.</strong> O valor é sobrescrito por <code>cal_cost</code> antes do único <code>commit</code></td>
 <td>—</td>
 </tr>
 <tr>
-<td>S9</td>
+<td>S12</td>
 <td><code>reserve</code> (247)</td>
 <td>custo inicial <code>0</code> → <code>-1</code></td>
 <td><strong>Equivalente</strong> (idem)</td>
 <td>—</td>
 </tr>
 <tr>
-<td>S10</td>
+<td>S13</td>
 <td><code>_ler_quartos</code> (34)</td>
 <td><code>len(set(n)) != len(n)</code> → <code>&lt;</code></td>
 <td><strong>Equivalente.</strong> Um conjunto nunca tem mais elementos que a lista de origem, então <code>!=</code> e <code>&lt;</code> são a mesma condição</td>
 <td>—</td>
 </tr>
 <tr>
-<td>S11</td>
+<td>S14</td>
 <td><code>_ler_quartos</code> (34)</td>
 <td><code>len(set(n)) != len(n)</code> → <code>is not</code></td>
 <td><strong>Equivalente no domínio.</strong> Os comprimentos só passam de 256 se o usuário informar mais de 256 quartos numa reserva, o que é irrealista; abaixo disso, o cache de inteiros do CPython torna <code>is not</code> idêntico a <code>!=</code></td>
@@ -1117,38 +752,59 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 </thead>
 <tbody>
 <tr>
-<td>CT-055</td>
-<td>CE-17</td>
+<td>CT-020</td>
+<td>CE-15, CE-21</td>
+<td>101 reservado D+10–12; nova D+8–10 (sai no dia em que a outra entra)</td>
+<td>aceita</td>
+<td>S1, S2</td>
+</tr>
+<tr>
+<td>CT-021</td>
+<td>CE-15</td>
+<td>101 reservado D+10–12; nova D+7–9</td>
+<td>aceita</td>
+<td>S3</td>
+</tr>
+<tr>
+<td>CT-022</td>
+<td>CE-15</td>
 <td>Ana tem o 102 em D+10 (reserva 1); Bruno tem o 101 em D+20 (reserva 2); Ana reserva o 101 em D+10</td>
 <td>aceita</td>
-<td>S1</td>
+<td>S4</td>
 </tr>
 <tr>
-<td>CT-056</td>
-<td>CE-13, CE-20</td>
+<td>CT-023</td>
+<td>CE-05, CE-10</td>
 <td>Reservar 101, 102 e 103 para 9 hóspedes por 2 noites</td>
 <td>aceita; custo 900; 3 vínculos</td>
-<td>S2</td>
+<td>S5</td>
 </tr>
 <tr>
-<td>CT-059</td>
-<td>CE-05, CE-19</td>
+<td>CT-024</td>
+<td>CE-22</td>
+<td>saída um dia antes da entrada</td>
+<td>recusa</td>
+<td>S6</td>
+</tr>
+<tr>
+<td>CT-025</td>
+<td>CE-09, CE-21</td>
 <td>Quarto 301 (R$ 120) por 2 noites</td>
 <td>custo 240</td>
-<td>S3</td>
+<td>S7</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Rodada final (suíte completa, 60 casos, <code>evidencias/mutacao-final/</code>): 189 mutantes: 181 mortos, 8 sobreviventes, 0 incompetentes. Escore de 95,8% (inicial: 94,2%), em 315 s.</strong> Os três casos novos mataram os três sobreviventes não equivalentes. Restam 8 sobreviventes, todos classificados como equivalentes (S4 a S11); não equivalentes restantes: 0. O arquivo <code>evidencias/mutacao-final/sobreviventes.txt</code> traz o diff de cada um.</p>
+<p><strong>Rodada final (suíte completa, 25 casos, <code>evidencias/mutacao-final/</code>): 141 mutantes: 134 mortos, 7 sobreviventes, 0 incompetentes. Escore de 95,0% (inicial: 90,1%), em 206 s.</strong> Os 6 casos novos mataram os 7 sobreviventes não equivalentes. Restam 7 sobreviventes, todos classificados como equivalentes (S8 a S14); não equivalentes restantes: 0. O arquivo <code>evidencias/mutacao-final/sobreviventes.txt</code> traz o diff de cada um.</p>
 <h3>7.4 Fragilidades reveladas</h3>
-<p>A suíte tinha 100% de cobertura de desvios e, mesmo assim, deixou vivos 3 mutantes não equivalentes. As fragilidades expostas foram:</p>
+<p>A suíte tinha 100% de cobertura de desvios e, mesmo assim, deixou vivos 7 mutantes não equivalentes. As fragilidades expostas foram:</p>
 <ol>
+<li><strong>Limite testado de um lado só.</strong> A etapa funcional testou "entrar no dia em que a outra estadia sai", mas não o simétrico "sair no dia em que a outra entra", nem um período inteiramente anterior. Três mutantes do predicado de conflito sobreviveram por isso.</li>
+<li><strong>Um único representante de uma classe inválida.</strong> CE-22 (saída igual ou anterior à entrada) foi exercitada só com 0 noites. Trocar <code>&lt;=</code> por <code>==</code> mantinha esse caso correto e deixava passar períodos negativos.</li>
 <li><strong>Dados de teste homogêneos.</strong> Todos os números de quarto cabiam no cache de inteiros pequenos do Python, o que esconde a troca de <code>==</code> por <code>is</code> no cálculo das diárias. Em produção, com quartos numerados como 301, esse erro passaria despercebido.</li>
-<li><strong>Cenários de ocupação sempre com a mesma ordem de criação.</strong> Faltava o caso em que a reserva mais nova pertence ao quarto pedido e a mais antiga a outro quarto, justamente o que distingue a junção correta (<code>brid == rid</code>) de uma errada.</li>
-<li><strong>Nenhum caso no extremo superior da enumeração de quartos</strong>, isto é, reservar todos eles.</li>
+<li><strong>Ordem de criação fixa e nenhum caso no extremo da enumeração de quartos.</strong> Faltavam a reserva mais nova pertencendo ao quarto pedido (o que distingue <code>brid == rid</code> de uma junção errada) e uma reserva de todos os quartos.</li>
 </ol>
-<p>Nos testes complementares do cancelamento, a mesma análise (feita quando o cancelamento estava no recorte) gerou CT-057 e CT-058, que mostraram a mesma fragilidade de dados homogêneos (uid 1000) e um oráculo de autorização testado num só sentido.</p>
-<p>Os 8 equivalentes vêm de código defensivo ou redundante que veio do original: o custo provisório 0 e <code>time(0, 0)</code> explícito. Eles mostram também que o escore bruto subestima a qualidade da suíte. Excluindo os equivalentes, o escore final é 100,0% (181/181).</p>
+<p>Os 7 equivalentes vêm de código defensivo ou redundante que veio do original: o custo provisório 0, <code>time(0, 0)</code> explícito e a comparação de tamanhos em <code>_ler_quartos</code>. Eles mostram também que o escore bruto subestima a qualidade da suíte. Excluindo os equivalentes, o escore final é 100,0% (134/134).</p>
 <h2>8. Evolução incremental</h2>
 <table>
 <thead>
@@ -1169,52 +825,52 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>1. Funcional</td>
 <td>Classes de equivalência + valor limite</td>
 <td>original</td>
-<td style="text-align: right;">50</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">28</td>
-<td style="text-align: right;">84/92 (91,3%)</td>
-<td style="text-align: right;">42/50 (84,0%)</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">60/63 (95,2%)</td>
+<td style="text-align: right;">29/34 (85,3%)</td>
 <td style="text-align: right;">—</td>
 </tr>
 <tr>
 <td>2. Estrutural</td>
 <td>Cobertura de comandos e desvios</td>
 <td>original</td>
-<td style="text-align: right;">57</td>
-<td style="text-align: right;">26</td>
-<td style="text-align: right;">31</td>
-<td style="text-align: right;">92/92 (100,0%)</td>
-<td style="text-align: right;">49/50 (98,0%)</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">63/63 (100,0%)</td>
+<td style="text-align: right;">33/34 (97,1%)</td>
 <td style="text-align: right;">—</td>
 </tr>
 <tr>
 <td>3. Correção</td>
 <td>Suíte funcional + estrutural no código corrigido</td>
 <td>corrigida</td>
-<td style="text-align: right;">57</td>
-<td style="text-align: right;">57</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">19</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">92/92 (100,0%)</td>
-<td style="text-align: right;">38/38 (100,0%)</td>
-<td style="text-align: right;">178/189 (94,2%)</td>
+<td style="text-align: right;">65/65 (100,0%)</td>
+<td style="text-align: right;">28/28 (100,0%)</td>
+<td style="text-align: right;">127/141 (90,1%)</td>
 </tr>
 <tr>
 <td>4. Mutação</td>
 <td>Casos para matar mutantes sobreviventes</td>
 <td>corrigida</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: right;">60</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">25</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">92/92 (100,0%)</td>
-<td style="text-align: right;">38/38 (100,0%)</td>
-<td style="text-align: right;">181/189 (95,8%)</td>
+<td style="text-align: right;">65/65 (100,0%)</td>
+<td style="text-align: right;">28/28 (100,0%)</td>
+<td style="text-align: right;">134/141 (95,0%)</td>
 </tr>
 </tbody>
 </table>
 <p>Na linha 3, o escore é o da rodada <strong>inicial</strong> do Cosmic Ray, executada com a suíte funcional + estrutural sobre o código corrigido. Na linha 4, é o da rodada <strong>final</strong>, com a suíte completa. Nas etapas 1 e 2 não há escore, pois a mutação só é aplicada depois da correção dos defeitos (seção 6). Fonte: <code>evidencias/evolucao.json</code>, gerado por <code>scripts/evolucao.py</code>.</p>
-<p>A ordem <strong>Funcional → Estrutural → (correção) → Mutação</strong> está no histórico do fork (os commits posteriores reorganizaram o recorte e completaram casos, sempre reexecutando todas as etapas): <code>afeb312</code> (etapa 1), <code>ac975b7</code> (etapa 2), seis commits de correção, e <code>324e29a</code> (etapa 3). Cada etapa só acrescenta casos. Nenhum caso das etapas anteriores foi removido ou marcado com <code>skip</code>.</p>
+<p>A ordem <strong>Funcional → Estrutural → (correção) → Mutação</strong> está no histórico do fork: <code>afeb312</code> (etapa 1), <code>ac975b7</code> (etapa 2), seis commits de correção, e <code>324e29a</code> (etapa 3). Os commits posteriores reorganizaram o recorte. Na última revisão, a consulta de disponibilidade passou a requisito secundário, a suíte funcional foi enxugada para 15 casos (um por classe inválida, com os limites embutidos) e os casos foram renumerados. Todas as etapas foram então reexecutadas do zero, e as evidências deste relatório são dessa execução. Dentro dela, cada etapa só acrescenta casos: nenhum caso das etapas anteriores foi removido ou marcado com <code>skip</code>.</p>
 <h2>9. Registro de defeitos</h2>
-<p>Linhas referentes ao <code>hotel/views.py</code> original (<code>sut-original</code>). Todos os defeitos têm teste automatizado que falha no original e passa no corrigido. <strong>DEF-08 a DEF-11 pertencem ao RF-08 (cancelamento, secundário)</strong> e foram revelados pelos testes complementares; os outros 15 pertencem aos três requisitos principais.</p>
+<p>Linhas referentes ao <code>hotel/views.py</code> original (<code>sut-original</code>). Todos os defeitos têm teste automatizado que falha no original e passa no corrigido. <strong>DEF-08 a DEF-11 pertencem ao RF-08 (cancelamento) e DEF-12, DEF-13, DEF-14, DEF-16 e DEF-17 ao RF-04 (consulta)</strong>, requisitos secundários, e foram revelados pelos testes complementares; os outros 10 pertencem aos três requisitos principais.</p>
 <table>
 <thead>
 <tr>
@@ -1234,10 +890,10 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>DEF-01</td>
 <td>Crítica</td>
 <td><code>reserve</code> 208–210; <code>show_rooms</code> 160–162</td>
-<td>101 reservado D+10–12; reservar 101 em D+20–22</td>
+<td>101 reservado D+10–12; reservar 101 em D+12–14 (entrada no dia da saída)</td>
 <td>aceita</td>
 <td>recusado: "not available"</td>
-<td>CT-021, 022, 023, 033, 034, 035, 061–064</td>
+<td>CT-003 (e CT-020, CT-021)</td>
 <td><code>(c1&lt;=d1 and d2&lt;=c2) or (d1&lt;=c1 and d2&lt;=c2) or (c1&lt;=d1 and c2&lt;=d2) or (d1&lt;=c1 and c2&lt;=d2)</code> é tautologia: para quaisquer datas, uma alternativa é verdadeira. Quarto reservado uma vez fica bloqueado para sempre</td>
 <td><code>_periodos_conflitam(a1, a2, b1, b2) = a1 &lt; b2 and b1 &lt; a2</code> (<code>2d1b2cd</code>)</td>
 </tr>
@@ -1248,7 +904,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>entrada hoje, 1 noite</td>
 <td>aceita</td>
 <td>recusado: "at least today"</td>
-<td>CT-011</td>
+<td>CT-004</td>
 <td><code>d1</code> (hoje 00:00) comparado com <code>datetime.now()</code></td>
 <td><code>d1.date() &lt; date.today()</code> (<code>704bc86</code>)</td>
 </tr>
@@ -1259,7 +915,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>101, 0 hóspedes</td>
 <td>recusa</td>
 <td>reserva gravada com 0 hóspedes e custo 200</td>
-<td>CT-007</td>
+<td>CT-009</td>
 <td>só há limite superior <code>num &gt; total_num</code></td>
 <td>exigir <code>num &gt;= 1</code> antes de gravar (<code>644fd0d</code>)</td>
 </tr>
@@ -1270,7 +926,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>quartos <code>abc</code></td>
 <td>recusa com mensagem</td>
 <td>500 <code>ValueError: invalid literal for int()</code></td>
-<td>CT-015</td>
+<td>CT-006</td>
 <td><code>int(each)</code> sem tratamento</td>
 <td><code>_ler_quartos</code> converte com <code>try/except</code> (<code>644fd0d</code>)</td>
 </tr>
@@ -1281,7 +937,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>quartos <code>101,999</code>, 2 hóspedes</td>
 <td>recusa</td>
 <td>gravado; vínculo com quarto 999 inexistente</td>
-<td>CT-016</td>
+<td>CT-007</td>
 <td>a existência só influencia indiretamente a soma de capacidades</td>
 <td><code>_ler_quartos</code> exige <code>set(numeros) &lt;= existentes</code> (<code>644fd0d</code>)</td>
 </tr>
@@ -1292,7 +948,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>quartos <code>101,101</code>, 2 hóspedes</td>
 <td>recusa</td>
 <td>2 vínculos, capacidade 4 e custo 400 (dobro)</td>
-<td>CT-017</td>
+<td>CT-008</td>
 <td>lista não é deduplicada nem validada</td>
 <td><code>_ler_quartos</code> recusa repetição (<code>644fd0d</code>)</td>
 </tr>
@@ -1303,7 +959,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>visitante sem login abre <code>/reserve</code></td>
 <td>redirecionar ao início</td>
 <td>500 <code>KeyError: 'user_available'</code></td>
-<td>CT-014, 025, 031</td>
+<td>CT-005 (e CT-102, complementar)</td>
 <td><code>session['user_available']</code> sem a chave, que só existe após login/logout</td>
 <td><code>_sessao_autenticada()</code> com <code>session.get(..., False)</code> (<code>8a6c4bd</code>)</td>
 </tr>
@@ -1314,7 +970,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>Bruno envia <code>POST /delete/&lt;rid de Ana&gt;</code></td>
 <td>403, reserva mantida</td>
 <td>reserva de Ana excluída</td>
-<td>CT-027 (e CT-058)</td>
+<td>CT-104 (e CT-108)</td>
 <td>só verifica se <em>alguém</em> está logado, não o titular</td>
 <td>403 se <code>reserva.ruid != usuário.uid</code> (<code>1313f12</code>)</td>
 </tr>
@@ -1325,7 +981,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td><code>POST /delete/999</code></td>
 <td>404</td>
 <td>500 <code>UnmappedInstanceError</code></td>
-<td>CT-026</td>
+<td>CT-103</td>
 <td><code>query.get</code> devolve <code>None</code> e <code>db.session.delete(None)</code> falha</td>
 <td><code>abort(404)</code> (<code>1313f12</code>)</td>
 </tr>
@@ -1336,7 +992,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td><code>GET /delete/&lt;rid&gt;</code></td>
 <td>405, nada alterado</td>
 <td>reserva excluída</td>
-<td>CT-028</td>
+<td>CT-105</td>
 <td>exclusão por <code>GET</code>: links, pré-carregamento do navegador ou robôs apagam dados</td>
 <td>rota só <code>POST</code>; lixeira vira formulário <code>POST</code> com confirmação (<code>1313f12</code>)</td>
 </tr>
@@ -1347,7 +1003,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>cancelar reserva com pagamento</td>
 <td>nenhum registro órfão</td>
 <td><code>payment.prid</code> aponta para reserva inexistente</td>
-<td>CT-029</td>
+<td>CT-106</td>
 <td>exclusão ignora <code>Payment</code> e usa vários <code>commit()</code></td>
 <td>apaga <code>Booked</code> e <code>Payment</code> junto, em uma transação (<code>1313f12</code>)</td>
 </tr>
@@ -1358,7 +1014,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>consulta com entrada D+12, saída D+10</td>
 <td>recusar com mensagem</td>
 <td>aceita e lista todos os quartos, sem aviso</td>
-<td>CT-037, 038</td>
+<td>CT-112</td>
 <td>nenhum teste do período; <code>show_rooms</code> ignora o filtro em silêncio com <code>c_in &lt; c_out</code></td>
 <td>valida <code>checkout &gt; checkin</code> (<code>9e66e2d</code>)</td>
 </tr>
@@ -1366,10 +1022,10 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>DEF-13</td>
 <td>Média</td>
 <td><code>check_available</code> 175–178</td>
-<td>consulta com 0 ou <code>dois</code> hóspedes</td>
+<td>consulta com 0 hóspedes</td>
 <td>recusar</td>
 <td>aceita</td>
-<td>CT-039, 054</td>
+<td>CT-113</td>
 <td><code>num_guests</code> não é validado</td>
 <td>exige inteiro <code>&gt;= 1</code> (<code>9e66e2d</code>)</td>
 </tr>
@@ -1380,7 +1036,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>consulta com 3 hóspedes</td>
 <td>omitir o 101 (capacidade 2)</td>
 <td>101 listado</td>
-<td>CT-041</td>
+<td>CT-114</td>
 <td>o número de hóspedes informado nunca é usado</td>
 <td>filtra <code>capacity &gt;= hóspedes</code> (<code>9e66e2d</code>)</td>
 </tr>
@@ -1391,7 +1047,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>101 de Ana em D+10, 102 de Bruno em D+20; reservar 101 em D+20</td>
 <td>aceita</td>
 <td>recusado (vínculo do 101 × datas da reserva do 102)</td>
-<td>CT-045 (e CT-055)</td>
+<td>CT-019 (e CT-022)</td>
 <td>laço triplo reservas × vínculos sem <code>brid == rid</code>; <strong>mascarado por DEF-01</strong></td>
 <td>junção <code>Booked.brid == Reservations.rid</code> em <code>_quartos_ocupados</code> (<code>2d1b2cd</code>)</td>
 </tr>
@@ -1402,7 +1058,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>Ana consulta D+10; Bruno abre <code>/rooms</code></td>
 <td>Bruno vê todos os quartos</td>
 <td>Bruno vê a lista filtrada de Ana</td>
-<td>CT-046</td>
+<td>CT-115</td>
 <td>filtro guardado em variável de módulo compartilhada por todas as sessões</td>
 <td>filtro em <code>session['filtro_disponibilidade']</code> (<code>9e66e2d</code>)</td>
 </tr>
@@ -1413,7 +1069,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>101 e 102 ocupados; consulta 1 hóspede</td>
 <td>só o 103</td>
 <td>102 aparece</td>
-<td>CT-047</td>
+<td>CT-116</td>
 <td><code>all_rooms.remove(each)</code> dentro de <code>for each in all_rooms</code> pula o elemento seguinte</td>
 <td>lista nova por compreensão (<code>9e66e2d</code>)</td>
 </tr>
@@ -1424,7 +1080,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>data <code>2026-13-01</code></td>
 <td>recusar</td>
 <td>500 <code>TypeError: combine() argument 1 must be datetime.date, not None</code></td>
-<td>CT-051, 053</td>
+<td>CT-014</td>
 <td><code>DateField</code> inválido deixa <code>data = None</code></td>
 <td>valida datas antes de usar (<code>644fd0d</code>, <code>9e66e2d</code>)</td>
 </tr>
@@ -1435,20 +1091,21 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>hóspedes <code>dois</code></td>
 <td>recusar</td>
 <td>500 <code>TypeError: '&gt;' not supported</code></td>
-<td>CT-052</td>
+<td>CT-011</td>
 <td><code>IntegerField</code> inválido deixa <code>None</code></td>
 <td>exige inteiro <code>&gt;= 1</code> (<code>644fd0d</code>)</td>
 </tr>
 </tbody>
 </table>
 <p><strong>Fora do recorte:</strong> <code>update_reservation</code>, <code>about_user</code> e <code>payment</code> repetem a causa de DEF-07 (<code>session['user_available']</code>), e <code>update_reservation</code> repete a de DEF-01 e DEF-15. Eles não foram corrigidos nem testados por estarem fora do escopo. A correção seria a mesma, reutilizando <code>_sessao_autenticada</code> e <code>_quartos_ocupados</code>.</p>
-<h3>9.1 Testes complementares do requisito secundário RF-08 (cancelar reserva)</h3>
-<p>Numa versão anterior do recorte, o cancelamento era um dos três requisitos principais. Seus casos continuam executáveis em <code>tests/test_04_secundarios.py</code> (marca <code>secundario</code>), com as classes CE-21 a CE-30, mas ficam fora das métricas de cobertura e de mutação. Evidências: <code>evidencias/secundarios-original/</code> e <code>evidencias/secundarios-corrigida/</code>.</p>
+<h3>9.1 Testes complementares dos requisitos secundários (RF-08 cancelar e RF-04 consultar)</h3>
+<p>O cancelamento e a consulta de disponibilidade já fizeram parte do recorte em versões anteriores. Seus casos continuam executáveis em <code>tests/test_04_secundarios.py</code> (marca <code>secundario</code>), com as classes CE-31 a CE-47, mas ficam fora das métricas de cobertura e de mutação. Evidências: <code>evidencias/secundarios-original/</code> e <code>evidencias/secundarios-corrigida/</code>.</p>
 <p>Legenda como na seção 4.3. Casos da marca <code>secundario</code> (fora das métricas).</p>
 <table>
 <thead>
 <tr>
 <th>Caso</th>
+<th>RF</th>
 <th>Classes</th>
 <th>Entrada / cenário</th>
 <th>Resultado esperado</th>
@@ -1457,85 +1114,141 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 </thead>
 <tbody>
 <tr>
-<td>CT-024</td>
-<td>CE-21,23,25,27,29</td>
+<td>CT-101</td>
+<td>RF-08</td>
+<td>CE-31, 33, 35, 37, 39</td>
 <td>Ana cancela a própria reserva (<code>POST</code>)</td>
 <td><code>/rooms</code>; reserva e vínculo removidos</td>
 <td>P</td>
 </tr>
 <tr>
-<td>CT-025</td>
-<td>CE-22</td>
+<td>CT-102</td>
+<td>RF-08</td>
+<td>CE-32</td>
 <td>visitante sem login <code>POST /delete/&lt;rid&gt;</code></td>
 <td>redireciona; reserva mantida</td>
 <td>F – DEF-07</td>
 </tr>
 <tr>
-<td>CT-026</td>
-<td>CE-24</td>
+<td>CT-103</td>
+<td>RF-08</td>
+<td>CE-34</td>
 <td><code>POST /delete/999</code></td>
 <td>404</td>
 <td>F – DEF-09</td>
 </tr>
 <tr>
-<td>CT-027</td>
-<td>CE-26</td>
+<td>CT-104</td>
+<td>RF-08</td>
+<td>CE-36</td>
 <td>Bruno cancela reserva de Ana</td>
 <td>403; reserva e vínculo mantidos</td>
 <td>F – DEF-08</td>
 </tr>
 <tr>
-<td>CT-028</td>
-<td>CE-28</td>
+<td>CT-105</td>
+<td>RF-08</td>
+<td>CE-38</td>
 <td><code>GET /delete/&lt;rid&gt;</code></td>
 <td>405; reserva mantida</td>
 <td>F – DEF-10</td>
 </tr>
 <tr>
-<td>CT-029</td>
-<td>CE-21,23,25,27,30</td>
+<td>CT-106</td>
+<td>RF-08</td>
+<td>CE-31, 33, 35, 37, 40</td>
 <td>cancelar reserva com pagamento</td>
 <td>reserva e pagamento removidos</td>
 <td>F – DEF-11</td>
 </tr>
 <tr>
-<td>CT-057</td>
-<td>CE-21, 23, 25, 27</td>
-<td>usuária com uid 1000 cancela a própria reserva (criado para um mutante de <code>delete_reservation</code>)</td>
+<td>CT-107</td>
+<td>RF-08</td>
+<td>CE-31, 33, 35, 37</td>
+<td>usuária com uid 1000 cancela a própria reserva</td>
 <td>cancelada</td>
 <td>P</td>
 </tr>
 <tr>
-<td>CT-058</td>
-<td>CE-26</td>
+<td>CT-108</td>
+<td>RF-08</td>
+<td>CE-36</td>
 <td>Ana (uid 1) tenta cancelar reserva de Bruno (uid 2)</td>
 <td>403; reserva mantida</td>
 <td>F – DEF-08</td>
+</tr>
+<tr>
+<td>CT-111</td>
+<td>RF-04</td>
+<td>CE-41, 43, 45, 46</td>
+<td>101 ocupado D+10–12; consulta D+10–12, 2 hóspedes</td>
+<td>lista 102, 103</td>
+<td>P</td>
+</tr>
+<tr>
+<td>CT-112</td>
+<td>RF-04</td>
+<td>CE-42</td>
+<td>consulta com entrada D+12 e saída D+10</td>
+<td>recusa (<code>/available</code>)</td>
+<td>F – DEF-12</td>
+</tr>
+<tr>
+<td>CT-113</td>
+<td>RF-04</td>
+<td>CE-44</td>
+<td>consulta com 0 hóspedes</td>
+<td>recusa</td>
+<td>F – DEF-13</td>
+</tr>
+<tr>
+<td>CT-114</td>
+<td>RF-04</td>
+<td>CE-46</td>
+<td>consulta com 3 hóspedes</td>
+<td>lista 102, 103 (o 101 comporta 2)</td>
+<td>F – DEF-14</td>
+</tr>
+<tr>
+<td>CT-115</td>
+<td>RF-04</td>
+<td>CE-47</td>
+<td>Ana consulta D+10 com o 101 ocupado; Bruno, em outra sessão, abre <code>/rooms</code></td>
+<td>Bruno vê 101, 102, 103</td>
+<td>F – DEF-16</td>
+</tr>
+<tr>
+<td>CT-116</td>
+<td>RF-04</td>
+<td>CE-46</td>
+<td>101 e 102 ocupados em D+10; consulta D+10, 1 hóspede</td>
+<td>só o 103</td>
+<td>F – DEF-17</td>
 </tr>
 </tbody>
 </table>
 <h2>10. Interpretação da cobertura e limitações</h2>
 <ul>
-<li><strong>Cobertura não é ausência de defeitos.</strong> Na etapa 2, o código original tinha 100% de comandos cobertos e 31 casos falhando. Em <code>show_rooms</code>, por exemplo, a linha do predicado tautológico era executada em todos os casos da consulta e sempre errava. Cobertura mede o que foi <em>executado</em>, não o que foi <em>verificado</em>. Quem revela o defeito é o oráculo.</li>
-<li><strong>Comandos × desvios.</strong> Depois da etapa 1, a cobertura de comandos (91,3%) era 7 pontos maior que a de desvios (84,0%). Os desvios 205→204 e 208→205 estavam em linhas executadas, mas um dos lados da decisão nunca ocorreu. Esse lado era o caso "vínculo de outro quarto", que depois levou ao DEF-15.</li>
+<li><strong>Cobertura não é ausência de defeitos.</strong> Na etapa 2, o código original tinha 100% de comandos cobertos e 10 casos falhando. Em <code>reserve</code>, por exemplo, a linha do predicado tautológico era executada em todos os casos com reserva prévia e errava sempre que as estadias não se sobrepunham. Cobertura mede o que foi <em>executado</em>, não o que foi <em>verificado</em>. Quem revela o defeito é o oráculo.</li>
+<li><strong>Comandos × desvios.</strong> Depois da etapa 1, a cobertura de comandos (95,2%) era 10 pontos maior que a de desvios (85,3%). Os desvios 205→204 e 208→205 estavam em linhas executadas, mas um dos lados da decisão nunca ocorreu. Esse lado era o caso "vínculo de outro quarto", que depois levou ao DEF-15.</li>
 <li><strong>Desvio inviável.</strong> O 230→229 do original não pode ser coberto porque as consultas retornam as reservas em ordem de chave primária. A correção eliminou esse laço.</li>
-<li><strong>Global × recorte.</strong> No <code>views.py</code> inteiro, a cobertura final é de 53,8%. O restante corresponde a rotas fora do escopo. É uma lacuna declarada, não um defeito da suíte.</li>
-<li><strong>100% de desvios ≠ suíte forte.</strong> A etapa 3 mostrou 3 mutantes não equivalentes vivos com 100% de desvios.</li>
+<li><strong>Global × recorte.</strong> No <code>views.py</code> inteiro, a cobertura final é de 40,7%. O restante corresponde a rotas fora do escopo. É uma lacuna declarada, não um defeito da suíte.</li>
+<li><strong>100% de desvios ≠ suíte forte.</strong> A etapa 3 mostrou 7 mutantes não equivalentes vivos com 100% de desvios.</li>
 <li><strong>Limitações.</strong><ul>
 <li>Os testes usam o cliente de teste do Flask e SQLite em memória: não há automação de navegador, carga ou concorrência real (duas reservas simultâneas do mesmo quarto não foram testadas).</li>
 <li>A proteção CSRF não é validada pelas rotas do original; a correção de DEF-10 (<code>POST</code>) reduz o risco, mas não o elimina.</li>
 <li>As senhas são gravadas em texto plano (<code>models.py</code>), fora do recorte.</li>
 <li>Alguns oráculos são convenções declaradas (seção 3), não requisitos escritos pela autora.</li>
-<li>O Cosmic Ray foi aplicado só às funções dos três requisitos; RF-07 (alteração) repete as regras de datas e não foi testado.</li>
+<li>O Cosmic Ray foi aplicado só às funções dos três requisitos; a consulta (RF-04) tem apenas testes complementares, e RF-07 (alteração) repete as regras de datas e não foi testado.</li>
 </ul>
 </li>
 </ul>
 <h2>11. Conclusões e lições aprendidas</h2>
 <ol>
-<li><strong>A técnica funcional encontrou a maior parte dos defeitos</strong> (12 dos 15 dos três requisitos) sem olhar o código, porque as classes inválidas e os limites foram tratados um a um. O limite "entrada hoje" e as estadias adjacentes expuseram defeitos que valores típicos não mostrariam.</li>
-<li><strong>A técnica estrutural encontrou o que a especificação não sugere:</strong> estado global compartilhado, remoção durante a iteração e produto cartesiano. Ela também mostrou que um defeito (DEF-15) pode ficar <strong>mascarado</strong> por outro (DEF-01), só aparecendo depois da primeira correção.</li>
-<li><strong>A mutação avaliou os próprios testes.</strong> Com 100% de desvios, a suíte ainda tinha fragilidades concretas (dados homogêneos, ordem de criação fixa), corrigidas com 3 casos pequenos.</li>
-<li><strong>Corrigir antes de mutar é indispensável.</strong> Mutar o original, com 31 testes falhando, invalidaria o escore, porque um mutante que "corrige" um defeito seria contado como vivo ou morto por acaso.</li>
+<li><strong>A técnica funcional encontrou a maior parte dos defeitos</strong> (9 dos 10 dos três requisitos) com 15 casos, sem olhar o código, porque cada classe inválida teve um caso próprio e os limites foram embutidos nesses casos. O limite "entrada hoje" e as estadias adjacentes expuseram defeitos que valores típicos não mostrariam.</li>
+<li><strong>A técnica estrutural encontrou o que a especificação não sugere:</strong> o produto cartesiano entre reservas e vínculos (DEF-15). Ela também mostrou que um defeito pode ficar <strong>mascarado</strong> por outro (DEF-01), só aparecendo depois da primeira correção.</li>
+<li><strong>A mutação avaliou os próprios testes.</strong> Com 100% de desvios, a suíte ainda tinha fragilidades concretas (limite testado de um lado só, um único representante de classe inválida, dados homogêneos), corrigidas com 6 casos pequenos.</li>
+<li><strong>Corrigir antes de mutar é indispensável.</strong> Mutar o original, com 10 testes falhando, invalidaria o escore, porque um mutante que "corrige" um defeito seria contado como vivo ou morto por acaso.</li>
 <li><strong>Dificuldades:</strong><ul>
 <li>dependências de 2019 incompatíveis com o Python atual, resolvidas com ambientes separados e <code>compat.py</code>;</li>
 <li>a execução do Cosmic Ray no Windows (caminho relativo do interpretador);</li>
@@ -1551,7 +1264,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 </code></pre>
 <p>Comandos isolados:</p>
 <ul>
-<li><code>SUT_VERSAO=original pytest -m funcional -rxX</code></li>
+<li><code>SUT_VERSAO=original pytest -m funcional -rxX</code> (15 casos; 9 falhas esperadas)</li>
 <li><code>pytest --cov=hotel.views --cov-branch --cov-report=term-missing</code></li>
 <li><code>.venv-mutation/Scripts/python.exe scripts/mutacao.py final</code></li>
 <li><code>git diff sut-original sut-corrigido -- hotel</code></li>
@@ -1577,7 +1290,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>válida</td>
 <td>Usuário autenticado</td>
 <td>CT-001</td>
-<td>CT-050</td>
+<td>CT-016</td>
 </tr>
 <tr>
 <td>CE-02</td>
@@ -1585,11 +1298,11 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>C01 Sessão</td>
 <td>inválida</td>
 <td>Sem sessão (nunca fez login) ou sessão encerrada</td>
-<td>CT-014</td>
-<td>CT-048</td>
+<td>CT-005</td>
+<td>CT-017</td>
 </tr>
 <tr>
-<td>CE-11</td>
+<td>CE-03</td>
 <td>REQ-01</td>
 <td>C02 Formato dos quartos</td>
 <td>válida</td>
@@ -1598,34 +1311,34 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>—</td>
 </tr>
 <tr>
-<td>CE-12</td>
+<td>CE-04</td>
 <td>REQ-01</td>
 <td>C02 Formato dos quartos</td>
 <td>inválida</td>
 <td>Texto não numérico</td>
-<td>CT-015</td>
+<td>CT-006</td>
 <td>—</td>
 </tr>
 <tr>
-<td>CE-13</td>
+<td>CE-05</td>
 <td>REQ-01</td>
 <td>C03 Existência dos quartos</td>
 <td>válida</td>
 <td>Todos os quartos existem</td>
 <td>CT-001</td>
-<td>CT-056</td>
+<td>CT-023</td>
 </tr>
 <tr>
-<td>CE-14</td>
+<td>CE-06</td>
 <td>REQ-01</td>
 <td>C03 Existência dos quartos</td>
 <td>inválida</td>
 <td>Algum quarto não existe</td>
-<td>CT-016</td>
+<td>CT-007</td>
 <td>—</td>
 </tr>
 <tr>
-<td>CE-15</td>
+<td>CE-07</td>
 <td>REQ-01</td>
 <td>C04 Repetição de quartos</td>
 <td>válida</td>
@@ -1634,408 +1347,291 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td>—</td>
 </tr>
 <tr>
-<td>CE-16</td>
+<td>CE-08</td>
 <td>REQ-01</td>
 <td>C04 Repetição de quartos</td>
 <td>inválida</td>
 <td>Quarto repetido</td>
-<td>CT-017</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-19</td>
-<td>REQ-01</td>
-<td>C05 Quantidade de quartos</td>
-<td>válida</td>
-<td>Um quarto</td>
-<td>CT-001</td>
-<td>CT-044, CT-059</td>
-</tr>
-<tr>
-<td>CE-20</td>
-<td>REQ-01</td>
-<td>C05 Quantidade de quartos</td>
-<td>válida</td>
-<td>Vários quartos (custo e capacidade somados)</td>
-<td>CT-002, CT-060, CT-067</td>
-<td>CT-056</td>
-</tr>
-<tr>
-<td>CE-08</td>
-<td>REQ-01</td>
-<td>C06 Nº de hóspedes na reserva</td>
-<td>válida</td>
-<td>Inteiro de 1 até a capacidade somada dos quartos</td>
-<td>CT-001, CT-002, CT-003, CT-006, CT-060</td>
+<td>CT-008</td>
 <td>—</td>
 </tr>
 <tr>
 <td>CE-09</td>
 <td>REQ-01</td>
-<td>C06 Nº de hóspedes na reserva</td>
-<td>inválida</td>
-<td>Menor que 1</td>
-<td>CT-007</td>
-<td>—</td>
+<td>C05 Quantidade de quartos</td>
+<td>válida</td>
+<td>Um quarto</td>
+<td>CT-001</td>
+<td>CT-018, CT-025</td>
 </tr>
 <tr>
 <td>CE-10</td>
 <td>REQ-01</td>
-<td>C06 Nº de hóspedes na reserva</td>
-<td>inválida</td>
-<td>Maior que a capacidade somada</td>
-<td>CT-004, CT-005</td>
+<td>C05 Quantidade de quartos</td>
+<td>válida</td>
+<td>Vários quartos (custo e capacidade somados)</td>
+<td>CT-002</td>
+<td>CT-023</td>
+</tr>
+<tr>
+<td>CE-11</td>
+<td>REQ-01</td>
+<td>C06 Nº de hóspedes</td>
+<td>válida</td>
+<td>Inteiro de 1 até a capacidade somada dos quartos</td>
+<td>CT-001, CT-002</td>
 <td>—</td>
 </tr>
 <tr>
-<td>CE-45</td>
+<td>CE-12</td>
 <td>REQ-01</td>
-<td>C06 Nº de hóspedes na reserva</td>
+<td>C06 Nº de hóspedes</td>
+<td>inválida</td>
+<td>Menor que 1</td>
+<td>CT-009</td>
+<td>—</td>
+</tr>
+<tr>
+<td>CE-13</td>
+<td>REQ-01</td>
+<td>C06 Nº de hóspedes</td>
+<td>inválida</td>
+<td>Maior que a capacidade somada</td>
+<td>CT-010</td>
+<td>—</td>
+</tr>
+<tr>
+<td>CE-14</td>
+<td>REQ-01</td>
+<td>C06 Nº de hóspedes</td>
 <td>inválida</td>
 <td>Não inteiro (texto)</td>
-<td>CT-052</td>
+<td>CT-011</td>
+<td>—</td>
+</tr>
+<tr>
+<td>CE-15</td>
+<td>REQ-01</td>
+<td>C07 Ocupação do quarto no período</td>
+<td>válida</td>
+<td>Nenhuma estadia do quarto com interseção (inclui estadias adjacentes e reservas de outros quartos)</td>
+<td>CT-001, CT-003</td>
+<td>CT-018, CT-019, CT-020, CT-021, CT-022</td>
+</tr>
+<tr>
+<td>CE-16</td>
+<td>REQ-01</td>
+<td>C07 Ocupação do quarto no período</td>
+<td>inválida</td>
+<td>Estadia existente do quarto com interseção de ao menos uma noite</td>
+<td>CT-012</td>
 <td>—</td>
 </tr>
 <tr>
 <td>CE-17</td>
-<td>REQ-01</td>
-<td>C07 Ocupação do quarto no período</td>
+<td>REQ-02</td>
+<td>C08 Entrada em relação a hoje</td>
 <td>válida</td>
-<td>Nenhuma reserva do quarto com interseção (inclui estadias adjacentes e outros quartos)</td>
-<td>CT-001, CT-021, CT-022, CT-023, CT-061, CT-062</td>
-<td>CT-044, CT-045, CT-055</td>
+<td>Hoje ou data futura</td>
+<td>CT-001, CT-003, CT-004</td>
+<td>—</td>
 </tr>
 <tr>
 <td>CE-18</td>
-<td>REQ-01</td>
-<td>C07 Ocupação do quarto no período</td>
-<td>inválida</td>
-<td>Reserva existente do quarto com interseção de ao menos uma noite</td>
-<td>CT-018, CT-019, CT-020</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-31</td>
-<td>REQ-01</td>
-<td>C08 Sessão na consulta prévia</td>
-<td>válida</td>
-<td>Usuário autenticado</td>
-<td>CT-030, CT-032</td>
-<td>CT-049</td>
-</tr>
-<tr>
-<td>CE-32</td>
-<td>REQ-01</td>
-<td>C08 Sessão na consulta prévia</td>
-<td>inválida</td>
-<td>Sem sessão ou sessão encerrada</td>
-<td>CT-031</td>
-<td>CT-048</td>
-</tr>
-<tr>
-<td>CE-33</td>
-<td>REQ-01</td>
-<td>C09 Filtro da consulta</td>
-<td>válida</td>
-<td>Sem filtro: lista geral de quartos</td>
-<td>CT-030</td>
-<td>CT-046</td>
-</tr>
-<tr>
-<td>CE-34</td>
-<td>REQ-01</td>
-<td>C09 Filtro da consulta</td>
-<td>válida</td>
-<td>Com período e hóspedes informados</td>
-<td>CT-032</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-37</td>
-<td>REQ-01</td>
-<td>C10 Nº de hóspedes na consulta</td>
-<td>válida</td>
-<td>Inteiro maior ou igual a 1</td>
-<td>CT-032, CT-042</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-38</td>
-<td>REQ-01</td>
-<td>C10 Nº de hóspedes na consulta</td>
-<td>inválida</td>
-<td>Menor que 1</td>
-<td>CT-039</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-48</td>
-<td>REQ-01</td>
-<td>C10 Nº de hóspedes na consulta</td>
-<td>inválida</td>
-<td>Não inteiro (texto)</td>
-<td>CT-054</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-39</td>
-<td>REQ-01</td>
-<td>C11 Ocupação de cada quarto na consulta</td>
-<td>válida</td>
-<td>Livre no período: exibido</td>
-<td>CT-032, CT-033, CT-034, CT-035, CT-063, CT-064</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-40</td>
-<td>REQ-01</td>
-<td>C11 Ocupação de cada quarto na consulta</td>
-<td>válida</td>
-<td>Ocupado no período: omitido</td>
-<td>CT-032, CT-036</td>
-<td>CT-047</td>
-</tr>
-<tr>
-<td>CE-41</td>
-<td>REQ-01</td>
-<td>C12 Capacidade de cada quarto na consulta</td>
-<td>válida</td>
-<td>Capacidade ≥ hóspedes: exibido</td>
-<td>CT-032, CT-040, CT-042</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-42</td>
-<td>REQ-01</td>
-<td>C12 Capacidade de cada quarto na consulta</td>
-<td>válida</td>
-<td>Capacidade &lt; hóspedes: omitido</td>
-<td>CT-041</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-03</td>
 <td>REQ-02</td>
-<td>C13 Entrada em relação a hoje</td>
-<td>válida</td>
-<td>Hoje ou data futura</td>
-<td>CT-001, CT-011, CT-012</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-04</td>
-<td>REQ-02</td>
-<td>C13 Entrada em relação a hoje</td>
+<td>C08 Entrada em relação a hoje</td>
 <td>inválida</td>
 <td>Data passada</td>
 <td>CT-013</td>
 <td>—</td>
 </tr>
 <tr>
-<td>CE-43</td>
+<td>CE-19</td>
 <td>REQ-02</td>
-<td>C14 Formato da data de entrada</td>
+<td>C09 Formato das datas</td>
 <td>válida</td>
-<td>Data válida no formato MM/DD/AAAA (reserva ou consulta)</td>
-<td>CT-001, CT-032</td>
+<td>Entrada e saída válidas no formato MM/DD/AAAA</td>
+<td>CT-001</td>
 <td>—</td>
 </tr>
 <tr>
-<td>CE-44</td>
+<td>CE-20</td>
 <td>REQ-02</td>
-<td>C14 Formato da data de entrada</td>
+<td>C09 Formato das datas</td>
 <td>inválida</td>
 <td>Data malformada, inexistente ou ausente</td>
-<td>CT-051, CT-053, CT-068</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-52</td>
-<td>REQ-02</td>
-<td>C15 Entrada × saída de estadia existente do quarto</td>
-<td>válida</td>
-<td>Entrada no dia da saída existente ou depois</td>
-<td>CT-022, CT-034, CT-062, CT-064</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-53</td>
-<td>REQ-02</td>
-<td>C15 Entrada × saída de estadia existente do quarto</td>
-<td>inválida</td>
-<td>Entrada antes da saída existente, sobrepondo a estadia</td>
-<td>CT-020, CT-036</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-05</td>
-<td>REQ-03</td>
-<td>C16 Duração da reserva (saída − entrada)</td>
-<td>válida</td>
-<td>1 noite ou mais; cada noite é uma diária cobrada</td>
-<td>CT-001, CT-008, CT-067</td>
-<td>CT-059</td>
-</tr>
-<tr>
-<td>CE-06</td>
-<td>REQ-03</td>
-<td>C16 Duração da reserva (saída − entrada)</td>
-<td>inválida</td>
-<td>0 noites (saída = entrada)</td>
-<td>CT-009</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-07</td>
-<td>REQ-03</td>
-<td>C16 Duração da reserva (saída − entrada)</td>
-<td>inválida</td>
-<td>Negativa (saída antes da entrada)</td>
-<td>CT-010</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-35</td>
-<td>REQ-03</td>
-<td>C17 Período da consulta</td>
-<td>válida</td>
-<td>Saída posterior à entrada (1 noite ou mais)</td>
-<td>CT-032, CT-043</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-36</td>
-<td>REQ-03</td>
-<td>C17 Período da consulta</td>
-<td>inválida</td>
-<td>Saída igual ou anterior à entrada</td>
-<td>CT-037, CT-038</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-49</td>
-<td>REQ-03</td>
-<td>C18 Formato da data de saída</td>
-<td>válida</td>
-<td>Data válida no formato MM/DD/AAAA (reserva ou consulta)</td>
-<td>CT-001, CT-032, CT-067</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-50</td>
-<td>REQ-03</td>
-<td>C18 Formato da data de saída</td>
-<td>inválida</td>
-<td>Data malformada ou inexistente</td>
-<td>CT-065, CT-066</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-54</td>
-<td>REQ-03</td>
-<td>C19 Saída × entrada de estadia existente do quarto</td>
-<td>válida</td>
-<td>Saída no dia da entrada existente ou antes</td>
-<td>CT-021, CT-035, CT-061, CT-063</td>
-<td>—</td>
-</tr>
-<tr>
-<td>CE-55</td>
-<td>REQ-03</td>
-<td>C19 Saída × entrada de estadia existente do quarto</td>
-<td>inválida</td>
-<td>Saída depois da entrada existente, sobrepondo a estadia</td>
-<td>CT-019</td>
+<td>CT-014</td>
 <td>—</td>
 </tr>
 <tr>
 <td>CE-21</td>
+<td>REQ-03</td>
+<td>C10 Duração da reserva (saída − entrada)</td>
+<td>válida</td>
+<td>1 noite ou mais; cada noite é uma diária cobrada</td>
+<td>CT-001, CT-004</td>
+<td>CT-020, CT-025</td>
+</tr>
+<tr>
+<td>CE-22</td>
+<td>REQ-03</td>
+<td>C10 Duração da reserva (saída − entrada)</td>
+<td>inválida</td>
+<td>0 noites ou negativa (saída igual ou anterior à entrada)</td>
+<td>CT-015</td>
+<td>CT-024</td>
+</tr>
+<tr>
+<td>CE-31</td>
 <td>RF-08</td>
 <td>S1 Sessão</td>
 <td>válida</td>
 <td>Usuário autenticado</td>
-<td>CT-024, CT-029, CT-057</td>
+<td>CT-101, CT-106, CT-107</td>
 <td>—</td>
 </tr>
 <tr>
-<td>CE-22</td>
+<td>CE-32</td>
 <td>RF-08</td>
 <td>S1 Sessão</td>
 <td>inválida</td>
 <td>Sem sessão ou sessão encerrada</td>
-<td>CT-025</td>
+<td>CT-102</td>
 <td>—</td>
 </tr>
 <tr>
-<td>CE-23</td>
+<td>CE-33</td>
 <td>RF-08</td>
 <td>S2 Existência da reserva</td>
 <td>válida</td>
 <td>Reserva existente</td>
-<td>CT-024, CT-029, CT-057</td>
+<td>CT-101, CT-106, CT-107</td>
 <td>—</td>
 </tr>
 <tr>
-<td>CE-24</td>
+<td>CE-34</td>
 <td>RF-08</td>
 <td>S2 Existência da reserva</td>
 <td>inválida</td>
 <td>Identificador inexistente</td>
-<td>CT-026</td>
+<td>CT-103</td>
 <td>—</td>
 </tr>
 <tr>
-<td>CE-25</td>
+<td>CE-35</td>
 <td>RF-08</td>
 <td>S3 Titularidade</td>
 <td>válida</td>
 <td>Reserva do próprio usuário</td>
-<td>CT-024, CT-029, CT-057</td>
+<td>CT-101, CT-106, CT-107</td>
 <td>—</td>
 </tr>
 <tr>
-<td>CE-26</td>
+<td>CE-36</td>
 <td>RF-08</td>
 <td>S3 Titularidade</td>
 <td>inválida</td>
 <td>Reserva de outro usuário</td>
-<td>CT-027, CT-058</td>
+<td>CT-104, CT-108</td>
 <td>—</td>
 </tr>
 <tr>
-<td>CE-27</td>
+<td>CE-37</td>
 <td>RF-08</td>
 <td>S4 Forma da requisição</td>
 <td>válida</td>
 <td>Confirmação explícita (POST)</td>
-<td>CT-024, CT-029, CT-057</td>
+<td>CT-101, CT-106, CT-107</td>
 <td>—</td>
 </tr>
 <tr>
-<td>CE-28</td>
+<td>CE-38</td>
 <td>RF-08</td>
 <td>S4 Forma da requisição</td>
 <td>inválida</td>
 <td>Navegação por link (GET)</td>
-<td>CT-028</td>
+<td>CT-105</td>
 <td>—</td>
 </tr>
 <tr>
-<td>CE-29</td>
+<td>CE-39</td>
 <td>RF-08</td>
 <td>S5 Registros dependentes</td>
 <td>válida</td>
 <td>Reserva sem pagamento</td>
-<td>CT-024</td>
+<td>CT-101</td>
 <td>—</td>
 </tr>
 <tr>
-<td>CE-30</td>
+<td>CE-40</td>
 <td>RF-08</td>
 <td>S5 Registros dependentes</td>
 <td>válida</td>
 <td>Reserva com pagamento registrado</td>
-<td>CT-029</td>
+<td>CT-106</td>
+<td>—</td>
+</tr>
+<tr>
+<td>CE-41</td>
+<td>RF-04</td>
+<td>Q1 Período da consulta</td>
+<td>válida</td>
+<td>Saída posterior à entrada</td>
+<td>CT-111</td>
+<td>—</td>
+</tr>
+<tr>
+<td>CE-42</td>
+<td>RF-04</td>
+<td>Q1 Período da consulta</td>
+<td>inválida</td>
+<td>Saída igual ou anterior à entrada</td>
+<td>CT-112</td>
+<td>—</td>
+</tr>
+<tr>
+<td>CE-43</td>
+<td>RF-04</td>
+<td>Q2 Hóspedes na consulta</td>
+<td>válida</td>
+<td>Inteiro maior ou igual a 1</td>
+<td>CT-111</td>
+<td>—</td>
+</tr>
+<tr>
+<td>CE-44</td>
+<td>RF-04</td>
+<td>Q2 Hóspedes na consulta</td>
+<td>inválida</td>
+<td>Menor que 1</td>
+<td>CT-113</td>
+<td>—</td>
+</tr>
+<tr>
+<td>CE-45</td>
+<td>RF-04</td>
+<td>Q3 Quarto no resultado</td>
+<td>válida</td>
+<td>Livre no período e com capacidade: exibido</td>
+<td>CT-111</td>
+<td>—</td>
+</tr>
+<tr>
+<td>CE-46</td>
+<td>RF-04</td>
+<td>Q3 Quarto no resultado</td>
+<td>válida</td>
+<td>Ocupado no período ou sem capacidade: omitido</td>
+<td>CT-111, CT-114, CT-116</td>
+<td>—</td>
+</tr>
+<tr>
+<td>CE-47</td>
+<td>RF-04</td>
+<td>Q4 Filtro entre sessões</td>
+<td>válida</td>
+<td>O filtro de um usuário não altera a lista de outro</td>
+<td>CT-115</td>
 <td>—</td>
 </tr>
 </tbody>
