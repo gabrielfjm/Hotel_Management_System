@@ -10,7 +10,8 @@ Versão do sistema sob teste (SUT):
 
 Marcas usadas:
 
-* ``funcional``, ``estrutural``, ``mutacao``: etapa em que o caso foi criado.
+* ``funcional``, ``estrutural``, ``mutacao``: etapa da função de teste (o caso
+  funcional ou a ampliação feita na etapa estrutural ou de mutação).
 * ``ce("CE-01", ...)``: classes de equivalência exercitadas.
 * ``defeito("DEF-01", "descrição")``: defeito que o caso revela no original.
 """

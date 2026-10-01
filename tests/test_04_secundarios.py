@@ -4,8 +4,8 @@ RF-04 Consultar disponibilidade.
 O recorte principal do estudo são REQ-01 (reservar quartos), REQ-02 (data de
 entrada) e REQ-03 (data de saída). Estes casos ficam fora das métricas das
 etapas (cobertura e mutação medem só as funções dos três requisitos
-principais), mas revelaram DEF-08 a DEF-11 (cancelamento) e DEF-12 a DEF-17
-(consulta), corrigidos no fork. Selecionar com: pytest -m secundario
+principais), mas revelaram DEF-08 a DEF-11 (cancelamento) e DEF-12 a DEF-14,
+DEF-16 e DEF-17 (consulta), corrigidos no fork. Selecionar com: pytest -m secundario
 """
 
 import pytest
