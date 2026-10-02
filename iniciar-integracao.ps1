@@ -8,9 +8,11 @@ $ErrorActionPreference = 'Stop'
 Set-Location $PSScriptRoot
 $env:PYTHONIOENCODING = 'utf-8'
 $python = Join-Path $PSScriptRoot '.venv/Scripts/python.exe'
-$bridge = Join-Path $PSScriptRoot '../../integration/vv_bridge.py'
+# A ponte fica no V&V TestLab: este repositório dentro de output/ da ferramenta, ou ao lado dela (pacote de entrega).
+$bridge = @('../../integration/vv_bridge.py', '../2-ferramenta-vv-testlab/integration/vv_bridge.py', '../vv-testlab/integration/vv_bridge.py') |
+    ForEach-Object { Join-Path $PSScriptRoot $_ } | Where-Object { Test-Path $_ } | Select-Object -First 1
 if (!(Test-Path $python)) { throw 'Execute .\setup_local.ps1 primeiro.' }
-if (!(Test-Path $bridge)) { throw 'A ponte integration/vv_bridge.py precisa estar na pasta raiz do V&V TestLab.' }
+if (!$bridge) { throw 'Ponte integration/vv_bridge.py não encontrada: coloque este repositório em output/ do V&V TestLab ou ao lado da pasta da ferramenta.' }
 
 $funcoes = 'reserve,cal_cost'
 # O Windows procura "python" primeiro na pasta do cosmic-ray.exe (.venv-mutation, sem Flask); por isso a
