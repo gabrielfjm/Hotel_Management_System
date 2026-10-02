@@ -1,5 +1,6 @@
 > **Fork para o projeto de Verificação e Validação de Software (mestrado).** Testes funcionais, estruturais e de mutação, correção de 19 defeitos e evidências:
 > [README_TESTES.md](README_TESTES.md) · [relatório técnico (PDF)](docs/relatorio-tecnico.pdf) · [apresentação](docs/apresentacao-2-slides.pptx) · [evidências](evidencias/README.md) · correções: `git diff sut-original sut-corrigido -- hotel`
+> Gestão dos testes no **V&V TestLab** (online): https://gabrielfjm.github.io/vv-testlab/ · código da ferramenta: https://github.com/gabrielfjm/vv-testlab
 
 # Hotel Mangement System
 ## Final Project for ECE 464 Database
