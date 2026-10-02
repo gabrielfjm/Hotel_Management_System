@@ -11,8 +11,8 @@ Geradas por `etapas.ps1` (e pelos scripts citados). Os números batem com o rela
 | `estrutural-original/` | 2. Estrutural | original | 15 casos (18 testes) | 5 casos passaram, 10 xfail | 63/63 (100%) / 33/34 (97,1%) |
 | `correcoes.diff` | Correção | original → corrigido | — | `git diff sut-original sut-corrigido -- hotel` | — |
 | `suite-corrigida/` | Correção (base da mutação) | corrigido | 15 casos (18 testes) | 15 passaram | 65/65 (100%) / 28/28 (100%) |
-| `mutacao-inicial/` | 3. Mutação, rodada inicial | corrigido | 15 casos (18 testes) | 141 mutantes: 127 mortos, 14 sobreviventes (90,1%) | — |
-| `mutacao-final/` | 3. Mutação, rodada final | corrigido | 15 casos (22 testes) | 141 mutantes: 134 mortos, 7 sobreviventes equivalentes (95,0%) | — |
+| `mutacao-inicial/` | 3. Mutação, rodada inicial | corrigido | 15 casos (18 testes) | 141 mutantes: 127 mortos, 14 sobreviventes; escore 127 ÷ (141 − 7) = 94,8% (bruto 90,1%) | — |
+| `mutacao-final/` | 3. Mutação, rodada final | corrigido | 15 casos (22 testes) | 141 mutantes: 134 mortos, 7 sobreviventes equivalentes; escore 134 ÷ (141 − 7) = 100,0% (bruto 95,0%) | — |
 | `final-corrigida/` | Suíte final | corrigido | 15 casos (22 testes) | 15 passaram | 65/65 (100%) / 28/28 (100%) |
 | `secundarios-original/` | Complementares (RF-04 e RF-08, fora das métricas) | original | 14 | 3 passaram, 11 xfail (DEF-07 a DEF-17) | — |
 | `secundarios-corrigida/` | Complementares (RF-04 e RF-08, fora das métricas) | corrigido | 14 | 14 passaram | — |

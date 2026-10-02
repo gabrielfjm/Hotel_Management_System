@@ -14,8 +14,8 @@ As três técnicas foram aplicadas na ordem exigida (**funcional → estrutural 
 |---|---|---|---:|---:|---:|---:|
 | 1 | Funcional (classes de equivalência + valor limite) | original | 15 (15 testes) | 60/63 (95,2%) | 29/34 (85,3%) | — |
 | 2 | Estrutural (5 casos reaproveitados; meta: 100% de comandos e desvios viáveis) | original | 15 (18 testes) | 63/63 (100,0%) | 33/34 (97,1%) | — |
-| — | Correção dos defeitos; mesmos casos | corrigida | 15 (18 testes) | 65/65 (100,0%) | 28/28 (100,0%) | 127/141 (90,1%) |
-| 3 | Baseada em defeitos (Cosmic Ray; mesmos 15 casos, 4 ampliados) | corrigida | 15 (22 testes) | 65/65 (100,0%) | 28/28 (100,0%) | 134/141 (95,0%) |
+| — | Correção dos defeitos; mesmos casos | corrigida | 15 (18 testes) | 65/65 (100,0%) | 28/28 (100,0%) | 94,8% (127/134; bruto 90,1%) |
+| 3 | Baseada em defeitos (Cosmic Ray; mesmos 15 casos, 4 ampliados) | corrigida | 15 (22 testes) | 65/65 (100,0%) | 28/28 (100,0%) | 100,0% (134/134; bruto 95,0%) |
 
 A cobertura e a mutação consideram as funções dos três requisitos em `hotel/views.py` (seção 5). Os testes revelaram **10 defeitos** nos três requisitos. O principal é um predicado de conflito de datas que é uma tautologia: depois da primeira reserva, o quarto nunca mais pode ser reservado, qualquer que seja a data de entrada ou de saída. Testes complementares de dois requisitos secundários, cancelamento (RF-08) e consulta de disponibilidade (RF-04), revelaram outros 9 defeitos (seção 9), totalizando **19**. Todos os defeitos foram corrigidos em commits separados no fork e confirmados pelos testes que os revelaram. A suíte final passa integralmente no programa corrigido. A mutação foi aplicada ao programa corrigido, que é o código submetido aos mutantes.
 
@@ -241,11 +241,11 @@ Um ajuste de oráculo foi necessário e está registrado no commit `8a6c4bd`. O 
 * **Ferramenta:** Cosmic Ray 8.4.3, distribuidor local, timeout de 30 s por mutante e todos os operadores padrão: substituição de operadores relacionais, aritméticos, lógicos e unários, troca de números, de `break`/`continue` e de palavras-chave, laço de zero iterações, remoção de decorador etc.
 * **Escopo:** **todos os mutantes** gerados nas linhas das funções dos três requisitos no `hotel/views.py` corrigido, sem amostragem: `reserve`, `cal_cost` e as quatro auxiliares. Total: **141 mutantes**. As demais rotas, inclusive as dos requisitos secundários (`check_available`, `show_rooms` e `delete_reservation`), foram excluídas porque não fazem parte do recorte; incluí-las só acrescentaria sobreviventes triviais.
 * **Configuração:** `mutacao/cosmic-ray-inicial.toml` e `mutacao/cosmic-ray-final.toml`. O comando de teste é `pytest -x -q`, restrito a `-m 'funcional or estrutural'` na rodada inicial e a `-m 'funcional or estrutural or mutacao'` na final (os complementares ficam de fora). O script `scripts/mutacao.py` monta a sessão, executa `cosmic-ray exec` e grava `sessao.sqlite`, `resumo.json`, `sobreviventes.txt` (diff de cada sobrevivente) e `execucao.txt`.
-* **Escore:** mortos / (mortos + sobreviventes). Não houve mutantes incompetentes nem *timeouts*.
+* **Escore:** escore de mutação (%) = mortos ÷ (total de mutantes gerados − mutantes equivalentes) × 100. Um mutante equivalente não muda o comportamento do programa, então nenhum teste consegue matá-lo; por isso ele sai do denominador. A equivalência é uma propriedade do mutante, identificada na análise dos sobreviventes (seção 7.2), e vale para as duas rodadas. Para comparação, também é informado o escore bruto (mortos ÷ gerados), que é o que o Cosmic Ray mostra. Não houve mutantes incompetentes nem *timeouts*.
 
 ### 7.2 Rodada inicial (suíte ao fim da etapa estrutural)
 
-Os 15 casos (com as ampliações estruturais, 18 funções pytest) rodaram contra cada mutante. **141 mutantes: 127 mortos e 14 sobreviventes. Escore de 90,1%.** Execução em cerca de 4 minutos.
+Os 15 casos (com as ampliações estruturais, 18 funções pytest) rodaram contra cada mutante. **141 mutantes: 127 mortos e 14 sobreviventes. Escore de 94,8% (127 ÷ (141 − 7)), descontando os 7 equivalentes identificados na análise abaixo; sem descontar, 90,1%.** Execução em cerca de 4 minutos.
 
 | # | Função (linha) | Mutação | Classificação | Ação |
 |---|---|---|---|---|
@@ -275,7 +275,7 @@ Em vez de criar casos novos, os sobreviventes não equivalentes foram mortos **a
 | CT-012 | CE-15 | Ana tem o 102 de 10/03/2030 a 12/03/2030 (reserva 1); Bruno tem o 101 de 20/03/2030 a 22/03/2030 (reserva 2); Ana reserva o 101 de 10/03/2030 a 12/03/2030 | aceita | S4 |
 | CT-015 | CE-22 | saída (09/03/2030) um dia antes da entrada (10/03/2030) | recusa | S6 |
 
-**Rodada final (os mesmos 15 casos, 22 funções pytest, `evidencias/mutacao-final/`): 141 mutantes: 134 mortos, 7 sobreviventes, 0 incompetentes. Escore de 95,0% (inicial: 90,1%), em 223 s.** As ampliações de 4 casos mataram os 7 sobreviventes não equivalentes. Restam 7 sobreviventes, todos classificados como equivalentes (S8 a S14); não equivalentes restantes: 0. O arquivo `evidencias/mutacao-final/sobreviventes.txt` traz o diff de cada um.
+**Rodada final (os mesmos 15 casos, 22 funções pytest, `evidencias/mutacao-final/`): 141 mutantes: 134 mortos, 7 sobreviventes, 0 incompetentes. Escore de 100,0% (134 ÷ (141 − 7)); inicial: 94,8%. Sem descontar os equivalentes: 95,0% (inicial: 90,1%). Execução em 223 s.** As ampliações de 4 casos mataram os 7 sobreviventes não equivalentes. Restam 7 sobreviventes, todos classificados como equivalentes (S8 a S14); não equivalentes restantes: 0. O arquivo `evidencias/mutacao-final/sobreviventes.txt` traz o diff de cada um.
 
 ### 7.4 Fragilidades reveladas
 
@@ -286,7 +286,7 @@ A suíte tinha 100% de cobertura de desvios e, mesmo assim, deixou vivos 7 mutan
 3. **Dados de teste pouco variados.** Nenhum caso reservava o quarto 301; os quartos usados (101 e 102) cabem no cache de inteiros pequenos do Python, o que esconde a troca de `==` por `is` no cálculo das diárias. Em produção, com quartos numerados acima de 256, esse erro passaria despercebido.
 4. **Ordem de criação fixa e nenhum caso no extremo da enumeração de quartos.** Faltavam a reserva mais nova pertencendo ao quarto pedido (o que distingue `brid == rid` de uma junção errada) e uma reserva de todos os quartos.
 
-Os 7 equivalentes vêm de código defensivo ou redundante que veio do original: o custo provisório 0, `time(0, 0)` explícito e a comparação de tamanhos em `_ler_quartos`. Eles mostram também que o escore bruto subestima a qualidade da suíte. Excluindo os equivalentes, o escore final é 100,0% (134/134).
+Os 7 equivalentes vêm de código defensivo ou redundante que veio do original: o custo provisório 0, `time(0, 0)` explícito e a comparação de tamanhos em `_ler_quartos`. Eles mostram também por que a fórmula desconta os equivalentes: o escore bruto subestima a qualidade da suíte. Com os equivalentes fora do denominador, o escore final é 100,0% (134/134): todos os mutantes que podiam ser mortos foram mortos.
 
 ## 8. Evolução incremental
 
@@ -294,10 +294,10 @@ Os 7 equivalentes vêm de código defensivo ou redundante que veio do original: 
 |---|---|---|---:|---:|---:|---:|---:|---:|
 | 1. Funcional | Classes de equivalência + valor limite | original | 15 (15 testes) | 6 | 9 | 60/63 (95,2%) | 29/34 (85,3%) | — |
 | 2. Estrutural | 5 casos reaproveitados; 3 ampliados para a cobertura | original | 15 (18 testes) | 5 | 10 | 63/63 (100,0%) | 33/34 (97,1%) | — |
-| 3. Correção | Mesmos casos no código corrigido | corrigida | 15 (18 testes) | 15 | 0 | 65/65 (100,0%) | 28/28 (100,0%) | 127/141 (90,1%) |
-| 4. Mutação | Mesmos 15 casos; 4 ampliados para matar sobreviventes | corrigida | 15 (22 testes) | 15 | 0 | 65/65 (100,0%) | 28/28 (100,0%) | 134/141 (95,0%) |
+| 3. Correção | Mesmos casos no código corrigido | corrigida | 15 (18 testes) | 15 | 0 | 65/65 (100,0%) | 28/28 (100,0%) | 94,8% (127/134; bruto 90,1%) |
+| 4. Mutação | Mesmos 15 casos; 4 ampliados para matar sobreviventes | corrigida | 15 (22 testes) | 15 | 0 | 65/65 (100,0%) | 28/28 (100,0%) | 100,0% (134/134; bruto 95,0%) |
 
-Na linha 3, o escore é o da rodada **inicial** do Cosmic Ray, executada com a suíte funcional + estrutural sobre o código corrigido. Na linha 4, é o da rodada **final**, com a suíte completa. Nas etapas 1 e 2 não há escore, pois a mutação só é aplicada depois da correção dos defeitos (seção 6). Fonte: `evidencias/evolucao.json`, gerado por `scripts/evolucao.py`.
+Escore de mutação = mortos ÷ (gerados − equivalentes) × 100, com os 7 equivalentes da seção 7.2; entre parênteses, o escore bruto (mortos ÷ gerados), que é o que o Cosmic Ray informa. Na linha 3, o escore é o da rodada **inicial** do Cosmic Ray, executada com a suíte funcional + estrutural sobre o código corrigido. Na linha 4, é o da rodada **final**, com a suíte completa. Nas etapas 1 e 2 não há escore, pois a mutação só é aplicada depois da correção dos defeitos (seção 6). Fonte: `evidencias/evolucao.json`, gerado por `scripts/evolucao.py`.
 
 A ordem **Funcional → Estrutural → (correção) → Mutação** está no histórico do fork: `afeb312` (etapa 1), `ac975b7` (etapa 2), seis commits de correção, e `324e29a` (etapa 3). Os commits posteriores reorganizaram o recorte. Na última revisão, a consulta de disponibilidade passou a requisito secundário, a suíte funcional foi enxugada para 15 casos (um por classe inválida, com os limites embutidos) e os casos foram renumerados. Todas as etapas foram então reexecutadas do zero, e as evidências deste relatório são dessa execução. Nessa versão, **os mesmos 15 casos atravessam as três etapas**: a estrutural e a de mutação não criaram casos, apenas ampliaram alguns deles (3 e 4 casos, respectivamente) com novas funções pytest de mesmo identificador. Nenhum caso foi removido ou marcado com `skip`. As datas fixas dos casos ficaram em março de 2030.
 

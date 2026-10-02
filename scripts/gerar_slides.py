@@ -117,6 +117,19 @@ def notas(slide, conteudo):
 EQUIV = 7  # sobreviventes equivalentes (S8 a S14, relatório 7.2)
 
 
+def escore(mortos, total):
+    """Escore de mutação da disciplina: mortos ÷ (gerados − equivalentes) × 100."""
+    return 100 * mortos / (total - EQUIV)
+
+
+def escore_evolucao(linha):
+    """Escore de uma linha de evolucao.json ("127/141"), ou None nas etapas sem mutação."""
+    if linha["escore_pct"] is None:
+        return None
+    mortos, total = (int(n) for n in linha["mutacao"].split("/"))
+    return escore(mortos, total)
+
+
 def slide_processo(prs, evol, mut_ini, mut_fim):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     cabecalho(s, 1, "Processo de desenvolvimento do teste",
@@ -133,9 +146,10 @@ def slide_processo(prs, evol, mut_ini, mut_fim):
          ["**10 defeitos** corrigidos (+9 dos secundários)", "Cada commit confirmado pelo teste que revelou o defeito",
           f'**{e["3"]["casos"]}/{e["3"]["casos"]}** casos passam, sem skip', "**100%** de comandos e desvios"]),
         ("Mutação", f'Cosmic Ray · {mut_fim["total"]} mutantes', VERDE,
-         [f'Inicial: **{pct(mut_ini["escore_pct"])}** ({mut_ini["mortos"]}/{mut_ini["total"]})',
-          f'{mut_ini["sobreviventes"]} vivos: **{mut_ini["sobreviventes"] - EQUIV} matáveis**, {EQUIV} equivalentes', '**4 casos ampliados**, nenhum novo',
-          f'Final: **{pct(mut_fim["escore_pct"])}** · 100% dos não equivalentes']),
+         [f'Escore = mortos ÷ (gerados − {EQUIV} equivalentes)',
+          f'Inicial: **{pct(escore(mut_ini["mortos"], mut_ini["total"]))}** ({mut_ini["mortos"]}/{mut_ini["total"] - EQUIV})',
+          f'{mut_ini["sobreviventes"]} vivos: **{mut_ini["sobreviventes"] - EQUIV} matáveis**; **4 casos ampliados**',
+          f'Final: **{pct(escore(mut_fim["mortos"], mut_fim["total"]))}** ({mut_fim["mortos"]}/{mut_fim["total"] - EQUIV})']),
     ]
     x = 0.45
     for i, (nome, ferramenta, cor, itens) in enumerate(etapas):
@@ -173,7 +187,10 @@ def slide_processo(prs, evol, mut_ini, mut_fim):
         "Correção (30 s): antes de mutar, corrigi os defeitos no fork, um commit por grupo. O mesmo teste é xfail "
         "estrito no original e passa no corrigido: isso comprova cada correção.\n\n"
         f"Mutação (40 s): Cosmic Ray sobre todos os {mut_fim['total']} mutantes das funções dos três requisitos. Dos {mut_ini['sobreviventes']} vivos, {mut_ini['sobreviventes'] - EQUIV} eram matáveis "
-        f"e foram mortos ampliando 4 dos mesmos 15 casos; os {EQUIV} restantes são equivalentes e estão justificados no relatório.\n\n"
+        f"e foram mortos ampliando 4 dos mesmos 15 casos; os {EQUIV} restantes são equivalentes e estão justificados no relatório. "
+        f"Pela fórmula da disciplina, que tira os equivalentes do denominador, o escore foi de "
+        f"{pct(escore(mut_ini['mortos'], mut_ini['total']))} para {pct(escore(mut_fim['mortos'], mut_fim['total']))} "
+        f"(sem descontar: {pct(mut_ini['escore_pct'])} e {pct(mut_fim['escore_pct'])}).\n\n"
         "Ferramenta (20 s): organizei tudo no V&V TestLab, que importa JUnit, cobertura e mutação pela ponte local e "
         "mantém a rastreabilidade até o defeito."))
 
@@ -183,11 +200,11 @@ def slide_resultados(prs, evol, mut_fim):
     final = evol[-1]
     cabecalho(s, 2, "Resultados, dificuldades e lições aprendidas",
               f'os mesmos {final["casos"]} casos nas 3 etapas · 10 defeitos, todos corrigidos · 100% dos desvios · '
-              f'{pct(mut_fim["escore_pct"])} de escore de mutação')
+              f'{pct(escore(mut_fim["mortos"], mut_fim["total"]))} de escore de mutação')
     x = 0.45
     for valor, rotulo, cor in [(str(final["casos"]), "casos de teste", AZUL), ("10", "defeitos corrigidos", VINHO),
                                ("100%", "dos desvios cobertos", VERDE),
-                               (pct(mut_fim["escore_pct"]), "escore de mutação", LARANJA)]:
+                               (pct(escore(mut_fim["mortos"], mut_fim["total"])), f"escore de mutação ({mut_fim['mortos']} ÷ {mut_fim['total'] - EQUIV})", LARANJA)]:
         k = retangulo(s, x, 1.3, 1.9, 0.95, CLARO, BORDA)
         k.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
         texto(k, valor, 24, cor, True, PP_ALIGN.CENTER, novo=False, espaco=0)
@@ -197,7 +214,7 @@ def slide_resultados(prs, evol, mut_fim):
     dados.categories = [f'{l["etapa"].split(". ")[1]} ({l["casos"]})' for l in evol]
     dados.add_series("Comandos", [l["pct_comandos"] / 100 for l in evol])
     dados.add_series("Desvios", [l["pct_desvios"] / 100 for l in evol])
-    dados.add_series("Escore de mutação", [l["escore_pct"] / 100 if l["escore_pct"] is not None else None for l in evol])
+    dados.add_series("Escore de mutação", [escore_evolucao(l) / 100 if l["escore_pct"] is not None else None for l in evol])
     grafico = s.shapes.add_chart(XL_CHART_TYPE.COLUMN_CLUSTERED, Inches(0.45), Inches(2.38), Inches(7.9),
                                  Inches(2.62), dados).chart
     grafico.has_legend = True
@@ -258,8 +275,10 @@ def slide_resultados(prs, evol, mut_fim):
         texto(lic, "• " + item, 10, NAVY, espaco=2)
     notas(s, (
         f"Números (30 s): os mesmos {final['casos']} casos atravessam as três etapas (ampliados quando faltou um cenário), com 100% de comandos e desvios nas funções do recorte "
-        f"e {pct(mut_fim['escore_pct'])} de escore de mutação. Os {EQUIV} mutantes vivos são equivalentes, então 100% dos "
-        "não equivalentes morreram. No gráfico, a cobertura sobe na etapa estrutural e o escore sobe na mutação.\n\n"
+        f"e {pct(escore(mut_fim['mortos'], mut_fim['total']))} de escore de mutação: {mut_fim['mortos']} mortos ÷ "
+        f"({mut_fim['total']} gerados − {EQUIV} equivalentes). Os {EQUIV} mutantes vivos são equivalentes, por isso saem do "
+        f"denominador (sem descontar, o escore seria {pct(mut_fim['escore_pct'])}). No gráfico, a cobertura sobe na etapa "
+        "estrutural e o escore sobe na mutação.\n\n"
         "Defeito principal (40 s): a condição de conflito de datas é uma tautologia, sempre verdadeira. Depois da "
         "primeira reserva, o quarto nunca mais pode ser reservado. As imagens mostram a mesma reserva recusada no "
         "original e aceita no corrigido. Outro exemplo: a entrada no dia de hoje era recusada, porque a data era comparada com a hora atual.\n\n"

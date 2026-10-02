@@ -63,7 +63,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td style="text-align: right;">15 (18 testes)</td>
 <td style="text-align: right;">65/65 (100,0%)</td>
 <td style="text-align: right;">28/28 (100,0%)</td>
-<td style="text-align: right;">127/141 (90,1%)</td>
+<td style="text-align: right;">94,8% (127/134; bruto 90,1%)</td>
 </tr>
 <tr>
 <td>3</td>
@@ -72,7 +72,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td style="text-align: right;">15 (22 testes)</td>
 <td style="text-align: right;">65/65 (100,0%)</td>
 <td style="text-align: right;">28/28 (100,0%)</td>
-<td style="text-align: right;">134/141 (95,0%)</td>
+<td style="text-align: right;">100,0% (134/134; bruto 95,0%)</td>
 </tr>
 </tbody>
 </table>
@@ -619,10 +619,10 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <li><strong>Ferramenta:</strong> Cosmic Ray 8.4.3, distribuidor local, timeout de 30 s por mutante e todos os operadores padrão: substituição de operadores relacionais, aritméticos, lógicos e unários, troca de números, de <code>break</code>/<code>continue</code> e de palavras-chave, laço de zero iterações, remoção de decorador etc.</li>
 <li><strong>Escopo:</strong> <strong>todos os mutantes</strong> gerados nas linhas das funções dos três requisitos no <code>hotel/views.py</code> corrigido, sem amostragem: <code>reserve</code>, <code>cal_cost</code> e as quatro auxiliares. Total: <strong>141 mutantes</strong>. As demais rotas, inclusive as dos requisitos secundários (<code>check_available</code>, <code>show_rooms</code> e <code>delete_reservation</code>), foram excluídas porque não fazem parte do recorte; incluí-las só acrescentaria sobreviventes triviais.</li>
 <li><strong>Configuração:</strong> <code>mutacao/cosmic-ray-inicial.toml</code> e <code>mutacao/cosmic-ray-final.toml</code>. O comando de teste é <code>pytest -x -q</code>, restrito a <code>-m 'funcional or estrutural'</code> na rodada inicial e a <code>-m 'funcional or estrutural or mutacao'</code> na final (os complementares ficam de fora). O script <code>scripts/mutacao.py</code> monta a sessão, executa <code>cosmic-ray exec</code> e grava <code>sessao.sqlite</code>, <code>resumo.json</code>, <code>sobreviventes.txt</code> (diff de cada sobrevivente) e <code>execucao.txt</code>.</li>
-<li><strong>Escore:</strong> mortos / (mortos + sobreviventes). Não houve mutantes incompetentes nem <em>timeouts</em>.</li>
+<li><strong>Escore:</strong> escore de mutação (%) = mortos ÷ (total de mutantes gerados − mutantes equivalentes) × 100. Um mutante equivalente não muda o comportamento do programa, então nenhum teste consegue matá-lo; por isso ele sai do denominador. A equivalência é uma propriedade do mutante, identificada na análise dos sobreviventes (seção 7.2), e vale para as duas rodadas. Para comparação, também é informado o escore bruto (mortos ÷ gerados), que é o que o Cosmic Ray mostra. Não houve mutantes incompetentes nem <em>timeouts</em>.</li>
 </ul>
 <h3>7.2 Rodada inicial (suíte ao fim da etapa estrutural)</h3>
-<p>Os 15 casos (com as ampliações estruturais, 18 funções pytest) rodaram contra cada mutante. <strong>141 mutantes: 127 mortos e 14 sobreviventes. Escore de 90,1%.</strong> Execução em cerca de 4 minutos.</p>
+<p>Os 15 casos (com as ampliações estruturais, 18 funções pytest) rodaram contra cada mutante. <strong>141 mutantes: 127 mortos e 14 sobreviventes. Escore de 94,8% (127 ÷ (141 − 7)), descontando os 7 equivalentes identificados na análise abaixo; sem descontar, 90,1%.</strong> Execução em cerca de 4 minutos.</p>
 <table>
 <thead>
 <tr>
@@ -777,7 +777,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 </tr>
 </tbody>
 </table>
-<p><strong>Rodada final (os mesmos 15 casos, 22 funções pytest, <code>evidencias/mutacao-final/</code>): 141 mutantes: 134 mortos, 7 sobreviventes, 0 incompetentes. Escore de 95,0% (inicial: 90,1%), em 223 s.</strong> As ampliações de 4 casos mataram os 7 sobreviventes não equivalentes. Restam 7 sobreviventes, todos classificados como equivalentes (S8 a S14); não equivalentes restantes: 0. O arquivo <code>evidencias/mutacao-final/sobreviventes.txt</code> traz o diff de cada um.</p>
+<p><strong>Rodada final (os mesmos 15 casos, 22 funções pytest, <code>evidencias/mutacao-final/</code>): 141 mutantes: 134 mortos, 7 sobreviventes, 0 incompetentes. Escore de 100,0% (134 ÷ (141 − 7)); inicial: 94,8%. Sem descontar os equivalentes: 95,0% (inicial: 90,1%). Execução em 223 s.</strong> As ampliações de 4 casos mataram os 7 sobreviventes não equivalentes. Restam 7 sobreviventes, todos classificados como equivalentes (S8 a S14); não equivalentes restantes: 0. O arquivo <code>evidencias/mutacao-final/sobreviventes.txt</code> traz o diff de cada um.</p>
 <h3>7.4 Fragilidades reveladas</h3>
 <p>A suíte tinha 100% de cobertura de desvios e, mesmo assim, deixou vivos 7 mutantes não equivalentes. As fragilidades expostas foram:</p>
 <ol>
@@ -786,7 +786,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <li><strong>Dados de teste pouco variados.</strong> Nenhum caso reservava o quarto 301; os quartos usados (101 e 102) cabem no cache de inteiros pequenos do Python, o que esconde a troca de <code>==</code> por <code>is</code> no cálculo das diárias. Em produção, com quartos numerados acima de 256, esse erro passaria despercebido.</li>
 <li><strong>Ordem de criação fixa e nenhum caso no extremo da enumeração de quartos.</strong> Faltavam a reserva mais nova pertencendo ao quarto pedido (o que distingue <code>brid == rid</code> de uma junção errada) e uma reserva de todos os quartos.</li>
 </ol>
-<p>Os 7 equivalentes vêm de código defensivo ou redundante que veio do original: o custo provisório 0, <code>time(0, 0)</code> explícito e a comparação de tamanhos em <code>_ler_quartos</code>. Eles mostram também que o escore bruto subestima a qualidade da suíte. Excluindo os equivalentes, o escore final é 100,0% (134/134).</p>
+<p>Os 7 equivalentes vêm de código defensivo ou redundante que veio do original: o custo provisório 0, <code>time(0, 0)</code> explícito e a comparação de tamanhos em <code>_ler_quartos</code>. Eles mostram também por que a fórmula desconta os equivalentes: o escore bruto subestima a qualidade da suíte. Com os equivalentes fora do denominador, o escore final é 100,0% (134/134): todos os mutantes que podiam ser mortos foram mortos.</p>
 <h2>8. Evolução incremental</h2>
 <table>
 <thead>
@@ -834,7 +834,7 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">65/65 (100,0%)</td>
 <td style="text-align: right;">28/28 (100,0%)</td>
-<td style="text-align: right;">127/141 (90,1%)</td>
+<td style="text-align: right;">94,8% (127/134; bruto 90,1%)</td>
 </tr>
 <tr>
 <td>4. Mutação</td>
@@ -845,11 +845,11 @@ p > em:only-child { display: block; text-align: center; font-size: 8.5pt; color:
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">65/65 (100,0%)</td>
 <td style="text-align: right;">28/28 (100,0%)</td>
-<td style="text-align: right;">134/141 (95,0%)</td>
+<td style="text-align: right;">100,0% (134/134; bruto 95,0%)</td>
 </tr>
 </tbody>
 </table>
-<p>Na linha 3, o escore é o da rodada <strong>inicial</strong> do Cosmic Ray, executada com a suíte funcional + estrutural sobre o código corrigido. Na linha 4, é o da rodada <strong>final</strong>, com a suíte completa. Nas etapas 1 e 2 não há escore, pois a mutação só é aplicada depois da correção dos defeitos (seção 6). Fonte: <code>evidencias/evolucao.json</code>, gerado por <code>scripts/evolucao.py</code>.</p>
+<p>Escore de mutação = mortos ÷ (gerados − equivalentes) × 100, com os 7 equivalentes da seção 7.2; entre parênteses, o escore bruto (mortos ÷ gerados), que é o que o Cosmic Ray informa. Na linha 3, o escore é o da rodada <strong>inicial</strong> do Cosmic Ray, executada com a suíte funcional + estrutural sobre o código corrigido. Na linha 4, é o da rodada <strong>final</strong>, com a suíte completa. Nas etapas 1 e 2 não há escore, pois a mutação só é aplicada depois da correção dos defeitos (seção 6). Fonte: <code>evidencias/evolucao.json</code>, gerado por <code>scripts/evolucao.py</code>.</p>
 <p>A ordem <strong>Funcional → Estrutural → (correção) → Mutação</strong> está no histórico do fork: <code>afeb312</code> (etapa 1), <code>ac975b7</code> (etapa 2), seis commits de correção, e <code>324e29a</code> (etapa 3). Os commits posteriores reorganizaram o recorte. Na última revisão, a consulta de disponibilidade passou a requisito secundário, a suíte funcional foi enxugada para 15 casos (um por classe inválida, com os limites embutidos) e os casos foram renumerados. Todas as etapas foram então reexecutadas do zero, e as evidências deste relatório são dessa execução. Nessa versão, <strong>os mesmos 15 casos atravessam as três etapas</strong>: a estrutural e a de mutação não criaram casos, apenas ampliaram alguns deles (3 e 4 casos, respectivamente) com novas funções pytest de mesmo identificador. Nenhum caso foi removido ou marcado com <code>skip</code>. As datas fixas dos casos ficaram em março de 2030.</p>
 <h2>9. Registro de defeitos</h2>
 <p>Linhas referentes ao <code>hotel/views.py</code> original (<code>sut-original</code>). Todos os defeitos têm teste automatizado que falha no original e passa no corrigido. <strong>DEF-08 a DEF-11 pertencem ao RF-08 (cancelamento) e DEF-12, DEF-13, DEF-14, DEF-16 e DEF-17 ao RF-04 (consulta)</strong>, requisitos secundários, e foram revelados pelos testes complementares; os outros 10 pertencem aos três requisitos principais.</p>

@@ -51,15 +51,24 @@ def main():
     equivalentes = 7  # S8 a S14, classificados na seção 7.2 do relatório
     casos_ampliados = 4  # CT-002, CT-003, CT-012 e CT-015 (seção 7.3)
     vivos_nao_equiv = mut_fim["sobreviventes"] - equivalentes
+    # Escore da disciplina: mortos ÷ (gerados − equivalentes) × 100; o bruto (mortos ÷ gerados) vem entre parênteses.
+    escore = lambda mortos, total: pct(100 * mortos / (total - equivalentes))
+
+    def escore_evolucao(e):
+        if e["escore_pct"] is None:
+            return "—"
+        mortos, total = (int(n) for n in e["mutacao"].split("/"))
+        return f'{escore(mortos, total)} ({mortos}/{total - equivalentes}; bruto {pct(e["escore_pct"])})'
 
     linhas = ["| Etapa | Técnica | Código | Casos (testes pytest) | Casos que passaram | Casos que falharam (defeito confirmado) | Cobertura de comandos | "
               "Cobertura de desvios | Escore de mutação |", "|---|---|---|---:|---:|---:|---:|---:|---:|"]
     for e in evolucao:
-        escore = f'{e["mutacao"]} ({pct(e["escore_pct"])})' if e["escore_pct"] is not None else "—"
         linhas.append(f'| {e["etapa"]} | {e["tecnica"]} | {e["sut"]} | {e["casos"]} ({e["testes"]} testes) | {e["passaram"]} | {e["xfail"]} | '
-                      f'{e["comandos"]} ({pct(e["pct_comandos"])}) | {e["desvios"]} ({pct(e["pct_desvios"])}) | {escore} |')
+                      f'{e["comandos"]} ({pct(e["pct_comandos"])}) | {e["desvios"]} ({pct(e["pct_desvios"])}) | {escore_evolucao(e)} |')
     linhas.append("")
-    linhas.append("Na linha 3, o escore é o da rodada **inicial** do Cosmic Ray, executada com a suíte funcional + "
+    linhas.append(f"Escore de mutação = mortos ÷ (gerados − equivalentes) × 100, com os {equivalentes} equivalentes da seção 7.2; "
+                  "entre parênteses, o escore bruto (mortos ÷ gerados), que é o que o Cosmic Ray informa. "
+                  "Na linha 3, o escore é o da rodada **inicial** do Cosmic Ray, executada com a suíte funcional + "
                   "estrutural sobre o código corrigido. Na linha 4, é o da rodada **final**, com a suíte completa. "
                   "Nas etapas 1 e 2 não há escore, pois a mutação só é aplicada depois da correção dos defeitos (seção 6). "
                   "Fonte: `evidencias/evolucao.json`, gerado por `scripts/evolucao.py`.")
@@ -72,9 +81,8 @@ def main():
               "|---|---|---|---:|---:|---:|---:|"]
     for e in evolucao:
         num, tec = nomes[e["etapa"]]
-        escore = f'{e["mutacao"]} ({pct(e["escore_pct"])})' if e["escore_pct"] is not None else "—"
         resumo.append(f'| {num} | {tec} | {e["sut"]} | {e["casos"]} ({e["testes"]} testes) | {e["comandos"]} ({pct(e["pct_comandos"])}) | '
-                      f'{e["desvios"]} ({pct(e["pct_desvios"])}) | {escore} |')
+                      f'{e["desvios"]} ({pct(e["pct_desvios"])}) | {escore_evolucao(e)} |')
 
     nomes_req = {"REQ-01": "REQ-01 Reservar quartos", "REQ-02": "REQ-02 Data de entrada",
                  "REQ-03": "REQ-03 Data de saída"}
@@ -111,10 +119,15 @@ def main():
         "«COV_FINAL_DESV»": f'{final["recorte"]["desvios_cobertos"]}/{final["recorte"]["desvios"]} ({pct(final["recorte"]["pct_desvios"])})',
         "«COV_VIEWS_TOTAL»": pct(final["views_py_inteiro"]["pct_total"]),
         "«MUT_FINAL»": f'{mut_fim["mortos"]}/{mut_fim["total"]} ({pct(mut_fim["escore_pct"])})',
+        "«MUT_INI_ESCORE»": (
+            f'Escore de {escore(mut_ini["mortos"], mut_ini["total"])} ({mut_ini["mortos"]} ÷ ({mut_ini["total"]} − {equivalentes})), '
+            f'descontando os {equivalentes} equivalentes identificados na análise abaixo; sem descontar, {pct(mut_ini["escore_pct"])}.'),
         "«MUT_FINAL_TEXTO»": (
             f'{mut_fim["total"]} mutantes: {mut_fim["mortos"]} mortos, {mut_fim["sobreviventes"]} sobreviventes, '
-            f'{mut_fim["incompetentes"]} incompetentes. Escore de {pct(mut_fim["escore_pct"])} '
-            f'(inicial: {pct(mut_ini["escore_pct"])}), em {mut_fim["duracao_s"]:.0f} s.** As ampliações de {casos_ampliados} casos '
+            f'{mut_fim["incompetentes"]} incompetentes. Escore de {escore(mut_fim["mortos"], mut_fim["total"])} '
+            f'({mut_fim["mortos"]} ÷ ({mut_fim["total"]} − {equivalentes})); inicial: {escore(mut_ini["mortos"], mut_ini["total"])}. '
+            f'Sem descontar os equivalentes: {pct(mut_fim["escore_pct"])} (inicial: {pct(mut_ini["escore_pct"])}). '
+            f'Execução em {mut_fim["duracao_s"]:.0f} s.** As ampliações de {casos_ampliados} casos '
             f'mataram os {mut_ini["sobreviventes"] - equivalentes} sobreviventes não equivalentes. Restam {mut_fim["sobreviventes"]} sobreviventes, '
             f'todos classificados como equivalentes (S8 a S14); não equivalentes restantes: {vivos_nao_equiv}. '
             f'O arquivo `evidencias/mutacao-final/sobreviventes.txt` traz o diff de cada um.'),

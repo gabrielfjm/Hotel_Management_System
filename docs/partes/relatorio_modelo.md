@@ -179,11 +179,11 @@ Um ajuste de oráculo foi necessário e está registrado no commit `8a6c4bd`. O 
 * **Ferramenta:** Cosmic Ray 8.4.3, distribuidor local, timeout de 30 s por mutante e todos os operadores padrão: substituição de operadores relacionais, aritméticos, lógicos e unários, troca de números, de `break`/`continue` e de palavras-chave, laço de zero iterações, remoção de decorador etc.
 * **Escopo:** **todos os mutantes** gerados nas linhas das funções dos três requisitos no `hotel/views.py` corrigido, sem amostragem: `reserve`, `cal_cost` e as quatro auxiliares. Total: **«MUT_TOTAL» mutantes**. As demais rotas, inclusive as dos requisitos secundários (`check_available`, `show_rooms` e `delete_reservation`), foram excluídas porque não fazem parte do recorte; incluí-las só acrescentaria sobreviventes triviais.
 * **Configuração:** `mutacao/cosmic-ray-inicial.toml` e `mutacao/cosmic-ray-final.toml`. O comando de teste é `pytest -x -q`, restrito a `-m 'funcional or estrutural'` na rodada inicial e a `-m 'funcional or estrutural or mutacao'` na final (os complementares ficam de fora). O script `scripts/mutacao.py` monta a sessão, executa `cosmic-ray exec` e grava `sessao.sqlite`, `resumo.json`, `sobreviventes.txt` (diff de cada sobrevivente) e `execucao.txt`.
-* **Escore:** mortos / (mortos + sobreviventes). Não houve mutantes incompetentes nem *timeouts*.
+* **Escore:** escore de mutação (%) = mortos ÷ (total de mutantes gerados − mutantes equivalentes) × 100. Um mutante equivalente não muda o comportamento do programa, então nenhum teste consegue matá-lo; por isso ele sai do denominador. A equivalência é uma propriedade do mutante, identificada na análise dos sobreviventes (seção 7.2), e vale para as duas rodadas. Para comparação, também é informado o escore bruto (mortos ÷ gerados), que é o que o Cosmic Ray mostra. Não houve mutantes incompetentes nem *timeouts*.
 
 ### 7.2 Rodada inicial (suíte ao fim da etapa estrutural)
 
-Os 15 casos (com as ampliações estruturais, 18 funções pytest) rodaram contra cada mutante. **141 mutantes: 127 mortos e 14 sobreviventes. Escore de 90,1%.** Execução em cerca de 4 minutos.
+Os 15 casos (com as ampliações estruturais, 18 funções pytest) rodaram contra cada mutante. **141 mutantes: 127 mortos e 14 sobreviventes. «MUT_INI_ESCORE»** Execução em cerca de 4 minutos.
 
 | # | Função (linha) | Mutação | Classificação | Ação |
 |---|---|---|---|---|
@@ -224,7 +224,7 @@ A suíte tinha 100% de cobertura de desvios e, mesmo assim, deixou vivos 7 mutan
 3. **Dados de teste pouco variados.** Nenhum caso reservava o quarto 301; os quartos usados (101 e 102) cabem no cache de inteiros pequenos do Python, o que esconde a troca de `==` por `is` no cálculo das diárias. Em produção, com quartos numerados acima de 256, esse erro passaria despercebido.
 4. **Ordem de criação fixa e nenhum caso no extremo da enumeração de quartos.** Faltavam a reserva mais nova pertencendo ao quarto pedido (o que distingue `brid == rid` de uma junção errada) e uma reserva de todos os quartos.
 
-Os 7 equivalentes vêm de código defensivo ou redundante que veio do original: o custo provisório 0, `time(0, 0)` explícito e a comparação de tamanhos em `_ler_quartos`. Eles mostram também que o escore bruto subestima a qualidade da suíte. Excluindo os equivalentes, o escore final é «MUT_AJUSTADO».
+Os 7 equivalentes vêm de código defensivo ou redundante que veio do original: o custo provisório 0, `time(0, 0)` explícito e a comparação de tamanhos em `_ler_quartos`. Eles mostram também por que a fórmula desconta os equivalentes: o escore bruto subestima a qualidade da suíte. Com os equivalentes fora do denominador, o escore final é «MUT_AJUSTADO»: todos os mutantes que podiam ser mortos foram mortos.
 
 ## 8. Evolução incremental
 
